@@ -7,39 +7,22 @@ import Bishop from "./Bishop";
 import King from "./King";
 import Queen from "./Queen";
 
+function Piece(pieceProps) {
 
-function Piece(pieceParams) {
-  if (pieceParams.pieceType === "") {
-    return (
-        null
-    );
-  }else if (pieceParams.pieceType === "Pawn") {
-    return (
-        <Pawn color={pieceParams.pieceColor}/>
-    );
-  }else if (pieceParams.pieceType === "Rook") {
-    return (
-        <Rook color={pieceParams.pieceColor}/>
-    )
-  }else if (pieceParams.pieceType === "Knight") {
-    return (
-        <Knight color={pieceParams.pieceColor}/>
-    )
-  }
-  else if (pieceParams.pieceType === "Bishop") {
-    return (
-        <Bishop color={pieceParams.pieceColor}/>
-    )
-  }
-  else if (pieceParams.pieceType === "King") {
-    return (
-        <King color={pieceParams.pieceColor}/>
-    )
-  }
-  else {
-    return (
-        <Queen color={pieceParams.pieceColor}/>
-    )
+  if (pieceProps.pieceType === "") {
+    return null;
+  } else if (pieceProps.pieceType === "Pawn") {
+    return <Pawn color={pieceProps.pieceColor} />;
+  } else if (pieceProps.pieceType === "Rook") {
+    return <Rook color={pieceProps.pieceColor} />;
+  } else if (pieceProps.pieceType === "Knight") {
+    return <Knight color={pieceProps.pieceColor} />;
+  } else if (pieceProps.pieceType === "Bishop") {
+    return <Bishop color={pieceProps.pieceColor} />;
+  } else if (pieceProps.pieceType === "King") {
+    return <King color={pieceProps.pieceColor} />;
+  } else {
+    return <Queen color={pieceProps.pieceColor} />;
   }
 }
 
