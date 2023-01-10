@@ -10,7 +10,7 @@ function App() {
   //console.log(row1[0].props.pieceType)
   //console.log(row4[4].props.pieceType);
   //console.log(board[0][4].props.pieceType);
-  const column = MovePiece({board,setBoard})
+  // const column = MovePiece(board, setBoard);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -26,6 +26,13 @@ function App() {
           <div className="row">{board[7]}</div>
         </div>
       </div>
+      <button
+        onClick={() => {
+          MovePiece(board, setBoard);
+        }}
+      >
+        Test
+      </button>
     </DndProvider>
   );
 }

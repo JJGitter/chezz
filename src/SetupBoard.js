@@ -1,6 +1,5 @@
 import React from 'react';
 import Square from './Components/Square';
-import { useDrop } from 'react-dnd';
 
 function SetupBoard() {
 
