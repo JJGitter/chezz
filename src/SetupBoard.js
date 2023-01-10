@@ -1,7 +1,9 @@
 import React from 'react';
 import Square from './Components/Square';
+import { useDrop } from 'react-dnd';
 
 function SetupBoard() {
+
     const row8 = [
         <Square key="a8" index="a8"  color="Light" pieceType="Rook" pieceColor="black" />,
         <Square key="b8" index="b8" color="Dark" pieceType="Knight" pieceColor="black" />,

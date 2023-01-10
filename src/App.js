@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import SetupBoard from "./SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { useDrop } from "react-dnd";
 
 function App() {
   const [board, setBoard] = useState(SetupBoard);
