@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import SetupBoard from "./SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { useDrop } from "react-dnd";
+import MovePiece from "./Components/MovePiece";
 
 function App() {
   const [board, setBoard] = useState(SetupBoard);
   //console.log(row1[0].props.pieceType)
   //console.log(row4[4].props.pieceType);
   //console.log(board[0][4].props.pieceType);
+  const column = MovePiece({board,setBoard})
 
   return (
     <DndProvider backend={HTML5Backend}>
