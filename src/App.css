@@ -5,7 +5,7 @@
 .Board {
   height: 500px;
   width: 500px;
-  background-color:blue;
+  background-color: #CC6A85;
   border: 5px solid black;
   display: flex;
   flex-direction: column;
@@ -20,13 +20,13 @@
 
 .LightSquare {
   flex: 12.5%;
-  background-color: lightblue;
+  background-color: lightgrey;
   pointer-events:stroke;
 }
 
 .DarkSquare {
   flex: 12.5%;
-  background-color: darkolivegreen;
+  background-color: #769656;
   pointer-events:stroke;
 }
 
