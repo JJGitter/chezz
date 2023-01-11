@@ -29,3 +29,8 @@
   background-color: darkolivegreen;
   pointer-events:stroke;
 }
+
+.HoveredSquare{
+  flex: 12.5%;
+  pointer-events:stroke;
+}
