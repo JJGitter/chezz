@@ -3,14 +3,15 @@ import "../App.css";
 import Piece from "./Piece";
 import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
-import MovePiece from "./MovePiece";
+import MovePiece from "../Functions/MovePiece";
 import { boardContext } from "../App";
 import { useContext } from "react";
+import DestinationSquares from "../Functions/DestinationSquares";
 
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
   //The piece will be draggable and the square will be able to accept dropped pieces.
-  const { board, setBoard } = useContext(boardContext);
+  const { board, setBoard, player, setPlayer } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
     type: "piece",
@@ -25,7 +26,10 @@ function Square(squareProps) {
   const [dropProps, dropRef] = useDrop({
     accept: "piece", //the type of drag component that will be accepted to drop
     drop: (item, monitor) => {
-      MovePiece(board, setBoard, item.piece, item.pieceColor, item.fromCell, squareProps.index);
+      if (DestinationSquares(item,board).includes(squareProps.index)){
+        MovePiece(board, setBoard, item.piece, item.pieceColor, item.fromCell, squareProps.index);
+        setPlayer(player === "white" ? "black" : "white")
+      }
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver() }), //Collects isOver into dropProps
   });
@@ -37,7 +41,7 @@ function Square(squareProps) {
         dropProps.isOver ? "HoveredSquare" : squareProps.color + "Square"
       }
     >
-      <div ref={dragRef} //This component will be dragable
+      <div ref={squareProps.pieceColor === player ? dragRef : null} //This component will be dragable if it is that colors turn.
       >
         <Piece
           pieceType={squareProps.pieceType}

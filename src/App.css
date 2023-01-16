@@ -19,12 +19,18 @@
 }
 
 .LightSquare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 12.5%;
   background-color: lightgrey;
   pointer-events:stroke;
 }
 
 .DarkSquare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 12.5%;
   background-color: #769656;
   pointer-events:stroke;
