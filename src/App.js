@@ -11,7 +11,14 @@ function App() {
   const [player, setPlayer] = useState("white");
 
   return (
-    <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+      }}
+    >
       <boardContext.Provider value={{ board, setBoard, player, setPlayer }}>
         <DndProvider backend={HTML5Backend}>
           <div className="App">
@@ -25,18 +32,33 @@ function App() {
               <div className="row">{board[6]}</div>
               <div className="row">{board[7]}</div>
             </div>
+            <button
+              onClick={() => {
+                console.log(board[6][7].props);
+              }}
+            >
+              Test
+            </button>
           </div>
-          <button
-            onClick={() => {
-              console.log(board[6][7].props);
-            }}
-          >
-            Test
-          </button>
         </DndProvider>
       </boardContext.Provider>
 
-      <div style={{fontSize: 25} }>{player} to move</div>
+      <div style={{ fontSize: 25 }}>{player} to move</div>
+      <div className="taskList">
+        <h3 style={{
+          fontStyle: "normal"
+        }}>Task List</h3>
+        <ul>
+          <li>list of enemy controlled squares</li>
+          <li>enPassant target state</li>
+          <li>castling opportunities state</li>
+          <li>highligt last move</li>
+          <li>nr of halfmoves</li>
+          <li>nr of moves</li>
+          <li>create FEN</li>
+          <li>import FEN</li>
+        </ul>
+      </div>
     </div>
   );
 }

@@ -5,11 +5,10 @@
 .Board {
   height: 500px;
   width: 500px;
-  background-color: #CC6A85;
+  background-color: #cc6a85;
   border: 5px solid black;
   display: flex;
   flex-direction: column;
-  
 }
 
 .row {
@@ -24,7 +23,7 @@
   justify-content: center;
   flex: 12.5%;
   background-color: lightgrey;
-  pointer-events:stroke;
+  pointer-events: stroke;
 }
 
 .DarkSquare {
@@ -33,10 +32,18 @@
   justify-content: center;
   flex: 12.5%;
   background-color: #769656;
-  pointer-events:stroke;
+  pointer-events: stroke;
 }
 
-.HoveredSquare{
+.HoveredSquare {
   flex: 12.5%;
-  pointer-events:stroke;
+  pointer-events: stroke;
+}
+
+.taskList {
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 5px solid purple;
 }
