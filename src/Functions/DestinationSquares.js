@@ -404,7 +404,6 @@ function DestinationSquares(
   //_________________________________________________________________________
   else if (movedItem.piece === "King") {
     //TODO: The king also needs to consider if the square is under control by enemy piece
-    //TODO: The king also needs to consider castling(requires isMoved prop on rooks and king)
     //TODO: The player also needs to consider if the king is in check
     if (
       startColumn + 1 <= 7 &&
