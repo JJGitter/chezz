@@ -1,6 +1,14 @@
-/* .App {
-  text-align: center;
-} */
+.App {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.ButtonList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 
 .Board {
   height: 500px;
@@ -35,15 +43,15 @@
   pointer-events: stroke;
 }
 
-.HoveredSquare {
-  flex: 12.5%;
-  pointer-events: stroke;
-}
-
 .taskList {
   font-style: italic;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   border: 5px solid purple;
 }
+
+/* main axis is defined by flex-direction*/
+/* justify-content  aligns items inside  the container along the main axis*/
+/* align-items aligns items inside the container along the cross axis */

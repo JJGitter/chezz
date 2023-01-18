@@ -4,7 +4,7 @@ import Square from '../Components/Square';
 function SetupBoard() {
 
     const row8 = [
-        <Square key="a8" index="a8"  color="Light" pieceType="Rook" pieceColor="black" />,
+        <Square key="a8" index="a8" color="Light" pieceType="Rook" pieceColor="black" />,
         <Square key="b8" index="b8" color="Dark" pieceType="Knight" pieceColor="black" />,
         <Square key="c8" index="c8" color="Light" pieceType="Bishop" pieceColor="black" />,
         <Square key="d8" index="d8" color="Dark" pieceType="Queen" pieceColor="black" />,

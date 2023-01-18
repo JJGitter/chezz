@@ -1,4 +1,5 @@
 import { stringSplit } from "./MovePiece";
+import UnderEnemyControl from "./UnderEnemyControl";
 
 export function stringMerge(columnidx, rowidx) {
   //This function will merge two strings to make a square id string. (1 and 1 will become "b7")
@@ -11,8 +12,15 @@ export function stringMerge(columnidx, rowidx) {
   return squareID;
 }
 
-function DestinationSquares(movedItem, board) {
+function DestinationSquares(
+  movedItem,
+  board,
+  wKingState,
+  bKingState,
+  checkingEnemyControl
+) {
   //This function return an array of possible drop squares. ["c4","d6","f7"]
+  //It will exclude squares that are already occupied by pieces of your color
 
   let destinations = [];
   const [startColumn, startRow] = stringSplit(movedItem.fromCell);
@@ -455,11 +463,68 @@ function DestinationSquares(movedItem, board) {
     ) {
       destinations.push(stringMerge(startColumn + 1, startRow - 1));
     }
+
+    if (!checkingEnemyControl) {
+      //Add castling destinations
+     
+      if (movedItem.pieceColor === "white") {
+        if (
+          wKingState.hasKSideCastlingRights &&
+          !UnderEnemyControl(board, "white").includes("f1") &&
+          !UnderEnemyControl(board, "white").includes("g1") &&
+          !wKingState.isChecked &&
+          board[7][5].props.pieceType === "" &&
+          board[7][6].props.pieceType === ""
+        ) {
+          //white kingside
+          destinations.push("g1");
+        }
+        if (
+          wKingState.hasQSideCastlingRights &&
+          !UnderEnemyControl(board, "white").includes("c1") &&
+          !UnderEnemyControl(board, "white").includes("d1") &&
+          !wKingState.isChecked &&
+          board[7][1].props.pieceType === "" &&
+          board[7][2].props.pieceType === "" &&
+          board[7][3].props.pieceType === "" 
+        ) {
+          //white queenside
+          destinations.push("c1");
+        }
+      }
+
+
+
+      if (movedItem.pieceColor === "black") {
+        if (
+          bKingState.hasKSideCastlingRights &&
+          !UnderEnemyControl(board, "black").includes("f8") &&
+          !UnderEnemyControl(board, "black").includes("g8") &&
+          !bKingState.isChecked &&
+          board[0][5].props.pieceType === "" &&
+          board[0][6].props.pieceType === ""
+        ) {
+          //black kingside
+          destinations.push("g8");
+        }
+        if (
+          bKingState.hasQSideCastlingRights &&
+          !UnderEnemyControl(board, "black").includes("c8") &&
+          !UnderEnemyControl(board, "black").includes("d8") &&
+          !bKingState.isChecked &&
+          board[0][1].props.pieceType === "" &&
+          board[0][2].props.pieceType === "" &&
+          board[0][3].props.pieceType === "" 
+        ) {
+          //black queenside
+          destinations.push("c8");
+        }
+      }
+    }
   }
   //KING
   //_________________________________________________________________________
   //_________________________________________________________________________
-  console.log(destinations);
   return destinations;
 }
 
