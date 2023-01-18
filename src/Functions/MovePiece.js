@@ -1,5 +1,6 @@
 import React from "react";
 import Square from "../Components/Square";
+import { stringMerge } from "./DestinationSquares";
 
 export function stringSplit(string) {
   //This function will split the string of square id such as "C4" and return columnindex=2 and rowindex=4
@@ -20,8 +21,11 @@ function MovePiece(
   wKingState,
   bKingState,
   setwKingState,
-  setbKingState
+  setbKingState,
+  enPassantTarget,
+  setenPassantTarget
 ) {
+  setenPassantTarget(""); //reset the enPassanttarget every time a new piece is moved
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
 
@@ -37,6 +41,27 @@ function MovePiece(
       pieceColor=""
     />
   );
+
+  //add enPassant target
+  if (pieceType === "Pawn" && Math.abs(toRowIndex - fromRowIndex) === 2) {
+    //set target to the square behind the pawn
+    setenPassantTarget(
+      stringMerge(toColumnIndex, Math.min(fromRowIndex, toRowIndex) + 1)
+    );
+  }
+
+  //if enPassant is performed, remove the captured pawn
+  if (toSquare === enPassantTarget && pieceType === "Pawn") {
+    tempBoard[fromRowIndex][toColumnIndex] = (
+      <Square
+        key={board[fromRowIndex][toColumnIndex].props.index}
+        index={board[fromRowIndex][toColumnIndex].props.index}
+        color={board[fromRowIndex][toColumnIndex].props.color}
+        pieceType=""
+        pieceColor=""
+      />
+    );
+  }
 
   //Insert the piece where the piece moves to
   if (pieceType !== "Pawn" || (toRowIndex !== 0 && toRowIndex !== 7)) {
@@ -133,7 +158,7 @@ function MovePiece(
               pieceColor=""
             />
           );
-        }else{
+        } else {
           //Black castles queenside
           tempBoard[0][3] = (
             <Square

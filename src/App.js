@@ -20,6 +20,7 @@ function App() {
     hasQSideCastlingRights: true,
     isChecked: false,
   });
+  const [enPassantTarget, setenPassantTarget] = useState("");
 
   return (
     <boardContext.Provider
@@ -31,7 +32,9 @@ function App() {
         wKingState,
         bKingState,
         setwKingState,
-        setbKingState
+        setbKingState,
+        enPassantTarget,
+        setenPassantTarget
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -51,13 +54,7 @@ function App() {
           <div className="ButtonList">
             <button
               onClick={() => {
-                // console.log(UnderEnemyControl(player,board));
-                // UnderEnemyControl(player, board);
-                console.log("d1: " + board[7][4].props.pieceType)
-                console.log("f1: " + board[7][5].props.pieceType)
-                console.log("g1: " + board[7][6].props.pieceType)
-                console.log("h1: " + board[7][7].props.pieceType)
-                console.log("row length: " + board[7].length)
+                console.log(UnderEnemyControl(board,player))
               }}
             >
               Test
@@ -73,10 +70,8 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>list of enemy controlled squares</li>
+              <li>is King in check?</li>
               <li>button that flips the board</li>
-              <li>enPassant target state</li>
-              <li>castling opportunities state</li>
               <li>highligt last move</li>
               <li>make it possible to choose promotion piece</li>
               <li>nr of halfmoves</li>

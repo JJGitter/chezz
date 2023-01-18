@@ -19,7 +19,7 @@ function UnderEnemyControl(board, player) {
         item.piece = board[i][j].props.pieceType;
         item.pieceColor = board[i][j].props.pieceColor;
         controlledSquares.push(
-          ...DestinationSquares(item, board, null, null, true)
+          ...DestinationSquares(item, board, null, null, null, true)
         );
       }
       if (

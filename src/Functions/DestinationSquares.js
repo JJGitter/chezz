@@ -17,6 +17,7 @@ function DestinationSquares(
   board,
   wKingState,
   bKingState,
+  enPassantTarget,
   checkingEnemyControl
 ) {
   //This function return an array of possible drop squares. ["c4","d6","f7"]
@@ -132,6 +133,17 @@ function DestinationSquares(
     }
     //Pawn Captures
     //___________________________________________________________________________
+
+    //enPassant
+    //__________________________________________________________________________
+    if (stringMerge(startColumn - 1, startRow - 1) === enPassantTarget) {
+      destinations.push(enPassantTarget);
+    } else if (stringMerge(startColumn + 1, startRow - 1) === enPassantTarget) {
+      destinations.push(enPassantTarget);
+    }
+
+    //enPassant
+    //__________________________________________________________________________
   }
   //PAWN (WHITE)
   //_________________________________________________________________________
@@ -465,7 +477,7 @@ function DestinationSquares(
 
     if (!checkingEnemyControl) {
       //Add castling destinations
-     
+
       if (movedItem.pieceColor === "white") {
         if (
           wKingState.hasKSideCastlingRights &&
@@ -485,14 +497,12 @@ function DestinationSquares(
           !wKingState.isChecked &&
           board[7][1].props.pieceType === "" &&
           board[7][2].props.pieceType === "" &&
-          board[7][3].props.pieceType === "" 
+          board[7][3].props.pieceType === ""
         ) {
           //white queenside
           destinations.push("c1");
         }
       }
-
-
 
       if (movedItem.pieceColor === "black") {
         if (
@@ -513,7 +523,7 @@ function DestinationSquares(
           !bKingState.isChecked &&
           board[0][1].props.pieceType === "" &&
           board[0][2].props.pieceType === "" &&
-          board[0][3].props.pieceType === "" 
+          board[0][3].props.pieceType === ""
         ) {
           //black queenside
           destinations.push("c8");

@@ -20,6 +20,8 @@ function Square(squareProps) {
     bKingState,
     setwKingState,
     setbKingState,
+    enPassantTarget,
+    setenPassantTarget
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -36,7 +38,7 @@ function Square(squareProps) {
     accept: "piece", //the type of drag component that will be accepted to drop
     drop: (item, monitor) => {
       if (
-        DestinationSquares(item, board, wKingState, bKingState).includes(
+        DestinationSquares(item, board, wKingState, bKingState,enPassantTarget).includes(
           squareProps.index
         )
       ) {
@@ -50,7 +52,9 @@ function Square(squareProps) {
           wKingState,
           bKingState,
           setwKingState,
-          setbKingState
+          setbKingState,
+          enPassantTarget,
+          setenPassantTarget
         );
         setPlayer(player === "white" ? "black" : "white");
       }
