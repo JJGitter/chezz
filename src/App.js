@@ -21,6 +21,7 @@ function App() {
     isChecked: false,
   });
   const [enPassantTarget, setenPassantTarget] = useState("");
+  const [flippedBoard, setflippedBoard] = useState(false);
 
   return (
     <boardContext.Provider
@@ -34,32 +35,45 @@ function App() {
         setwKingState,
         setbKingState,
         enPassantTarget,
-        setenPassantTarget
+        setenPassantTarget,
       }}
     >
       <DndProvider backend={HTML5Backend}>
         <div className="App">
-          <div className="Board">
-            <div className="row">{board[0]}</div>
-            <div className="row">{board[1]}</div>
-            <div className="row">{board[2]}</div>
-            <div className="row">{board[3]}</div>
-            <div className="row">{board[4]}</div>
-            <div className="row">{board[5]}</div>
-            <div className="row">{board[6]}</div>
-            <div className="row">{board[7]}</div>
-          </div>
+          {!flippedBoard ? (
+            <div className="Board">
+              <div className="row">{board[0]}</div>
+              <div className="row">{board[1]}</div>
+              <div className="row">{board[2]}</div>
+              <div className="row">{board[3]}</div>
+              <div className="row">{board[4]}</div>
+              <div className="row">{board[5]}</div>
+              <div className="row">{board[6]}</div>
+              <div className="row">{board[7]}</div>
+            </div>
+          ) : (
+            <div className="Board">
+              <div className="row">{board[7].slice().reverse()}</div>
+              <div className="row">{board[6].slice().reverse()}</div>
+              <div className="row">{board[5].slice().reverse()}</div>
+              <div className="row">{board[4].slice().reverse()}</div>
+              <div className="row">{board[3].slice().reverse()}</div>
+              <div className="row">{board[2].slice().reverse()}</div>
+              <div className="row">{board[1].slice().reverse()}</div>
+              <div className="row">{board[0].slice().reverse()}</div>
+            </div>
+          )}
           <div style={{ fontSize: 25 }}>{player} to move</div>
 
           <div className="ButtonList">
             <button
               onClick={() => {
-                console.log(UnderEnemyControl(board,player))
+                console.log(UnderEnemyControl(board, player));
               }}
             >
               Test
             </button>
-            <button>Another button</button>
+            <button onClick={() => setflippedBoard(!flippedBoard)}>Flip Board</button>
           </div>
           <div className="taskList">
             <h3
@@ -71,7 +85,6 @@ function App() {
             </h3>
             <ul>
               <li>is King in check?</li>
-              <li>button that flips the board</li>
               <li>highligt last move</li>
               <li>make it possible to choose promotion piece</li>
               <li>nr of halfmoves</li>

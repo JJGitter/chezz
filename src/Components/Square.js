@@ -21,7 +21,7 @@ function Square(squareProps) {
     setwKingState,
     setbKingState,
     enPassantTarget,
-    setenPassantTarget
+    setenPassantTarget,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -38,9 +38,13 @@ function Square(squareProps) {
     accept: "piece", //the type of drag component that will be accepted to drop
     drop: (item, monitor) => {
       if (
-        DestinationSquares(item, board, wKingState, bKingState,enPassantTarget).includes(
-          squareProps.index
-        )
+        DestinationSquares(
+          item,
+          board,
+          wKingState,
+          bKingState,
+          enPassantTarget
+        ).includes(squareProps.index)
       ) {
         MovePiece(
           board,
