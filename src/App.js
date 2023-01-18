@@ -70,7 +70,6 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>look over the UnderEnemyControl function. It doesn't return squares that are occupied by enemy pieces</li>
               <li>is King in check?</li>
               <li>button that flips the board</li>
               <li>highligt last move</li>
