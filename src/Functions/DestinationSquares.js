@@ -30,68 +30,28 @@ function DestinationSquares(
   //_________________________________________________________________________
   //_________________________________________________________________________
   if (movedItem.piece === "Knight") {
-    if (
-      startColumn + 2 <= 7 &&
-      startRow + 1 <= 7 &&
-      board[startRow + 1][startColumn + 2].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn + 2 <= 7 && startRow + 1 <= 7) {
       destinations.push(stringMerge(startColumn + 2, startRow + 1));
     }
-    if (
-      startColumn + 2 <= 7 &&
-      startRow - 1 >= 0 &&
-      board[startRow - 1][startColumn + 2].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn + 2 <= 7 && startRow - 1 >= 0) {
       destinations.push(stringMerge(startColumn + 2, startRow - 1));
     }
-    if (
-      startColumn + 1 <= 7 &&
-      startRow + 2 <= 7 &&
-      board[startRow + 2][startColumn + 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn + 1 <= 7 && startRow + 2 <= 7) {
       destinations.push(stringMerge(startColumn + 1, startRow + 2));
     }
-    if (
-      startColumn - 1 >= 0 &&
-      startRow + 2 <= 7 &&
-      board[startRow + 2][startColumn - 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn - 1 >= 0 && startRow + 2 <= 7) {
       destinations.push(stringMerge(startColumn - 1, startRow + 2));
     }
-    if (
-      startColumn - 2 >= 0 &&
-      startRow + 1 <= 7 &&
-      board[startRow + 1][startColumn - 2].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn - 2 >= 0 && startRow + 1 <= 7) {
       destinations.push(stringMerge(startColumn - 2, startRow + 1));
     }
-    if (
-      startColumn - 2 >= 0 &&
-      startRow - 1 >= 0 &&
-      board[startRow - 1][startColumn - 2].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn - 2 >= 0 && startRow - 1 >= 0) {
       destinations.push(stringMerge(startColumn - 2, startRow - 1));
     }
-    if (
-      startColumn + 1 <= 7 &&
-      startRow - 2 >= 0 &&
-      board[startRow - 2][startColumn + 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn + 1 <= 7 && startRow - 2 >= 0) {
       destinations.push(stringMerge(startColumn + 1, startRow - 2));
     }
-    if (
-      startColumn - 1 >= 0 &&
-      startRow - 2 >= 0 &&
-      board[startRow - 2][startColumn - 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startColumn - 1 >= 0 && startRow - 2 >= 0) {
       destinations.push(stringMerge(startColumn - 1, startRow - 2));
     }
   }
@@ -198,9 +158,7 @@ function DestinationSquares(
       row--;
       //If there is a piece in the way, stop adding destinations.
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -209,9 +167,7 @@ function DestinationSquares(
     while (row < 7) {
       row++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -220,9 +176,7 @@ function DestinationSquares(
     while (col < 7) {
       col++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -231,9 +185,7 @@ function DestinationSquares(
     while (col > 0) {
       col--;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -253,9 +205,7 @@ function DestinationSquares(
       row--;
       col--;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -266,9 +216,7 @@ function DestinationSquares(
       row--;
       col++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -279,9 +227,7 @@ function DestinationSquares(
       row++;
       col++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -292,9 +238,7 @@ function DestinationSquares(
       row++;
       col--;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -314,9 +258,7 @@ function DestinationSquares(
       row--;
       col--;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -327,9 +269,7 @@ function DestinationSquares(
       row--;
       col++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -340,9 +280,7 @@ function DestinationSquares(
       row++;
       col++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -353,9 +291,7 @@ function DestinationSquares(
       row++;
       col--;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -366,9 +302,7 @@ function DestinationSquares(
       row--;
       //If there is a piece in the way, stop adding destinations.
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -377,9 +311,7 @@ function DestinationSquares(
     while (row < 7) {
       row++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -388,9 +320,7 @@ function DestinationSquares(
     while (col < 7) {
       col++;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -399,9 +329,7 @@ function DestinationSquares(
     while (col > 0) {
       col--;
       if (board[row][col].props.pieceType !== "") {
-        if (board[row][col].props.pieceColor !== movedItem.pieceColor) {
-          destinations.push(stringMerge(col, row));
-        }
+        destinations.push(stringMerge(col, row));
         break;
       }
       destinations.push(stringMerge(col, row));
@@ -417,61 +345,29 @@ function DestinationSquares(
   else if (movedItem.piece === "King") {
     //TODO: The king also needs to consider if the square is under control by enemy piece
     //TODO: The player also needs to consider if the king is in check
-    if (
-      startColumn + 1 <= 7 &&
-      board[startRow][startColumn + 1].props.pieceColor !== movedItem.pieceColor
-    ) {
+    if (startColumn + 1 <= 7) {
       destinations.push(stringMerge(startColumn + 1, startRow));
     }
-    if (
-      startColumn - 1 >= 0 &&
-      board[startRow][startColumn - 1].props.pieceColor !== movedItem.pieceColor
-    ) {
+    if (startColumn - 1 >= 0) {
       destinations.push(stringMerge(startColumn - 1, startRow));
     }
-    if (
-      startRow + 1 <= 7 &&
-      board[startRow + 1][startColumn].props.pieceColor !== movedItem.pieceColor
-    ) {
+    if (startRow + 1 <= 7) {
       destinations.push(stringMerge(startColumn, startRow + 1));
     }
-    if (
-      startRow - 1 >= 0 &&
-      board[startRow - 1][startColumn].props.pieceColor !== movedItem.pieceColor
-    ) {
+    if (startRow - 1 >= 0) {
       destinations.push(stringMerge(startColumn, startRow - 1));
     }
 
-    if (
-      startRow - 1 >= 0 &&
-      startColumn - 1 >= 0 &&
-      board[startRow - 1][startColumn - 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startRow - 1 >= 0 && startColumn - 1 >= 0) {
       destinations.push(stringMerge(startColumn - 1, startRow - 1));
     }
-    if (
-      startRow + 1 <= 7 &&
-      startColumn + 1 <= 7 &&
-      board[startRow + 1][startColumn + 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startRow + 1 <= 7 && startColumn + 1 <= 7) {
       destinations.push(stringMerge(startColumn + 1, startRow + 1));
     }
-    if (
-      startRow + 1 <= 7 &&
-      startColumn - 1 >= 0 &&
-      board[startRow + 1][startColumn - 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startRow + 1 <= 7 && startColumn - 1 >= 0) {
       destinations.push(stringMerge(startColumn - 1, startRow + 1));
     }
-    if (
-      startRow - 1 >= 0 &&
-      startColumn + 1 <= 7 &&
-      board[startRow - 1][startColumn + 1].props.pieceColor !==
-        movedItem.pieceColor
-    ) {
+    if (startRow - 1 >= 0 && startColumn + 1 <= 7) {
       destinations.push(stringMerge(startColumn + 1, startRow - 1));
     }
 
@@ -534,6 +430,20 @@ function DestinationSquares(
   //KING
   //_________________________________________________________________________
   //_________________________________________________________________________
+
+
+  //if not fetching the enemy control squares (i.e, fetching the destinations of movement)
+  //remove the destination IDs that are occupied by your own pieces
+  if (!checkingEnemyControl) {
+    let occupiedSquares = [];
+    for (let i = 0; i < destinations.length; i++) {
+      let [col, row] = stringSplit(destinations[i]);
+      if (board[row][col].props.pieceColor === movedItem.pieceColor) {
+        occupiedSquares.push(destinations[i])
+      }      
+    }
+    destinations = destinations.filter(dest => !occupiedSquares.includes(dest))
+  }
   return destinations;
 }
 
