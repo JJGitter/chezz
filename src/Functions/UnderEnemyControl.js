@@ -2,7 +2,7 @@ import DestinationSquares from "./DestinationSquares";
 import { stringMerge } from "./DestinationSquares";
 
 function UnderEnemyControl(board, player) {
-  //This function returns an array of the squares that are targets by enemy pieces.
+  //This function returns an array of the squares that are targets by enemy pieces (enemy is the opposer to player).
   //It is useful to determine if castling is legal and to determine checkmate and stalemate.
   //Squares that are targeted several times will also appear several times in the array.
   let controlledSquares = [];

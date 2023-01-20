@@ -11,6 +11,7 @@ import DestinationSquares from "../Functions/DestinationSquares";
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
   //The piece will be draggable and the square will be able to accept dropped pieces.
+
   const {
     board,
     setBoard,
@@ -22,6 +23,10 @@ function Square(squareProps) {
     setbKingState,
     enPassantTarget,
     setenPassantTarget,
+    wChecked,
+    bChecked,
+    setwChecked,
+    setbChecked,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -58,8 +63,14 @@ function Square(squareProps) {
           setwKingState,
           setbKingState,
           enPassantTarget,
-          setenPassantTarget
+          setenPassantTarget,
+          player,
+          wChecked,
+          bChecked,
+          setwChecked,
+          setbChecked
         );
+
         setPlayer(player === "white" ? "black" : "white");
       }
     },
@@ -72,6 +83,7 @@ function Square(squareProps) {
     >
       <div
         ref={squareProps.pieceColor === player ? dragRef : null} //This component will be dragable if it is that colors turn.
+        style={{ rotate: squareProps.rotate}}
       >
         <Piece
           pieceType={squareProps.pieceType}

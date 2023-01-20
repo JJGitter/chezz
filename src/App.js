@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import SetupBoard from "./Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import UnderEnemyControl from "./Functions/UnderEnemyControl";
 
 export const boardContext = React.createContext();
 
@@ -13,13 +12,16 @@ function App() {
   const [bKingState, setbKingState] = useState({
     hasKSideCastlingRights: true,
     hasQSideCastlingRights: true,
-    isChecked: false,
+    position: "e8",
   });
   const [wKingState, setwKingState] = useState({
     hasKSideCastlingRights: true,
     hasQSideCastlingRights: true,
-    isChecked: false,
+    position: "e1",
   });
+  const [wChecked, setwChecked] = useState(false);
+  const [bChecked, setbChecked] = useState(false);
+
   const [enPassantTarget, setenPassantTarget] = useState("");
   const [flippedBoard, setflippedBoard] = useState(false);
 
@@ -36,6 +38,10 @@ function App() {
         setbKingState,
         enPassantTarget,
         setenPassantTarget,
+        wChecked,
+        bChecked,
+        setwChecked,
+        setbChecked,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -68,12 +74,30 @@ function App() {
           <div className="ButtonList">
             <button
               onClick={() => {
-                console.log(UnderEnemyControl(board, player));
+                // console.log(UnderEnemyControl(board, player));
+                console.log(
+                  "white king : " +
+                    wKingState.position +
+                    " checked=" +
+                    wChecked
+                );
+                console.log(
+                  "black king: " +
+                    bKingState.position +
+                    " checked=" +
+                    bChecked
+                );
+                console.log("wking has king side castling rights: " + wKingState.hasKSideCastlingRights)
+                console.log("bking has king side castling rights: " + bKingState.hasKSideCastlingRights)
+                console.log("---------------------------------------------- ")
+
               }}
             >
               Test
             </button>
-            <button onClick={() => setflippedBoard(!flippedBoard)}>Flip Board</button>
+            <button onClick={() => setflippedBoard(!flippedBoard)}>
+              Flip Board
+            </button>
           </div>
           <div className="taskList">
             <h3
@@ -85,8 +109,12 @@ function App() {
             </h3>
             <ul>
               <li>is King in check?</li>
+              <li>
+                fix so that a move that puts your own king in check is illegal
+              </li>
               <li>highligt last move</li>
               <li>make it possible to choose promotion piece</li>
+              <li>material count</li>
               <li>nr of halfmoves</li>
               <li>nr of moves</li>
               <li>create FEN</li>

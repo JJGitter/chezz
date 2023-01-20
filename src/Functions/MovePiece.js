@@ -1,6 +1,7 @@
 import React from "react";
 import Square from "../Components/Square";
 import { stringMerge } from "./DestinationSquares";
+import UnderEnemyControl from "./UnderEnemyControl";
 
 export function stringSplit(string) {
   //This function will split the string of square id such as "C4" and return columnindex=2 and rowindex=4
@@ -23,7 +24,12 @@ function MovePiece(
   setwKingState,
   setbKingState,
   enPassantTarget,
-  setenPassantTarget
+  setenPassantTarget,
+  player,
+  wChecked,
+  bChecked,
+  setwChecked,
+  setbChecked
 ) {
   setenPassantTarget(""); //reset the enPassanttarget every time a new piece is moved
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
@@ -74,26 +80,15 @@ function MovePiece(
           ...wKingState,
           hasQSideCastlingRights: false,
           hasKSideCastlingRights: false,
+          position: toSquare,
         });
       } else {
         setbKingState({
           ...bKingState,
           hasQSideCastlingRights: false,
           hasKSideCastlingRights: false,
+          position: toSquare,
         });
-      }
-
-      if (pieceType === "Rook") {
-        //Remove castling rights if rook moves
-        if (fromSquare === "h1") {
-          setwKingState({ ...wKingState, hasKSideCastlingRights: false });
-        } else if (fromSquare === "a1") {
-          setwKingState({ ...wKingState, hasQSideCastlingRights: false });
-        } else if (fromSquare === "h8") {
-          setbKingState({ ...bKingState, hasKSideCastlingRights: false });
-        } else if (fromSquare === "a8") {
-          setbKingState({ ...bKingState, hasQSideCastlingRights: false });
-        }
       }
 
       if (Math.abs(toColumnIndex - fromColumnIndex) === 2) {
@@ -182,6 +177,20 @@ function MovePiece(
       }
     }
 
+    if (pieceType === "Rook") {
+      //Remove castling rights if rook moves
+      if (fromSquare === "h1") {
+        setwKingState({ ...wKingState, hasKSideCastlingRights: false });
+      } else if (fromSquare === "a1") {
+        setwKingState({ ...wKingState, hasQSideCastlingRights: false });
+      } else if (fromSquare === "h8") {
+        setbKingState({ ...bKingState, hasKSideCastlingRights: false });
+      } else if (fromSquare === "a8") {
+        setbKingState({ ...bKingState, hasQSideCastlingRights: false });
+      }
+    }
+
+    //set piece on the dropped square
     tempBoard[toRowIndex][toColumnIndex] = (
       <Square
         key={toSquare}
@@ -203,6 +212,80 @@ function MovePiece(
       />
     );
   }
+
+  //Handle check
+  //_____________________________________________
+  //_____________________________________________
+  if (player === "white") {
+    if (wChecked) {
+      setwChecked(false); //if white moves, he removes the check
+
+      if (pieceType !== "King") {
+        //if white blocks the check, remove the check indication on the king square
+        let [colidx, rowidx] = stringSplit(wKingState.position);
+        tempBoard[rowidx][colidx] = (
+          <Square
+            key={wKingState.position}
+            index={wKingState.position}
+            color={board[rowidx][colidx].props.color}
+            pieceType="King"
+            pieceColor="white"
+          />
+        );
+      }
+    }
+
+    if (UnderEnemyControl(board, "black").includes(bKingState.position)) {
+      //if the black king position is target by white
+      setbChecked(true);
+      let [colidx, rowidx] = stringSplit(bKingState.position);
+      tempBoard[rowidx][colidx] = (
+        <Square
+          key={bKingState.position}
+          index={bKingState.position}
+          color={board[rowidx][colidx].props.color}
+          pieceType="King"
+          pieceColor="black"
+          rotate= "20deg" //tilt to show that king is in check
+        />
+      );
+    }
+  } else if (player === "black") {
+    if (bChecked) {
+      setbChecked(false); //if black moves, he removes the check
+      if (pieceType !== "King") {
+        //if black blocks the check, remove the check indication on the king square
+        let [colidx, rowidx] = stringSplit(bKingState.position);
+        tempBoard[rowidx][colidx] = (
+          <Square
+            key={bKingState.position}
+            index={bKingState.position}
+            color={board[rowidx][colidx].props.color}
+            pieceType="King"
+            pieceColor="black"
+          />
+        );
+      }
+    }
+    if (UnderEnemyControl(board, "white").includes(wKingState.position)) {
+      //if the white king position is target by black
+      setwChecked(true);
+      let [colidx, rowidx] = stringSplit(wKingState.position);
+      tempBoard[rowidx][colidx] = (
+        <Square
+          key={wKingState.position}
+          index={wKingState.position}
+          color={board[rowidx][colidx].props.color}
+          pieceType="King"
+          pieceColor="white"
+          rotate= "20deg" //20deg tilt to show that king is in check
+        />
+      );
+    }
+  }
+  //Handle check
+  //_____________________________________________
+  //_____________________________________________
 
   //Update the board state
   setBoard(tempBoard);
