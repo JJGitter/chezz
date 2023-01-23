@@ -344,7 +344,6 @@ function DestinationSquares(
   //_________________________________________________________________________
   else if (movedItem.piece === "King") {
     //TODO: The king also needs to consider if the square is under control by enemy piece
-    //TODO: The player also needs to consider if the king is in check
     if (startColumn + 1 <= 7) {
       destinations.push(stringMerge(startColumn + 1, startRow));
     }
@@ -372,13 +371,13 @@ function DestinationSquares(
     }
 
     if (!checkingEnemyControl) {
-      //Add castling destinations
-
+      //Add castling destinations and remove destinations that are target by the enemy
       if (movedItem.pieceColor === "white") {
+        let enemyControlled = UnderEnemyControl(board, "white");
         if (
           wKingState.hasKSideCastlingRights &&
-          !UnderEnemyControl(board, "white").includes("f1") &&
-          !UnderEnemyControl(board, "white").includes("g1") &&
+          !enemyControlled.includes("f1") &&
+          !enemyControlled.includes("g1") &&
           !wKingState.isChecked &&
           board[7][5].props.pieceType === "" &&
           board[7][6].props.pieceType === ""
@@ -388,8 +387,8 @@ function DestinationSquares(
         }
         if (
           wKingState.hasQSideCastlingRights &&
-          !UnderEnemyControl(board, "white").includes("c1") &&
-          !UnderEnemyControl(board, "white").includes("d1") &&
+          !enemyControlled.includes("c1") &&
+          !enemyControlled.includes("d1") &&
           !wKingState.isChecked &&
           board[7][1].props.pieceType === "" &&
           board[7][2].props.pieceType === "" &&
@@ -398,13 +397,23 @@ function DestinationSquares(
           //white queenside
           destinations.push("c1");
         }
+        //remove the white king destinations that are controlled by enemy pieces
+        //___________________________
+        //___________________________
+        destinations = destinations.filter(
+          (dest) => !enemyControlled.includes(dest)
+        );
+        //remove the white king destinations that are controlled by enemy pieces
+        //___________________________
+        //___________________________
       }
 
       if (movedItem.pieceColor === "black") {
+        let enemyControlled = UnderEnemyControl(board, "black");
         if (
           bKingState.hasKSideCastlingRights &&
-          !UnderEnemyControl(board, "black").includes("f8") &&
-          !UnderEnemyControl(board, "black").includes("g8") &&
+          !enemyControlled.includes("f8") &&
+          !enemyControlled.includes("g8") &&
           !bKingState.isChecked &&
           board[0][5].props.pieceType === "" &&
           board[0][6].props.pieceType === ""
@@ -414,8 +423,8 @@ function DestinationSquares(
         }
         if (
           bKingState.hasQSideCastlingRights &&
-          !UnderEnemyControl(board, "black").includes("c8") &&
-          !UnderEnemyControl(board, "black").includes("d8") &&
+          !enemyControlled.includes("c8") &&
+          !enemyControlled.includes("d8") &&
           !bKingState.isChecked &&
           board[0][1].props.pieceType === "" &&
           board[0][2].props.pieceType === "" &&
@@ -424,13 +433,21 @@ function DestinationSquares(
           //black queenside
           destinations.push("c8");
         }
+        //remove the black king destinations that are controlled by enemy pieces
+        //___________________________
+        //___________________________
+        destinations = destinations.filter(
+          (dest) => !enemyControlled.includes(dest)
+        );
+        //remove the black king destinations that are controlled by enemy pieces
+        //___________________________
+        //___________________________
       }
     }
   }
   //KING
   //_________________________________________________________________________
   //_________________________________________________________________________
-
 
   //if not fetching the enemy control squares (i.e, fetching the destinations of movement)
   //remove the destination IDs that are occupied by your own pieces
@@ -439,10 +456,12 @@ function DestinationSquares(
     for (let i = 0; i < destinations.length; i++) {
       let [col, row] = stringSplit(destinations[i]);
       if (board[row][col].props.pieceColor === movedItem.pieceColor) {
-        occupiedSquares.push(destinations[i])
-      }      
+        occupiedSquares.push(destinations[i]);
+      }
     }
-    destinations = destinations.filter(dest => !occupiedSquares.includes(dest))
+    destinations = destinations.filter(
+      (dest) => !occupiedSquares.includes(dest)
+    );
   }
   return destinations;
 }

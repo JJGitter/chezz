@@ -108,7 +108,6 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>is King in check?</li>
               <li>
                 fix so that a move that puts your own king in check is illegal
               </li>
