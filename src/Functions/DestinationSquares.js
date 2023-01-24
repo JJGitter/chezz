@@ -373,7 +373,7 @@ function DestinationSquares(
     }
 
     if (!checkingEnemyControl) {
-      //Add castling destinations and remove destinations that are target by the enemy
+      //Add castling destinations and remove destinations that are targeted by the enemy
       if (movedItem.pieceColor === "white") {
         let enemyControlled = UnderEnemyControl(board, "white");
         if (

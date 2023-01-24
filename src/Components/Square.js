@@ -7,6 +7,7 @@ import MovePiece from "../Functions/MovePiece";
 import { boardContext } from "../App";
 import { useContext } from "react";
 import DestinationSquares from "../Functions/DestinationSquares";
+import Checkmate from "../Functions/Checkmate";
 
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
@@ -27,6 +28,8 @@ function Square(squareProps) {
     bChecked,
     setwChecked,
     setbChecked,
+    checkmate,
+    setcheckmate,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -71,6 +74,10 @@ function Square(squareProps) {
           setbChecked
         );
 
+        if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
+          setcheckmate(true);
+        }
+
         setPlayer(player === "white" ? "black" : "white");
       }
     },
@@ -82,7 +89,11 @@ function Square(squareProps) {
       className={squareProps.color + "Square"}
     >
       <div
-        ref={squareProps.pieceColor === player ? dragRef : null} //This component will be dragable if it is that colors turn.
+        ref={
+          squareProps.pieceColor === player && checkmate === false
+            ? dragRef
+            : null
+        } //This component will be dragable if it is that colors turn.
         style={{ rotate: squareProps.rotate }}
       >
         <Piece

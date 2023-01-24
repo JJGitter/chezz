@@ -26,6 +26,8 @@ function App() {
   const [enPassantTarget, setenPassantTarget] = useState("");
   const [flippedBoard, setflippedBoard] = useState(false);
 
+  const [checkmate, setcheckmate] = useState(false);
+
   return (
     <boardContext.Provider
       value={{
@@ -43,6 +45,8 @@ function App() {
         bChecked,
         setwChecked,
         setbChecked,
+        checkmate,
+        setcheckmate,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -70,28 +74,17 @@ function App() {
               <div className="row">{board[0].slice().reverse()}</div>
             </div>
           )}
-          <div style={{ fontSize: 25 }}>{player} to move</div>
-
+          {checkmate ? (
+            <div style={{ fontSize: 40 }}>CHECKMATE </div>
+          ) : (
+            <div style={{ fontSize: 25 }}>{player} to move</div>
+          )}
           <div className="ButtonList">
             <button
               onClick={() => {
-                console.log(UnderEnemyControl(board,"black"))
-                // console.log(
-                //   "white king : " +
-                //     wKingState.position +
-                //     " checked=" +
-                //     wChecked
-                // );
-                // console.log(
-                //   "black king: " +
-                //     bKingState.position +
-                //     " checked=" +
-                //     bChecked
-                // );
-                // console.log("wking has king side castling rights: " + wKingState.hasKSideCastlingRights)
-                // console.log("bking has king side castling rights: " + bKingState.hasKSideCastlingRights)
-                // console.log("---------------------------------------------- ")
-
+                console.log(
+                  "wchecked: " + wChecked + ", bchecked: " + bChecked
+                );
               }}
             >
               Test
@@ -109,9 +102,6 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>
-                fix so that a move that puts your own king in check is illegal
-              </li>
               <li>highligt last move</li>
               <li>make it possible to choose promotion piece</li>
               <li>material count</li>
@@ -119,6 +109,9 @@ function App() {
               <li>nr of moves</li>
               <li>create FEN</li>
               <li>import FEN</li>
+              <li>store the move history</li>
+              <li>put the game on a website</li>
+              <li>add time control</li>
             </ul>
           </div>
         </div>
