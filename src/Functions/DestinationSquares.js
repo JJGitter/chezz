@@ -1,5 +1,7 @@
 import { stringSplit } from "./MovePiece";
 import UnderEnemyControl from "./UnderEnemyControl";
+import Square from "../Components/Square";
+import CreateTempBoard from "./CreateTempBoard";
 
 export function stringMerge(columnidx, rowidx) {
   //This function will merge two strings to make a square id string. (1 and 1 will become "b7")
@@ -21,7 +23,7 @@ function DestinationSquares(
   checkingEnemyControl
 ) {
   //This function return an array of possible drop squares. ["c4","d6","f7"]
-  //It will exclude squares that are already occupied by pieces of your color
+  //It will exclude squares that are already occupied by pieces of your color (unless checkingEnemyControl)
 
   let destinations = [];
   const [startColumn, startRow] = stringSplit(movedItem.fromCell);
@@ -449,7 +451,7 @@ function DestinationSquares(
   //_________________________________________________________________________
   //_________________________________________________________________________
 
-  //if not fetching the enemy control squares (i.e, fetching the destinations of movement)
+  //if not fetching the enemy control squares (i.e, if fetching the destinations of movement)
   //remove the destination IDs that are occupied by your own pieces
   if (!checkingEnemyControl) {
     let occupiedSquares = [];
@@ -461,6 +463,57 @@ function DestinationSquares(
     }
     destinations = destinations.filter(
       (dest) => !occupiedSquares.includes(dest)
+    );
+  }
+
+  if (!checkingEnemyControl && movedItem.piece !== "King") {
+    //if not fetching the enemy control squares (i.e, if fetching the destinations of movement)
+    //remove the destination IDs that put your own king in check
+    //This is done by performing the move on a temporary board and evaluating if king is checked on that board.
+    //The king destinations are handled separetely, within the //King// section above.
+    let illegalDestinations = [];
+    let tempBoard = [];
+    for (let i = 0; i < destinations.length; i++) {
+      //for each possible move of the dragged piece, make the move on temporary board and evaluate check
+      tempBoard = CreateTempBoard(board);
+      let [col, row] = stringSplit(destinations[i]);
+      tempBoard[row][col] = (
+        <Square
+          key={board[row][col].props.index}
+          index={board[row][col].props.index}
+          color={board[row][col].props.color}
+          pieceType={movedItem.piece}
+          pieceColor={movedItem.pieceColor}
+        />
+      );
+      tempBoard[startRow][startColumn] = (
+        <Square
+          key={board[startRow][startColumn].props.index}
+          index={board[startRow][startColumn].props.index}
+          color={board[startRow][startColumn].props.color}
+          pieceType=""
+          pieceColor=""
+        />
+      );
+
+      if (
+        movedItem.pieceColor === "white" &&
+        UnderEnemyControl(tempBoard, "white").includes(wKingState.position)
+      ) {
+        //add illegal destination if king is checked on the temporary board
+        illegalDestinations.push(destinations[i]);
+      } else if (
+        movedItem.pieceColor === "black" &&
+        UnderEnemyControl(tempBoard, "black").includes(bKingState.position)
+      ) {
+        //add illegal destination if king is checked on the temporary board
+        illegalDestinations.push(destinations[i]);
+      }
+      tempBoard = CreateTempBoard(board);
+    }
+    //filter out the illegal destinations from the destinations array
+    destinations = destinations.filter(
+      (dest) => !illegalDestinations.includes(dest)
     );
   }
   return destinations;

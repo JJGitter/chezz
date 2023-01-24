@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import SetupBoard from "./Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import UnderEnemyControl from "./Functions/UnderEnemyControl";
 
 export const boardContext = React.createContext();
 
@@ -74,22 +75,22 @@ function App() {
           <div className="ButtonList">
             <button
               onClick={() => {
-                // console.log(UnderEnemyControl(board, player));
-                console.log(
-                  "white king : " +
-                    wKingState.position +
-                    " checked=" +
-                    wChecked
-                );
-                console.log(
-                  "black king: " +
-                    bKingState.position +
-                    " checked=" +
-                    bChecked
-                );
-                console.log("wking has king side castling rights: " + wKingState.hasKSideCastlingRights)
-                console.log("bking has king side castling rights: " + bKingState.hasKSideCastlingRights)
-                console.log("---------------------------------------------- ")
+                console.log(UnderEnemyControl(board,"black"))
+                // console.log(
+                //   "white king : " +
+                //     wKingState.position +
+                //     " checked=" +
+                //     wChecked
+                // );
+                // console.log(
+                //   "black king: " +
+                //     bKingState.position +
+                //     " checked=" +
+                //     bChecked
+                // );
+                // console.log("wking has king side castling rights: " + wKingState.hasKSideCastlingRights)
+                // console.log("bking has king side castling rights: " + bKingState.hasKSideCastlingRights)
+                // console.log("---------------------------------------------- ")
 
               }}
             >

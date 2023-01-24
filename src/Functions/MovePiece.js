@@ -236,7 +236,7 @@ function MovePiece(
     }
 
     if (UnderEnemyControl(board, "black").includes(bKingState.position)) {
-      //if the black king position is target by white
+      //if the black king position is targeted by white
       setbChecked(true);
       let [colidx, rowidx] = stringSplit(bKingState.position);
       tempBoard[rowidx][colidx] = (
@@ -268,7 +268,7 @@ function MovePiece(
       }
     }
     if (UnderEnemyControl(board, "white").includes(wKingState.position)) {
-      //if the white king position is target by black
+      //if the white king position is targeted by black
       setwChecked(true);
       let [colidx, rowidx] = stringSplit(wKingState.position);
       tempBoard[rowidx][colidx] = (

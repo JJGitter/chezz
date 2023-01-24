@@ -83,7 +83,7 @@ function Square(squareProps) {
     >
       <div
         ref={squareProps.pieceColor === player ? dragRef : null} //This component will be dragable if it is that colors turn.
-        style={{ rotate: squareProps.rotate}}
+        style={{ rotate: squareProps.rotate }}
       >
         <Piece
           pieceType={squareProps.pieceType}
