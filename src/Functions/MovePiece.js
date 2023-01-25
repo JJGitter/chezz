@@ -12,6 +12,8 @@ export function stringSplit(string) {
   return [columnIndex, rowIndex];
 }
 
+let lastMoveHighlight = "grayscale(50%)";
+
 function MovePiece(
   board,
   setBoard,
@@ -29,7 +31,9 @@ function MovePiece(
   wChecked,
   bChecked,
   setwChecked,
-  setbChecked
+  setbChecked,
+  lastMove,
+  setLastMove
 ) {
   setenPassantTarget(""); //reset the enPassanttarget every time a new piece is moved
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
@@ -45,6 +49,7 @@ function MovePiece(
       color={board[fromRowIndex][fromColumnIndex].props.color}
       pieceType=""
       pieceColor=""
+      lastMoveHighlight={lastMoveHighlight}
     />
   );
 
@@ -198,6 +203,7 @@ function MovePiece(
         color={board[toRowIndex][toColumnIndex].props.color}
         pieceType={pieceType}
         pieceColor={pieceColor}
+        lastMoveHighlight={lastMoveHighlight}
       />
     );
   } else {
@@ -209,6 +215,7 @@ function MovePiece(
         color={board[toRowIndex][toColumnIndex].props.color}
         pieceType="Queen"
         pieceColor={pieceColor}
+        lastMoveHighlight={lastMoveHighlight}
       />
     );
   }
@@ -246,7 +253,7 @@ function MovePiece(
           color={board[rowidx][colidx].props.color}
           pieceType="King"
           pieceColor="black"
-          rotate= "20deg" //tilt to show that king is in check
+          rotate="20deg" //tilt to show that king is in check
         />
       );
     }
@@ -278,12 +285,45 @@ function MovePiece(
           color={board[rowidx][colidx].props.color}
           pieceType="King"
           pieceColor="white"
-          rotate= "20deg" //20deg tilt to show that king is in check
+          rotate="20deg" //20deg tilt to show that king is in check
         />
       );
     }
   }
   //Handle check
+  //_____________________________________________
+  //_____________________________________________
+
+  //Remove the highlight on the last move
+  //_____________________________________________
+  //_____________________________________________
+
+  if (lastMove.from !== "") {
+    let [lastFromCol, lastFromRow] = stringSplit(lastMove.from);
+    let [lastToCol, lastToRow] = stringSplit(lastMove.to);
+    tempBoard[lastFromRow][lastFromCol] = (
+      <Square
+        key={tempBoard[lastFromRow][lastFromCol].props.index}
+        index={tempBoard[lastFromRow][lastFromCol].props.index}
+        color={tempBoard[lastFromRow][lastFromCol].props.color}
+        pieceType={tempBoard[lastFromRow][lastFromCol].props.pieceType}
+        pieceColor={tempBoard[lastFromRow][lastFromCol].props.pieceColor}
+        rotate={tempBoard[lastFromRow][lastFromCol].props.rotate}
+      />
+    );
+    tempBoard[lastToRow][lastToCol] = (
+      <Square
+        key={tempBoard[lastToRow][lastToCol].props.index}
+        index={tempBoard[lastToRow][lastToCol].props.index}
+        color={tempBoard[lastToRow][lastToCol].props.color}
+        pieceType={tempBoard[lastToRow][lastToCol].props.pieceType}
+        pieceColor={tempBoard[lastToRow][lastToCol].props.pieceColor}
+        rotate={tempBoard[lastToRow][lastToCol].props.rotate}
+      />
+    );
+  }
+  setLastMove({ from: fromSquare, to: toSquare }); //update the lastmove (used to visualize the last move on the board)
+  //Remove the highlight on the last move
   //_____________________________________________
   //_____________________________________________
 

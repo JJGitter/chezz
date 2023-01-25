@@ -6,6 +6,8 @@ function anyLegalMoves(player, board, wKingState, bKingState, enPassantTarget) {
   let anyLegalMoves = false;
 
   let item = { fromCell: "", piece: "", pieceColor: "" };
+
+  //loop through all squares and find if there are destinations for the pieces on them.
   chunkLoop: for (let i = 0; i <= 7; i++) {
     for (let j = 0; j <= 7; j++) {
       if (

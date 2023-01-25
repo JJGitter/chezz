@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import SetupBoard from "./Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import UnderEnemyControl from "./Functions/UnderEnemyControl";
 
 export const boardContext = React.createContext();
+let renderCount = 0;
 
 function App() {
+  renderCount++
+  console.log("render " + renderCount);
   const [board, setBoard] = useState(SetupBoard);
   const [player, setPlayer] = useState("white");
   const [bKingState, setbKingState] = useState({
@@ -28,6 +30,8 @@ function App() {
 
   const [checkmate, setcheckmate] = useState(false);
 
+  const [lastMove, setLastMove] = useState({ from: "", to: "" });
+
   return (
     <boardContext.Provider
       value={{
@@ -47,6 +51,8 @@ function App() {
         setbChecked,
         checkmate,
         setcheckmate,
+        lastMove,
+        setLastMove
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -102,7 +108,8 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>highligt last move</li>
+              <li>Detect stalemate</li>
+              <li>Detect 3 move repetition</li>
               <li>make it possible to choose promotion piece</li>
               <li>material count</li>
               <li>nr of halfmoves</li>

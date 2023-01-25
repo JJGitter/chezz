@@ -30,6 +30,8 @@ function Square(squareProps) {
     setbChecked,
     checkmate,
     setcheckmate,
+    lastMove,
+    setLastMove,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -71,11 +73,17 @@ function Square(squareProps) {
           wChecked,
           bChecked,
           setwChecked,
-          setbChecked
+          setbChecked,
+          lastMove,
+          setLastMove
         );
 
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
-          setcheckmate(true);
+          if (wChecked || bChecked) {
+            setcheckmate(true);
+          }else{
+            console.log("STALEMATE")
+          }
         }
 
         setPlayer(player === "white" ? "black" : "white");
@@ -87,6 +95,7 @@ function Square(squareProps) {
     <div
       ref={dropRef} //This component will be able to accept dragged items corresponding to dropRef
       className={squareProps.color + "Square"}
+      style={{ filter: squareProps.lastMoveHighlight }}
     >
       <div
         ref={
