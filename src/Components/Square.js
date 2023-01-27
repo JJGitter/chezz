@@ -13,7 +13,6 @@ function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
   //The piece will be draggable and the square will be able to accept dropped pieces.
 
-
   const {
     board,
     setBoard,
@@ -27,11 +26,8 @@ function Square(squareProps) {
     wChecked,
     bChecked,
     checkmate,
-    setcheckmate,
     lastMove,
-    setLastMove,
   } = useContext(boardContext);
-
 
   const [dragProps, dragRef] = useDrag({
     type: "piece",
@@ -71,15 +67,14 @@ function Square(squareProps) {
           wChecked,
           bChecked,
           lastMove,
-          setLastMove
         );
-        
+
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
           // stuff.current = "stuff was updated"
           if (wChecked || bChecked) {
-            setcheckmate(true);
-          }else{
-            console.log("STALEMATE")
+            checkmate.current = true;
+          } else {
+            console.log("STALEMATE");
           }
         }
 
@@ -96,12 +91,12 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === player && checkmate === false
+          squareProps.pieceColor === player && checkmate.current === false
             ? dragRef
             : null
         } //This component will be dragable if it is that colors turn.
         className="PieceContainer"
-        style={{ rotate: squareProps.rotate}}
+        style={{ rotate: squareProps.rotate }}
       >
         <Piece
           pieceType={squareProps.pieceType}

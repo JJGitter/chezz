@@ -15,6 +15,10 @@ function App() {
   renderCount++
   console.log("render " + renderCount);
   const [board, setBoard] = useState(SetupBoard);
+  const [flippedBoard, setflippedBoard] = useState(false);
+
+
+
   const [player, setPlayer] = useState("white");
   const [bKingState, setbKingState] = useState({
     hasKSideCastlingRights: true,
@@ -33,14 +37,8 @@ function App() {
   const bChecked = useRef(false); // bCheck = {current: false}
 
   const enPassantTarget = useRef("")
-  // const [enPassantTarget, setenPassantTarget] = useState("");
-
-
-  const [flippedBoard, setflippedBoard] = useState(false);
-
-  const [checkmate, setcheckmate] = useState(false);
-
-  const [lastMove, setLastMove] = useState({ from: "", to: "" });
+  const checkmate = useRef(false);
+  const lastMove = useRef({ from: "", to: "" })
 
   return (
     <boardContext.Provider
@@ -57,9 +55,7 @@ function App() {
         wChecked,
         bChecked,
         checkmate,
-        setcheckmate,
         lastMove,
-        setLastMove,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -87,7 +83,7 @@ function App() {
               <div className="row">{board[0].slice().reverse()}</div>
             </div>
           )}
-          {checkmate ? (
+          {checkmate.current ? (
             <div style={{ fontSize: 40 }}>CHECKMATE </div>
           ) : (
             <div style={{ fontSize: 25 }}>{player} to move</div>

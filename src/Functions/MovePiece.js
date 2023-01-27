@@ -29,8 +29,7 @@ function MovePiece(
   player,
   wChecked,
   bChecked,
-  lastMove,
-  setLastMove
+  lastMove
 ) {
   enPassantTarget.current = ""; //reset the enPassanttarget every time a new piece is moved
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
@@ -296,9 +295,9 @@ function MovePiece(
   //_____________________________________________
   //_____________________________________________
 
-  if (lastMove.from !== "") {
-    let [lastFromCol, lastFromRow] = stringSplit(lastMove.from);
-    let [lastToCol, lastToRow] = stringSplit(lastMove.to);
+  if (lastMove.current.from !== "") {
+    let [lastFromCol, lastFromRow] = stringSplit(lastMove.current.from);
+    let [lastToCol, lastToRow] = stringSplit(lastMove.current.to);
     tempBoard[lastFromRow][lastFromCol] = (
       <Square
         key={tempBoard[lastFromRow][lastFromCol].props.index}
@@ -320,7 +319,7 @@ function MovePiece(
       />
     );
   }
-  setLastMove({ from: fromSquare, to: toSquare }); //update the lastmove (used to visualize the last move on the board)
+  lastMove.current = { from: fromSquare, to: toSquare }; //update the lastmove (used to visualize the last move on the board)
   //Remove the highlight on the last move
   //_____________________________________________
   //_____________________________________________
