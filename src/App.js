@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import SetupBoard from "./Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { useRef } from "react";
 
 export const boardContext = React.createContext();
 let renderCount = 0;
 
 function App() {
+
+  
+  
   renderCount++
   console.log("render " + renderCount);
   const [board, setBoard] = useState(SetupBoard);
@@ -22,10 +26,16 @@ function App() {
     hasQSideCastlingRights: true,
     position: "e1",
   });
-  const [wChecked, setwChecked] = useState(false);
-  const [bChecked, setbChecked] = useState(false);
+  // const [wChecked, setwChecked] = useState(false);
+  // const [bChecked, setbChecked] = useState(false);
 
-  const [enPassantTarget, setenPassantTarget] = useState("");
+  const wChecked = useRef(false); // wCheck = {current: false}
+  const bChecked = useRef(false); // bCheck = {current: false}
+
+  const enPassantTarget = useRef("")
+  // const [enPassantTarget, setenPassantTarget] = useState("");
+
+
   const [flippedBoard, setflippedBoard] = useState(false);
 
   const [checkmate, setcheckmate] = useState(false);
@@ -44,15 +54,12 @@ function App() {
         setwKingState,
         setbKingState,
         enPassantTarget,
-        setenPassantTarget,
         wChecked,
         bChecked,
-        setwChecked,
-        setbChecked,
         checkmate,
         setcheckmate,
         lastMove,
-        setLastMove
+        setLastMove,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -89,7 +96,7 @@ function App() {
             <button
               onClick={() => {
                 console.log(
-                  "wchecked: " + wChecked + ", bchecked: " + bChecked
+                  enPassantTarget.current
                 );
               }}
             >

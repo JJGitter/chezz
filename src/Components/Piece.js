@@ -8,21 +8,21 @@ import { GiChessBishop } from "react-icons/gi";
 import { GiChessKing } from "react-icons/gi";
 
 function Piece(pieceProps) {
-  let fontSize = 57;
+  let pieceSize ="80%"; //size relative to the square
   if (pieceProps.pieceType === "") {
     return null;
   } else if (pieceProps.pieceType === "Pawn") {
-    return <GiChessPawn fontSize={fontSize} color={pieceProps.pieceColor} />;
+    return <GiChessPawn style={{height:pieceSize, width: pieceSize}} color={pieceProps.pieceColor} />;
   } else if (pieceProps.pieceType === "Rook") {
-    return <GiChessRook fontSize={fontSize} color={pieceProps.pieceColor} />;
+    return <GiChessRook style={{height:pieceSize, width: pieceSize}} color={pieceProps.pieceColor} />;
   } else if (pieceProps.pieceType === "Knight") {
-    return <GiChessKnight fontSize={fontSize} color={pieceProps.pieceColor} />;
+    return <GiChessKnight style={{height:pieceSize, width: pieceSize}} color={pieceProps.pieceColor} />;
   } else if (pieceProps.pieceType === "Bishop") {
-    return <GiChessBishop fontSize={fontSize} color={pieceProps.pieceColor} />;
+    return <GiChessBishop style={{height:pieceSize, width: pieceSize}} color={pieceProps.pieceColor} />;
   } else if (pieceProps.pieceType === "King") {
-    return <GiChessKing fontSize={fontSize} color={pieceProps.pieceColor} />;
+    return <GiChessKing style={{height:pieceSize, width: pieceSize}} color={pieceProps.pieceColor} />;
   } else {
-    return <GiChessQueen fontSize={fontSize} color={pieceProps.pieceColor} />;
+    return <GiChessQueen style={{height:pieceSize, width: pieceSize}} color={pieceProps.pieceColor} />;
   }
 }
 

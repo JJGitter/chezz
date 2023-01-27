@@ -26,16 +26,13 @@ function MovePiece(
   setwKingState,
   setbKingState,
   enPassantTarget,
-  setenPassantTarget,
   player,
   wChecked,
   bChecked,
-  setwChecked,
-  setbChecked,
   lastMove,
   setLastMove
 ) {
-  setenPassantTarget(""); //reset the enPassanttarget every time a new piece is moved
+  enPassantTarget.current = ""; //reset the enPassanttarget every time a new piece is moved
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
 
@@ -56,8 +53,9 @@ function MovePiece(
   //add enPassant target
   if (pieceType === "Pawn" && Math.abs(toRowIndex - fromRowIndex) === 2) {
     //set target to the square behind the pawn
-    setenPassantTarget(
-      stringMerge(toColumnIndex, Math.min(fromRowIndex, toRowIndex) + 1)
+    enPassantTarget.current = stringMerge(
+      toColumnIndex,
+      Math.min(fromRowIndex, toRowIndex) + 1
     );
   }
 
@@ -225,7 +223,7 @@ function MovePiece(
   //_____________________________________________
   if (player === "white") {
     if (wChecked) {
-      setwChecked(false); //if white moves, he removes the check
+      wChecked.current = false; //if white moves, he removes the check
 
       if (pieceType !== "King") {
         //if white blocks the check, remove the check indication on the king square
@@ -244,7 +242,7 @@ function MovePiece(
 
     if (UnderEnemyControl(board, "black").includes(bKingState.position)) {
       //if the black king position is targeted by white
-      setbChecked(true);
+      bChecked.current = true;
       let [colidx, rowidx] = stringSplit(bKingState.position);
       tempBoard[rowidx][colidx] = (
         <Square
@@ -259,7 +257,7 @@ function MovePiece(
     }
   } else if (player === "black") {
     if (bChecked) {
-      setbChecked(false); //if black moves, he removes the check
+      bChecked.current = false; //if black moves, he removes the check
       if (pieceType !== "King") {
         //if black blocks the check, remove the check indication on the king square
         let [colidx, rowidx] = stringSplit(bKingState.position);
@@ -276,7 +274,7 @@ function MovePiece(
     }
     if (UnderEnemyControl(board, "white").includes(wKingState.position)) {
       //if the white king position is targeted by black
-      setwChecked(true);
+      wChecked.current = true;
       let [colidx, rowidx] = stringSplit(wKingState.position);
       tempBoard[rowidx][colidx] = (
         <Square

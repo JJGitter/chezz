@@ -3,6 +3,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+  height: 100vh;
 }
 .ButtonList {
   display: flex;
@@ -11,8 +12,8 @@
 }
 
 .Board {
-  height: 500px;
-  width: 500px;
+  height: 80vh;
+  width: 80vh;
   background-color: #cc6a85;
   border: 5px solid black;
   display: flex;
@@ -41,6 +42,14 @@
   flex: 12.5%;
   background-color: #769656;
   pointer-events: stroke;
+}
+
+.PieceContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .taskList {

@@ -98,10 +98,14 @@ function DestinationSquares(
 
     //enPassant
     //__________________________________________________________________________
-    if (stringMerge(startColumn - 1, startRow - 1) === enPassantTarget) {
-      destinations.push(enPassantTarget);
-    } else if (stringMerge(startColumn + 1, startRow - 1) === enPassantTarget) {
-      destinations.push(enPassantTarget);
+    if (
+      stringMerge(startColumn - 1, startRow - 1) === enPassantTarget.current
+    ) {
+      destinations.push(enPassantTarget.current);
+    } else if (
+      stringMerge(startColumn + 1, startRow - 1) === enPassantTarget.current
+    ) {
+      destinations.push(enPassantTarget.current);
     }
 
     //enPassant
@@ -145,6 +149,24 @@ function DestinationSquares(
     }
     //Pawn Captures
     //___________________________________________________________________________
+
+    //Pawn Captures
+    //___________________________________________________________________________
+
+    //enPassant
+    //__________________________________________________________________________
+    if (
+      stringMerge(startColumn - 1, startRow + 1) === enPassantTarget.current
+    ) {
+      destinations.push(enPassantTarget.current);
+    } else if (
+      stringMerge(startColumn + 1, startRow + 1) === enPassantTarget.current
+    ) {
+      destinations.push(enPassantTarget.current);
+    }
+
+    //enPassant
+    //__________________________________________________________________________
   }
   //PAWN (BLACK)
   //_________________________________________________________________________

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 import Piece from "./Piece";
 import { useDrag } from "react-dnd";
@@ -13,6 +13,7 @@ function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
   //The piece will be draggable and the square will be able to accept dropped pieces.
 
+
   const {
     board,
     setBoard,
@@ -23,16 +24,14 @@ function Square(squareProps) {
     setwKingState,
     setbKingState,
     enPassantTarget,
-    setenPassantTarget,
     wChecked,
     bChecked,
-    setwChecked,
-    setbChecked,
     checkmate,
     setcheckmate,
     lastMove,
     setLastMove,
   } = useContext(boardContext);
+
 
   const [dragProps, dragRef] = useDrag({
     type: "piece",
@@ -68,17 +67,15 @@ function Square(squareProps) {
           setwKingState,
           setbKingState,
           enPassantTarget,
-          setenPassantTarget,
           player,
           wChecked,
           bChecked,
-          setwChecked,
-          setbChecked,
           lastMove,
           setLastMove
         );
-
+        
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
+          // stuff.current = "stuff was updated"
           if (wChecked || bChecked) {
             setcheckmate(true);
           }else{
@@ -103,7 +100,8 @@ function Square(squareProps) {
             ? dragRef
             : null
         } //This component will be dragable if it is that colors turn.
-        style={{ rotate: squareProps.rotate }}
+        className="PieceContainer"
+        style={{ rotate: squareProps.rotate}}
       >
         <Piece
           pieceType={squareProps.pieceType}
