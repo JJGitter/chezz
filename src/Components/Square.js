@@ -39,7 +39,7 @@ function Square(squareProps) {
     collect: (monitor) => ({ isDragging: !!monitor.isDragging() }), //Collects isDragging into dragProps
   });
 
-  const [, dropRef] = useDrop({
+  const [dropProps, dropRef] = useDrop({
     accept: "piece", //the type of drag component that will be accepted to drop
     drop: (item, monitor) => {
       if (
@@ -70,7 +70,6 @@ function Square(squareProps) {
         );
 
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
-          // stuff.current = "stuff was updated"
           if (wChecked || bChecked) {
             checkmate.current = true;
           } else {
@@ -81,13 +80,16 @@ function Square(squareProps) {
         setPlayer(player === "white" ? "black" : "white");
       }
     },
+    collect: (monitor) => ({ isOver: !!monitor.isOver() }), //Collects isOver into dropProps
+
   });
 
   return (
     <div
       ref={dropRef} //This component will be able to accept dragged items corresponding to dropRef
-      className={squareProps.color + "Square"}
-      style={{ filter: squareProps.lastMoveHighlight }}
+      className={ squareProps.color + "Square"}
+      style={dropProps.isOver? {filter: "drop-shadow(0 0 1.5rem blue)"} : { filter: squareProps.lastMoveHighlight }}
+
     >
       <div
         ref={
