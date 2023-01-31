@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import "../App.css";
 import Piece from "./Piece";
 import { useDrag } from "react-dnd";
@@ -27,6 +26,7 @@ function Square(squareProps) {
     bChecked,
     checkmate,
     lastMove,
+    stalemate,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -66,14 +66,15 @@ function Square(squareProps) {
           player,
           wChecked,
           bChecked,
-          lastMove,
+          lastMove
         );
 
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
           if (wChecked || bChecked) {
             checkmate.current = true;
           } else {
-            console.log("STALEMATE");
+            //stalemate
+            stalemate.current = true;
           }
         }
 
@@ -81,15 +82,17 @@ function Square(squareProps) {
       }
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver() }), //Collects isOver into dropProps
-
   });
 
   return (
     <div
       ref={dropRef} //This component will be able to accept dragged items corresponding to dropRef
-      className={ squareProps.color + "Square"}
-      style={dropProps.isOver? {filter: "drop-shadow(0 0 1.5rem blue)"} : { filter: squareProps.lastMoveHighlight }}
-
+      className={squareProps.color + "Square"}
+      style={
+        dropProps.isOver
+          ? { filter: "drop-shadow(0 0 1.5rem blue)" }
+          : { filter: squareProps.lastMoveHighlight }
+      }
     >
       <div
         ref={

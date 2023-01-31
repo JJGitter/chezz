@@ -4,20 +4,16 @@ import SetupBoard from "./Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { useRef } from "react";
+import SetupFromFEN from "./Functions/SetupFromFEN";
 
 export const boardContext = React.createContext();
 let renderCount = 0;
 
 function App() {
-
-  
-  
-  renderCount++
+  renderCount++;
   console.log("render " + renderCount);
   const [board, setBoard] = useState(SetupBoard);
   const [flippedBoard, setflippedBoard] = useState(false);
-
-
 
   const [player, setPlayer] = useState("white");
   const [bKingState, setbKingState] = useState({
@@ -36,9 +32,10 @@ function App() {
   const wChecked = useRef(false); // wCheck = {current: false}
   const bChecked = useRef(false); // bCheck = {current: false}
 
-  const enPassantTarget = useRef("")
+  const enPassantTarget = useRef("");
   const checkmate = useRef(false);
-  const lastMove = useRef({ from: "", to: "" })
+  const stalemate = useRef(false);
+  const lastMove = useRef({ from: "", to: "" });
 
   return (
     <boardContext.Provider
@@ -56,6 +53,7 @@ function App() {
         bChecked,
         checkmate,
         lastMove,
+        stalemate,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -84,16 +82,19 @@ function App() {
             </div>
           )}
           {checkmate.current ? (
-            <div style={{ fontSize: 40 }}>CHECKMATE </div>
+            <div style={{ fontSize: 40 }}>CHECKMATE</div>
+          ) : stalemate.current ? (
+            <div style={{ fontSize: 40 }}>STALEMATE</div>
           ) : (
             <div style={{ fontSize: 25 }}>{player} to move</div>
           )}
           <div className="ButtonList">
             <button
               onClick={() => {
-                console.log(
-                  enPassantTarget.current
-                );
+                SetupFromFEN(board,setBoard, setPlayer);
+                // console.log(wChecked.current);
+                // console.log(bChecked.current);
+                // console.log("checkmate: " + checkmate.current)
               }}
             >
               Test
@@ -111,14 +112,16 @@ function App() {
               Task List
             </h3>
             <ul>
+              <li>create FEN</li>
+              <li>import FEN</li>
+              <li>some pawn captures are not highlighted properly as the last move</li>
+              <li>checkmate is not always detected</li>
               <li>Detect stalemate</li>
               <li>Detect 3 move repetition</li>
               <li>make it possible to choose promotion piece</li>
               <li>material count</li>
               <li>nr of halfmoves</li>
               <li>nr of moves</li>
-              <li>create FEN</li>
-              <li>import FEN</li>
               <li>store the move history</li>
               <li>put the game on a website</li>
               <li>add time control</li>
