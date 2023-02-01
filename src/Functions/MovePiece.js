@@ -23,8 +23,6 @@ function MovePiece(
   toSquare,
   wKingState,
   bKingState,
-  setwKingState,
-  setbKingState,
   enPassantTarget,
   player,
   wChecked,
@@ -78,15 +76,15 @@ function MovePiece(
     if (pieceType === "King") {
       //Remove castling rights if king moves
       if (pieceColor === "white") {
-        setwKingState({
-          ...wKingState,
+        wKingState.current=({
+          ...wKingState.current,
           hasQSideCastlingRights: false,
           hasKSideCastlingRights: false,
           position: toSquare,
         });
       } else {
-        setbKingState({
-          ...bKingState,
+        bKingState.current=({
+          ...bKingState.current,
           hasQSideCastlingRights: false,
           hasKSideCastlingRights: false,
           position: toSquare,
@@ -182,13 +180,13 @@ function MovePiece(
     if (pieceType === "Rook") {
       //Remove castling rights if rook moves
       if (fromSquare === "h1") {
-        setwKingState({ ...wKingState, hasKSideCastlingRights: false });
+        wKingState.current=({ ...wKingState.current, hasKSideCastlingRights: false });
       } else if (fromSquare === "a1") {
-        setwKingState({ ...wKingState, hasQSideCastlingRights: false });
+        wKingState.current=({ ...wKingState.current, hasQSideCastlingRights: false });
       } else if (fromSquare === "h8") {
-        setbKingState({ ...bKingState, hasKSideCastlingRights: false });
+        bKingState.current=({ ...bKingState.current, hasKSideCastlingRights: false });
       } else if (fromSquare === "a8") {
-        setbKingState({ ...bKingState, hasQSideCastlingRights: false });
+        bKingState.current=({ ...bKingState.current, hasQSideCastlingRights: false });
       }
     }
 
@@ -226,11 +224,11 @@ function MovePiece(
 
       if (pieceType !== "King") {
         //if white blocks the check, remove the check indication on the king square
-        let [colidx, rowidx] = stringSplit(wKingState.position);
+        let [colidx, rowidx] = stringSplit(wKingState.current.position);
         tempBoard[rowidx][colidx] = (
           <Square
-            key={wKingState.position}
-            index={wKingState.position}
+            key={wKingState.current.position}
+            index={wKingState.current.position}
             color={board[rowidx][colidx].props.color}
             pieceType="King"
             pieceColor="white"
@@ -239,14 +237,14 @@ function MovePiece(
       }
     }
 
-    if (UnderEnemyControl(board, "black").includes(bKingState.position)) {
+    if (UnderEnemyControl(board, "black").includes(bKingState.current.position)) {
       //if the black king position is targeted by white
       bChecked.current = true;
-      let [colidx, rowidx] = stringSplit(bKingState.position);
+      let [colidx, rowidx] = stringSplit(bKingState.current.position);
       tempBoard[rowidx][colidx] = (
         <Square
-          key={bKingState.position}
-          index={bKingState.position}
+          key={bKingState.current.position}
+          index={bKingState.current.position}
           color={board[rowidx][colidx].props.color}
           pieceType="King"
           pieceColor="black"
@@ -259,11 +257,11 @@ function MovePiece(
       bChecked.current = false; //if black moves, he removes the check
       if (pieceType !== "King") {
         //if black blocks the check, remove the check indication on the king square
-        let [colidx, rowidx] = stringSplit(bKingState.position);
+        let [colidx, rowidx] = stringSplit(bKingState.current.position);
         tempBoard[rowidx][colidx] = (
           <Square
-            key={bKingState.position}
-            index={bKingState.position}
+            key={bKingState.current.position}
+            index={bKingState.current.position}
             color={board[rowidx][colidx].props.color}
             pieceType="King"
             pieceColor="black"
@@ -271,14 +269,14 @@ function MovePiece(
         );
       }
     }
-    if (UnderEnemyControl(board, "white").includes(wKingState.position)) {
+    if (UnderEnemyControl(board, "white").includes(wKingState.current.position)) {
       //if the white king position is targeted by black
       wChecked.current = true;
-      let [colidx, rowidx] = stringSplit(wKingState.position);
+      let [colidx, rowidx] = stringSplit(wKingState.current.position);
       tempBoard[rowidx][colidx] = (
         <Square
-          key={wKingState.position}
-          index={wKingState.position}
+          key={wKingState.current.position}
+          index={wKingState.current.position}
           color={board[rowidx][colidx].props.color}
           pieceType="King"
           pieceColor="white"

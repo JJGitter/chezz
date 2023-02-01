@@ -1,18 +1,10 @@
 import Square from "../Components/Square";
+import CreateTempBoard from "./CreateTempBoard";
 
-function SetupFromFEN(
-  board,
-  setBoard,
-  setPlayer,
-  wKingState,
-  bKingState,
-  setwKingState,
-  setbKingState
-) {
-  let tempBoard = board;
-//   const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+function SetupFromFEN(board, setBoard, setPlayer, wKingState, bKingState, enPassantTarget) {
+  let tempBoard = CreateTempBoard(board);
+    // const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
   const FEN = "4k2r/6r1/8/8/8/8/3R4/R3K3 w Qk - 0 1";
-
   //  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1"
 
   let FENarray = FEN.split("");
@@ -50,20 +42,20 @@ function SetupFromFEN(
       piece = "Queen";
     } else if (FENarray[i] === "k") {
       piece = "King";
-      setbKingState({
-        ...bKingState,
+      bKingState.current = {
+        ...bKingState.current,
         position: board[currentRow][currentCol].props.index,
         hasKSideCastlingRights: false,
         hasQSideCastlingRights: false,
-      });
+      };
     } else if (FENarray[i] === "K") {
       piece = "King";
-      setwKingState({
-        ...bKingState,
+      wKingState.current = {
+        ...wKingState.current,
         position: board[currentRow][currentCol].props.index,
         hasKSideCastlingRights: false,
         hasQSideCastlingRights: false,
-      });
+      };
     } else if (FENarray[i] === "p" || FENarray[i] === "P") {
       piece = "Pawn";
     } else {
@@ -104,38 +96,57 @@ function SetupFromFEN(
 
   let castlingDescriptionIndex = colorDescriptionIndex + 2;
 
+  //Update castling rights
+  //___________________________________________
   let i = castlingDescriptionIndex;
-//"4k2r/6r1/8/8/8/8/3R4/R3K3 w Qk - 0 1";
   if (FENarray[castlingDescriptionIndex] !== "-") {
     while (FENarray[i] !== " ") {
       if (FENarray[i] === "K") {
-        console.log("this should not trigger")
-        setwKingState({
-          ...wKingState,
+        wKingState.current = {
+          ...wKingState.current,
           hasKSideCastlingRights: true,
-        });
+        };
       } else if (FENarray[i] === "Q") {
-        console.log("this should trigger")
-        setwKingState({
-          ...wKingState,
+        wKingState.current = {
+          ...wKingState.current,
           hasQSideCastlingRights: true,
-        });
+        };
       } else if (FENarray[i] === "q") {
-        console.log("this should not trigger")
-        setbKingState({
-          ...bKingState,
+        bKingState.current = {
+          ...bKingState.current,
           hasQSideCastlingRights: true,
-        });
+        };
       } else if (FENarray[i] === "k") {
-        console.log("this should trigger")
-        setbKingState({
-          ...bKingState,
+        bKingState.current = {
+          ...bKingState.current,
           hasKSideCastlingRights: true,
-        });
+        };
       }
       i++;
     }
+    //Update castling rights
+    //___________________________________________
+
+
+
+    //"4k2r/6r1/8/8/8/8/3R4/R3K3 w Qk - 0 1";
+
+    //Update enPassantSquare
+    //___________________________________________
     let enPassantDescriptionIndex = i + 1;
+    if(FENarray[enPassantDescriptionIndex] === "-"){
+        enPassantTarget.current = "";
+    }else{
+        enPassantTarget.current = FENarray[enPassantDescriptionIndex]+ FENarray[enPassantDescriptionIndex+1]
+    }
+
+    //Update enPassantSquare
+    //___________________________________________
+
+
+
+
+    
   }
 
   //"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";

@@ -16,18 +16,19 @@ function App() {
   const [flippedBoard, setflippedBoard] = useState(false);
 
   const [player, setPlayer] = useState("white");
-  const [bKingState, setbKingState] = useState({
+
+  const bKingState = useRef({
     hasKSideCastlingRights: true,
     hasQSideCastlingRights: true,
     position: "e8",
   });
-  const [wKingState, setwKingState] = useState({
-    hasKSideCastlingRights: true,
-    hasQSideCastlingRights: true,
-    position: "e1",
-  });
-  // const [wChecked, setwChecked] = useState(false);
-  // const [bChecked, setbChecked] = useState(false);
+
+
+  const wKingState = useRef({
+      hasKSideCastlingRights: true,
+      hasQSideCastlingRights: true,
+      position: "e1",
+    });
 
   const wChecked = useRef(false); // wCheck = {current: false}
   const bChecked = useRef(false); // bCheck = {current: false}
@@ -46,8 +47,6 @@ function App() {
         setPlayer,
         wKingState,
         bKingState,
-        setwKingState,
-        setbKingState,
         enPassantTarget,
         wChecked,
         bChecked,
@@ -91,7 +90,7 @@ function App() {
           <div className="ButtonList">
             <button
               onClick={() => {
-                SetupFromFEN(board,setBoard, setPlayer,wKingState, bKingState, setwKingState, setbKingState);
+                SetupFromFEN(board,setBoard, setPlayer,wKingState, bKingState,enPassantTarget);
 
               }}
             >
@@ -99,8 +98,9 @@ function App() {
             </button>
             <button
               onClick={() => {
-                console.log(wKingState)
-                console.log(bKingState)
+                console.log("enPassantTarget: " + enPassantTarget.current)
+                console.log(wKingState.current)
+                console.log(bKingState.current)
                 // console.log(wChecked.current);
                 // console.log(bChecked.current);
                 // console.log("checkmate: " + checkmate.current)

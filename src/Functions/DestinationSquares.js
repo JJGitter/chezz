@@ -399,10 +399,10 @@ function DestinationSquares(
       if (movedItem.pieceColor === "white") {
         let enemyControlled = UnderEnemyControl(board, "white");
         if (
-          wKingState.hasKSideCastlingRights &&
+          wKingState.current.hasKSideCastlingRights &&
           !enemyControlled.includes("f1") &&
           !enemyControlled.includes("g1") &&
-          !wKingState.isChecked &&
+          !wKingState.current.isChecked &&
           board[7][5].props.pieceType === "" &&
           board[7][6].props.pieceType === ""
         ) {
@@ -410,10 +410,10 @@ function DestinationSquares(
           destinations.push("g1");
         }
         if (
-          wKingState.hasQSideCastlingRights &&
+          wKingState.current.hasQSideCastlingRights &&
           !enemyControlled.includes("c1") &&
           !enemyControlled.includes("d1") &&
-          !wKingState.isChecked &&
+          !wKingState.current.isChecked &&
           board[7][1].props.pieceType === "" &&
           board[7][2].props.pieceType === "" &&
           board[7][3].props.pieceType === ""
@@ -435,10 +435,10 @@ function DestinationSquares(
       if (movedItem.pieceColor === "black") {
         let enemyControlled = UnderEnemyControl(board, "black");
         if (
-          bKingState.hasKSideCastlingRights &&
+          bKingState.current.hasKSideCastlingRights &&
           !enemyControlled.includes("f8") &&
           !enemyControlled.includes("g8") &&
-          !bKingState.isChecked &&
+          !bKingState.current.isChecked &&
           board[0][5].props.pieceType === "" &&
           board[0][6].props.pieceType === ""
         ) {
@@ -446,10 +446,10 @@ function DestinationSquares(
           destinations.push("g8");
         }
         if (
-          bKingState.hasQSideCastlingRights &&
+          bKingState.current.hasQSideCastlingRights &&
           !enemyControlled.includes("c8") &&
           !enemyControlled.includes("d8") &&
-          !bKingState.isChecked &&
+          !bKingState.current.isChecked &&
           board[0][1].props.pieceType === "" &&
           board[0][2].props.pieceType === "" &&
           board[0][3].props.pieceType === ""
@@ -520,13 +520,13 @@ function DestinationSquares(
 
       if (
         movedItem.pieceColor === "white" &&
-        UnderEnemyControl(tempBoard, "white").includes(wKingState.position)
+        UnderEnemyControl(tempBoard, "white").includes(wKingState.current.position)
       ) {
         //add illegal destination if king is checked on the temporary board
         illegalDestinations.push(destinations[i]);
       } else if (
         movedItem.pieceColor === "black" &&
-        UnderEnemyControl(tempBoard, "black").includes(bKingState.position)
+        UnderEnemyControl(tempBoard, "black").includes(bKingState.current.position)
       ) {
         //add illegal destination if king is checked on the temporary board
         illegalDestinations.push(destinations[i]);

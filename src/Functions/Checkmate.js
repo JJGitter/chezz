@@ -45,7 +45,7 @@ function Checkmate(player, board, wKingState, bKingState, enPassantTarget) {
   if (player === "white") {
     let kingDestinations = DestinationSquares(
       {
-        fromCell: bKingState.position,
+        fromCell: bKingState.current.position,
         piece: "King",
         pieceColor: "black",
       },
@@ -67,7 +67,7 @@ function Checkmate(player, board, wKingState, bKingState, enPassantTarget) {
   } else {
     let kingDestinations = DestinationSquares(
       {
-        fromCell: wKingState.position,
+        fromCell: wKingState.current.position,
         piece: "King",
         pieceColor: "white",
       },
@@ -89,11 +89,11 @@ function Checkmate(player, board, wKingState, bKingState, enPassantTarget) {
 
   if (checkmate) {
     if (player === "black") {
-      let [kingCol, kingRow] = stringSplit(wKingState.position);
+      let [kingCol, kingRow] = stringSplit(wKingState.current.position);
       board[kingRow][kingCol] = (
         <Square
-          key={wKingState.position}
-          index={wKingState.position}
+          key={wKingState.current.position}
+          index={wKingState.current.position}
           color={board[kingRow][kingCol].props.color}
           pieceType="King"
           pieceColor="white"
@@ -101,11 +101,11 @@ function Checkmate(player, board, wKingState, bKingState, enPassantTarget) {
         />
       );
     } else {
-      let [kingCol, kingRow] = stringSplit(bKingState.position);
+      let [kingCol, kingRow] = stringSplit(bKingState.current.position);
       board[kingRow][kingCol] = (
         <Square
-          key={bKingState.position}
-          index={bKingState.position}
+          key={bKingState.current.position}
+          index={bKingState.current.position}
           color={board[kingRow][kingCol].props.color}
           pieceType="King"
           pieceColor="black"
