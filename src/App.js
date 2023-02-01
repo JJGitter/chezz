@@ -91,7 +91,16 @@ function App() {
           <div className="ButtonList">
             <button
               onClick={() => {
-                SetupFromFEN(board,setBoard, setPlayer);
+                SetupFromFEN(board,setBoard, setPlayer,wKingState, bKingState, setwKingState, setbKingState);
+
+              }}
+            >
+              SetupFromFEN
+            </button>
+            <button
+              onClick={() => {
+                console.log(wKingState)
+                console.log(bKingState)
                 // console.log(wChecked.current);
                 // console.log(bChecked.current);
                 // console.log("checkmate: " + checkmate.current)
