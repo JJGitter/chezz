@@ -7,11 +7,13 @@ function SetupFromFEN(
   setPlayer,
   wKingState,
   bKingState,
-  enPassantTarget
+  enPassantTarget,
+  nrOfHalfMoves,
+  nrOfFullMoves
 ) {
   let tempBoard = CreateTempBoard(board);
-  // const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
-  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1";
+  //const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 25 9";
   //  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1"
 
   let FENarray = FEN.split("");
@@ -74,8 +76,8 @@ function SetupFromFEN(
       if (j > 0) {
         currentCol = currentCol + 1;
       }
-      console.log("row: " + currentRow);
-      console.log("col: " + currentCol);
+      // console.log("row: " + currentRow);
+      // console.log("col: " + currentCol);
       tempBoard[currentRow][currentCol] = (
         <Square
           key={board[currentRow][currentCol].props.index}
@@ -86,7 +88,7 @@ function SetupFromFEN(
         />
       );
 
-      console.log(tempBoard[currentRow][currentCol].props.pieceType);
+      // console.log(tempBoard[currentRow][currentCol].props.pieceType);
     }
 
     currentCol++;
@@ -104,8 +106,13 @@ function SetupFromFEN(
   //Update castling rights
   //___________________________________________
   let i = castlingDescriptionIndex;
+  let halfMovesIndex;
+  let enPassantDescriptionIndex = castlingDescriptionIndex + 2;
+
   if (FENarray[castlingDescriptionIndex] !== "-") {
+    enPassantDescriptionIndex--;
     while (FENarray[i] !== " ") {
+      enPassantDescriptionIndex++;
       if (FENarray[i] === "K") {
         wKingState.current = {
           ...wKingState.current,
@@ -129,23 +136,53 @@ function SetupFromFEN(
       }
       i++;
     }
-    //Update castling rights
-    //___________________________________________
-
-    //Update enPassantSquare
-    //___________________________________________
-    let enPassantDescriptionIndex = i + 1;
-    if (FENarray[enPassantDescriptionIndex] === "-") {
-      enPassantTarget.current = "";
-    } else {
-      enPassantTarget.current =
-        FENarray[enPassantDescriptionIndex] +
-        FENarray[enPassantDescriptionIndex + 1];
-    }
-
-    //Update enPassantSquare
-    //___________________________________________
   }
+  //Update castling rights
+  //___________________________________________
+
+  //Update enPassantSquare
+  //___________________________________________
+  if (FENarray[enPassantDescriptionIndex] === "-") {
+    enPassantTarget.current = "";
+    halfMovesIndex = enPassantDescriptionIndex + 2;
+  } else {
+    enPassantTarget.current =
+      FENarray[enPassantDescriptionIndex] +
+      FENarray[enPassantDescriptionIndex + 1];
+    halfMovesIndex = enPassantDescriptionIndex + 3;
+  }
+
+  //Update enPassantSquare
+  //___________________________________________
+
+  //Update halfMoves
+  //___________________________________________
+  let fullMovesIndex;
+  let ii = 1;
+  let tmp = FENarray[halfMovesIndex];
+  while (FENarray[halfMovesIndex + ii] !== " ") {
+    tmp = tmp + FENarray[halfMovesIndex + ii];
+    ii++;
+  }
+  nrOfHalfMoves.current = tmp;
+  fullMovesIndex = halfMovesIndex + ii + 1;
+
+  //Update halfMoves
+  //___________________________________________
+
+  //Update FullMoves
+  //___________________________________________
+
+  ii = 1;
+  let tmp2 = FENarray[fullMovesIndex];
+  while (fullMovesIndex + ii !== FENarray.length) {
+    tmp2 = tmp2 + FENarray[fullMovesIndex + ii];
+    ii++;
+  }
+  nrOfFullMoves.current = tmp2;
+
+  //Update FullMoves
+  //___________________________________________
 }
 
 export default SetupFromFEN;

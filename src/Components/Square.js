@@ -25,6 +25,8 @@ function Square(squareProps) {
     checkmate,
     lastMove,
     stalemate,
+    nrOfHalfMoves,
+    nrOfFullMoves,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -62,8 +64,13 @@ function Square(squareProps) {
           player,
           wChecked,
           bChecked,
-          lastMove
+          lastMove,
+          nrOfHalfMoves
         );
+
+        if (player === "black") {
+          nrOfFullMoves.current++;
+        }
 
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
           if (wChecked || bChecked) {

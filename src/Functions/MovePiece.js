@@ -27,13 +27,57 @@ function MovePiece(
   player,
   wChecked,
   bChecked,
-  lastMove
+  lastMove,
+  nrOfHalfMoves
 ) {
   enPassantTarget.current = ""; //reset the enPassanttarget every time a new piece is moved
+
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
 
+  if (
+    pieceType === "Pawn" ||
+    board[toRowIndex][toColumnIndex].props.pieceType !== ""
+  ) {
+    //Reset the halfmove count if a pawn is moved or a piece is captured. Otherwise increment it.
+    nrOfHalfMoves.current = 0;
+  } else {
+    nrOfHalfMoves.current++;
+  }
+
   let tempBoard = [...board];
+
+  //Remove the highlight on the last move
+  //_____________________________________________
+  //_____________________________________________
+  if (lastMove.current.from !== "") {
+    let [lastFromCol, lastFromRow] = stringSplit(lastMove.current.from);
+    let [lastToCol, lastToRow] = stringSplit(lastMove.current.to);
+    tempBoard[lastFromRow][lastFromCol] = (
+      <Square
+        key={tempBoard[lastFromRow][lastFromCol].props.index}
+        index={tempBoard[lastFromRow][lastFromCol].props.index}
+        color={tempBoard[lastFromRow][lastFromCol].props.color}
+        pieceType={tempBoard[lastFromRow][lastFromCol].props.pieceType}
+        pieceColor={tempBoard[lastFromRow][lastFromCol].props.pieceColor}
+        rotate={tempBoard[lastFromRow][lastFromCol].props.rotate}
+      />
+    );
+    tempBoard[lastToRow][lastToCol] = (
+      <Square
+        key={tempBoard[lastToRow][lastToCol].props.index}
+        index={tempBoard[lastToRow][lastToCol].props.index}
+        color={tempBoard[lastToRow][lastToCol].props.color}
+        pieceType={tempBoard[lastToRow][lastToCol].props.pieceType}
+        pieceColor={tempBoard[lastToRow][lastToCol].props.pieceColor}
+        rotate={tempBoard[lastToRow][lastToCol].props.rotate}
+      />
+    );
+  }
+  lastMove.current = { from: fromSquare, to: toSquare }; //update the lastmove (used to visualize the last move on the board)
+  //Remove the highlight on the last move
+  //_____________________________________________
+  //_____________________________________________
 
   //Insert an empty square where the piece moved from
   tempBoard[fromRowIndex][fromColumnIndex] = (
@@ -76,19 +120,19 @@ function MovePiece(
     if (pieceType === "King") {
       //Remove castling rights if king moves
       if (pieceColor === "white") {
-        wKingState.current=({
+        wKingState.current = {
           ...wKingState.current,
           hasQSideCastlingRights: false,
           hasKSideCastlingRights: false,
           position: toSquare,
-        });
+        };
       } else {
-        bKingState.current=({
+        bKingState.current = {
           ...bKingState.current,
           hasQSideCastlingRights: false,
           hasKSideCastlingRights: false,
           position: toSquare,
-        });
+        };
       }
 
       if (Math.abs(toColumnIndex - fromColumnIndex) === 2) {
@@ -180,13 +224,25 @@ function MovePiece(
     if (pieceType === "Rook") {
       //Remove castling rights if rook moves
       if (fromSquare === "h1") {
-        wKingState.current=({ ...wKingState.current, hasKSideCastlingRights: false });
+        wKingState.current = {
+          ...wKingState.current,
+          hasKSideCastlingRights: false,
+        };
       } else if (fromSquare === "a1") {
-        wKingState.current=({ ...wKingState.current, hasQSideCastlingRights: false });
+        wKingState.current = {
+          ...wKingState.current,
+          hasQSideCastlingRights: false,
+        };
       } else if (fromSquare === "h8") {
-        bKingState.current=({ ...bKingState.current, hasKSideCastlingRights: false });
+        bKingState.current = {
+          ...bKingState.current,
+          hasKSideCastlingRights: false,
+        };
       } else if (fromSquare === "a8") {
-        bKingState.current=({ ...bKingState.current, hasQSideCastlingRights: false });
+        bKingState.current = {
+          ...bKingState.current,
+          hasQSideCastlingRights: false,
+        };
       }
     }
 
@@ -237,7 +293,9 @@ function MovePiece(
       }
     }
 
-    if (UnderEnemyControl(board, "black").includes(bKingState.current.position)) {
+    if (
+      UnderEnemyControl(board, "black").includes(bKingState.current.position)
+    ) {
       //if the black king position is targeted by white
       bChecked.current = true;
       let [colidx, rowidx] = stringSplit(bKingState.current.position);
@@ -269,7 +327,9 @@ function MovePiece(
         );
       }
     }
-    if (UnderEnemyControl(board, "white").includes(wKingState.current.position)) {
+    if (
+      UnderEnemyControl(board, "white").includes(wKingState.current.position)
+    ) {
       //if the white king position is targeted by black
       wChecked.current = true;
       let [colidx, rowidx] = stringSplit(wKingState.current.position);
@@ -286,39 +346,6 @@ function MovePiece(
     }
   }
   //Handle check
-  //_____________________________________________
-  //_____________________________________________
-
-  //Remove the highlight on the last move
-  //_____________________________________________
-  //_____________________________________________
-
-  if (lastMove.current.from !== "") {
-    let [lastFromCol, lastFromRow] = stringSplit(lastMove.current.from);
-    let [lastToCol, lastToRow] = stringSplit(lastMove.current.to);
-    tempBoard[lastFromRow][lastFromCol] = (
-      <Square
-        key={tempBoard[lastFromRow][lastFromCol].props.index}
-        index={tempBoard[lastFromRow][lastFromCol].props.index}
-        color={tempBoard[lastFromRow][lastFromCol].props.color}
-        pieceType={tempBoard[lastFromRow][lastFromCol].props.pieceType}
-        pieceColor={tempBoard[lastFromRow][lastFromCol].props.pieceColor}
-        rotate={tempBoard[lastFromRow][lastFromCol].props.rotate}
-      />
-    );
-    tempBoard[lastToRow][lastToCol] = (
-      <Square
-        key={tempBoard[lastToRow][lastToCol].props.index}
-        index={tempBoard[lastToRow][lastToCol].props.index}
-        color={tempBoard[lastToRow][lastToCol].props.color}
-        pieceType={tempBoard[lastToRow][lastToCol].props.pieceType}
-        pieceColor={tempBoard[lastToRow][lastToCol].props.pieceColor}
-        rotate={tempBoard[lastToRow][lastToCol].props.rotate}
-      />
-    );
-  }
-  lastMove.current = { from: fromSquare, to: toSquare }; //update the lastmove (used to visualize the last move on the board)
-  //Remove the highlight on the last move
   //_____________________________________________
   //_____________________________________________
 

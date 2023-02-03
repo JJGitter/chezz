@@ -1,4 +1,12 @@
-function CreateFEN(board, player, wKingState, bKingState, enPassantTarget) {
+function CreateFEN(
+  board,
+  player,
+  wKingState,
+  bKingState,
+  enPassantTarget,
+  nrOfHalfMoves,
+  nrOfFullMoves
+) {
   "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
   let FEN = "";
 
@@ -76,6 +84,10 @@ function CreateFEN(board, player, wKingState, bKingState, enPassantTarget) {
   } else {
     FEN = FEN + " - ";
   }
+
+  FEN = FEN + nrOfHalfMoves.current + " ";
+
+  FEN = FEN + nrOfFullMoves.current;
 
   return FEN;
 }

@@ -35,6 +35,8 @@ function App() {
   const checkmate = useRef(false);
   const stalemate = useRef(false);
   const lastMove = useRef({ from: "", to: "" });
+  const nrOfHalfMoves = useRef(0);
+  const nrOfFullMoves = useRef(0);
 
   return (
     <boardContext.Provider
@@ -51,6 +53,8 @@ function App() {
         checkmate,
         lastMove,
         stalemate,
+        nrOfHalfMoves,
+        nrOfFullMoves,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -94,7 +98,9 @@ function App() {
                   setPlayer,
                   wKingState,
                   bKingState,
-                  enPassantTarget
+                  enPassantTarget,
+                  nrOfHalfMoves,
+                  nrOfFullMoves
                 );
               }}
             >
@@ -102,7 +108,17 @@ function App() {
             </button>
             <button
               onClick={() => {
-                console.log(CreateFEN(board, player, wKingState, bKingState, enPassantTarget));
+                console.log(
+                  CreateFEN(
+                    board,
+                    player,
+                    wKingState,
+                    bKingState,
+                    enPassantTarget,
+                    nrOfHalfMoves,
+                    nrOfFullMoves
+                  )
+                );
                 console.log("enPassantTarget: " + enPassantTarget.current);
                 console.log(wKingState.current);
                 console.log(bKingState.current);
@@ -126,19 +142,12 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>create FEN</li>
-              <li>import FEN</li>
               <li>The rook does not "control" squares past the enemy king</li>
-              <li>
-                some pawn captures are not highlighted properly as the last move
-              </li>
               <li>checkmate is not always detected</li>
               <li>Detect stalemate</li>
               <li>Detect 3 move repetition</li>
               <li>make it possible to choose promotion piece</li>
               <li>material count</li>
-              <li>nr of halfmoves</li>
-              <li>nr of moves</li>
               <li>store the move history</li>
               <li>put the game on a website</li>
               <li>add time control</li>
