@@ -5,6 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { useRef } from "react";
 import SetupFromFEN from "./Functions/SetupFromFEN";
+import CreateFEN from "./Functions/CreateFEN";
 
 export const boardContext = React.createContext();
 let renderCount = 0;
@@ -22,14 +23,11 @@ function App() {
     hasQSideCastlingRights: true,
     position: "e8",
   });
-
-
   const wKingState = useRef({
-      hasKSideCastlingRights: true,
-      hasQSideCastlingRights: true,
-      position: "e1",
-    });
-
+    hasKSideCastlingRights: true,
+    hasQSideCastlingRights: true,
+    position: "e1",
+  });
   const wChecked = useRef(false); // wCheck = {current: false}
   const bChecked = useRef(false); // bCheck = {current: false}
 
@@ -90,17 +88,24 @@ function App() {
           <div className="ButtonList">
             <button
               onClick={() => {
-                SetupFromFEN(board,setBoard, setPlayer,wKingState, bKingState,enPassantTarget);
-
+                SetupFromFEN(
+                  board,
+                  setBoard,
+                  setPlayer,
+                  wKingState,
+                  bKingState,
+                  enPassantTarget
+                );
               }}
             >
               SetupFromFEN
             </button>
             <button
               onClick={() => {
-                console.log("enPassantTarget: " + enPassantTarget.current)
-                console.log(wKingState.current)
-                console.log(bKingState.current)
+                console.log(CreateFEN(board, player, wKingState, bKingState, enPassantTarget));
+                console.log("enPassantTarget: " + enPassantTarget.current);
+                console.log(wKingState.current);
+                console.log(bKingState.current);
                 // console.log(wChecked.current);
                 // console.log(bChecked.current);
                 // console.log("checkmate: " + checkmate.current)
@@ -123,7 +128,10 @@ function App() {
             <ul>
               <li>create FEN</li>
               <li>import FEN</li>
-              <li>some pawn captures are not highlighted properly as the last move</li>
+              <li>The rook does not "control" squares past the enemy king</li>
+              <li>
+                some pawn captures are not highlighted properly as the last move
+              </li>
               <li>checkmate is not always detected</li>
               <li>Detect stalemate</li>
               <li>Detect 3 move repetition</li>

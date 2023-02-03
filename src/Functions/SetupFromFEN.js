@@ -1,18 +1,23 @@
 import Square from "../Components/Square";
 import CreateTempBoard from "./CreateTempBoard";
 
-function SetupFromFEN(board, setBoard, setPlayer, wKingState, bKingState, enPassantTarget) {
+function SetupFromFEN(
+  board,
+  setBoard,
+  setPlayer,
+  wKingState,
+  bKingState,
+  enPassantTarget
+) {
   let tempBoard = CreateTempBoard(board);
-    // const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
-  const FEN = "4k2r/6r1/8/8/8/8/3R4/R3K3 w Qk - 0 1";
+  // const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1";
   //  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1"
 
   let FENarray = FEN.split("");
   let colorDescriptionIndex = null;
 
-  // console.log(FENarray);
-
-  //Loop through all the squares of the FEN.
+  //Loop through all the squares of the FEN and update each according square of the tempBoard.
   let currentRow = 0;
   let currentCol = 0;
   for (let i = 0; i <= FENarray.length; i++) {
@@ -127,29 +132,20 @@ function SetupFromFEN(board, setBoard, setPlayer, wKingState, bKingState, enPass
     //Update castling rights
     //___________________________________________
 
-
-
-    //"4k2r/6r1/8/8/8/8/3R4/R3K3 w Qk - 0 1";
-
     //Update enPassantSquare
     //___________________________________________
     let enPassantDescriptionIndex = i + 1;
-    if(FENarray[enPassantDescriptionIndex] === "-"){
-        enPassantTarget.current = "";
-    }else{
-        enPassantTarget.current = FENarray[enPassantDescriptionIndex]+ FENarray[enPassantDescriptionIndex+1]
+    if (FENarray[enPassantDescriptionIndex] === "-") {
+      enPassantTarget.current = "";
+    } else {
+      enPassantTarget.current =
+        FENarray[enPassantDescriptionIndex] +
+        FENarray[enPassantDescriptionIndex + 1];
     }
 
     //Update enPassantSquare
     //___________________________________________
-
-
-
-
-    
   }
-
-  //"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 }
 
 export default SetupFromFEN;
