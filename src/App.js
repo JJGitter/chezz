@@ -100,7 +100,8 @@ function App() {
                   bKingState,
                   enPassantTarget,
                   nrOfHalfMoves,
-                  nrOfFullMoves
+                  nrOfFullMoves,
+                  checkmate
                 );
               }}
             >
@@ -142,15 +143,13 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>The rook does not "control" squares past the enemy king</li>
-              <li>checkmate is not always detected</li>
               <li>Detect stalemate</li>
+              <li>store the move history</li>
               <li>Detect 3 move repetition</li>
               <li>make it possible to choose promotion piece</li>
               <li>material count</li>
-              <li>store the move history</li>
-              <li>put the game on a website</li>
               <li>add time control</li>
+              <li>put the game on a website</li>
             </ul>
           </div>
         </div>

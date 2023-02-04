@@ -180,8 +180,17 @@ function DestinationSquares(
     let row = startRow;
     while (row > 0) {
       row--;
-      //If there is a piece in the way, stop adding destinations.
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -190,7 +199,14 @@ function DestinationSquares(
     row = startRow;
     while (row < 7) {
       row++;
-      if (board[row][col].props.pieceType !== "") {
+      if (
+        board[row][col].props.pieceType !== "" &&
+        !(
+          board[row][col].props.pieceType === "King" &&
+          board[row][col].props.pieceColor !== movedItem.pieceColor &&
+          checkingEnemyControl
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -199,7 +215,14 @@ function DestinationSquares(
     row = startRow;
     while (col < 7) {
       col++;
-      if (board[row][col].props.pieceType !== "") {
+      if (
+        board[row][col].props.pieceType !== "" &&
+        !(
+          board[row][col].props.pieceType === "King" &&
+          board[row][col].props.pieceColor !== movedItem.pieceColor &&
+          checkingEnemyControl
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -208,7 +231,14 @@ function DestinationSquares(
     col = startColumn;
     while (col > 0) {
       col--;
-      if (board[row][col].props.pieceType !== "") {
+      if (
+        board[row][col].props.pieceType !== "" &&
+        !(
+          board[row][col].props.pieceType === "King" &&
+          board[row][col].props.pieceColor !== movedItem.pieceColor &&
+          checkingEnemyControl
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -228,7 +258,17 @@ function DestinationSquares(
     while (row > 0 && col > 0) {
       row--;
       col--;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -239,7 +279,17 @@ function DestinationSquares(
     while (row > 0 && col < 7) {
       row--;
       col++;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -250,7 +300,17 @@ function DestinationSquares(
     while (row < 7 && col < 7) {
       row++;
       col++;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -261,7 +321,17 @@ function DestinationSquares(
     while (row < 7 && col > 0) {
       row++;
       col--;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -281,7 +351,17 @@ function DestinationSquares(
     while (row > 0 && col > 0) {
       row--;
       col--;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -292,7 +372,17 @@ function DestinationSquares(
     while (row > 0 && col < 7) {
       row--;
       col++;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -303,7 +393,17 @@ function DestinationSquares(
     while (row < 7 && col < 7) {
       row++;
       col++;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -314,7 +414,17 @@ function DestinationSquares(
     while (row < 7 && col > 0) {
       row++;
       col--;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -325,7 +435,17 @@ function DestinationSquares(
     while (row > 0) {
       row--;
       //If there is a piece in the way, stop adding destinations.
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -334,7 +454,17 @@ function DestinationSquares(
     row = startRow;
     while (row < 7) {
       row++;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -343,7 +473,17 @@ function DestinationSquares(
     row = startRow;
     while (col < 7) {
       col++;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -352,7 +492,17 @@ function DestinationSquares(
     col = startColumn;
     while (col > 0) {
       col--;
-      if (board[row][col].props.pieceType !== "") {
+      //If there is a piece in the way, stop adding destinations. Unless the piece is the enemy king and you are checking for enemy controlled squares.
+      if (
+        board[row][col].props.pieceType !== "" && //if there is a piece in the way
+        !(
+          (
+            board[row][col].props.pieceType === "King" && //and its not the enemy king while
+            board[row][col].props.pieceColor !== movedItem.pieceColor &&
+            checkingEnemyControl
+          ) //if we are not checking EnemyControl, we will stop at the enemy king.
+        )
+      ) {
         destinations.push(stringMerge(col, row));
         break;
       }
@@ -520,13 +670,17 @@ function DestinationSquares(
 
       if (
         movedItem.pieceColor === "white" &&
-        UnderEnemyControl(tempBoard, "white").includes(wKingState.current.position)
+        UnderEnemyControl(tempBoard, "white").includes(
+          wKingState.current.position
+        )
       ) {
         //add illegal destination if king is checked on the temporary board
         illegalDestinations.push(destinations[i]);
       } else if (
         movedItem.pieceColor === "black" &&
-        UnderEnemyControl(tempBoard, "black").includes(bKingState.current.position)
+        UnderEnemyControl(tempBoard, "black").includes(
+          bKingState.current.position
+        )
       ) {
         //add illegal destination if king is checked on the temporary board
         illegalDestinations.push(destinations[i]);

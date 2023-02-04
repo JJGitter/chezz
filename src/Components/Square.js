@@ -74,6 +74,7 @@ function Square(squareProps) {
 
         if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
           if (wChecked || bChecked) {
+            console.log("this is triggerd")
             checkmate.current = true;
           } else {
             //stalemate
