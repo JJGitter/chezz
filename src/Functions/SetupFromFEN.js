@@ -10,7 +10,10 @@ function SetupFromFEN(
   enPassantTarget,
   nrOfHalfMoves,
   nrOfFullMoves,
-  checkmate
+  checkmate,
+  stalemate,
+  wChecked,
+  bChecked
 ) {
   let tempBoard = CreateTempBoard(board);
   //const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
@@ -19,12 +22,16 @@ function SetupFromFEN(
   //const FEN = "8/5k2/3p4/1p1Pp2p/pP2Pp1P/P4P1K/8/8 b - - 99 50";
   //const FEN = "rn2n1k1/ppp2ppp/8/2N5/2Pp4/8/PPP2PPP/R1B1R1K1 w - - 1 17";
   //const FEN = "rn5k/ppp2p1p/3n4/2N5/2P5/3p2R1/PPPB1PPP/R5K1 w - - 3 22";
-  const FEN = "rnbbk1nr/pp1p1ppp/2p1p3/8/5PP1/q7/PPPPPKBP/RNB2QNR b kq - 7 6";
+  //const FEN = "rnbbk1nr/pp1p1ppp/2p1p3/8/5PP1/q7/PPPPPKBP/RNB2QNR b kq - 7 6"; //Mate in one with Bishop
+  const FEN = "5bnr/4p1pq/2Q1ppkr/7p/2P4P/8/PP1PPPP1/RNB1KBNR w KQ - 0 10"; //stalemate in one move(Qxe6)
 
   let FENarray = FEN.split("");
   let colorDescriptionIndex = null;
 
   checkmate.current = false;
+  stalemate.current = false;
+  wChecked.current = false;
+  bChecked.current = false;
 
   //Loop through all the squares of the FEN and update each according square of the tempBoard.
   let currentRow = 0;

@@ -275,7 +275,7 @@ function MovePiece(
   //_____________________________________________
   //_____________________________________________
   if (player === "white") {
-    if (wChecked) {
+    if (wChecked.current) {
       wChecked.current = false; //if white moves, he removes the check
 
       if (pieceType !== "King") {
@@ -311,7 +311,7 @@ function MovePiece(
       );
     }
   } else if (player === "black") {
-    if (bChecked) {
+    if (bChecked.current) {
       bChecked.current = false; //if black moves, he removes the check
       if (pieceType !== "King") {
         //if black blocks the check, remove the check indication on the king square

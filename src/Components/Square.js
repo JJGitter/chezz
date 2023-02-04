@@ -6,7 +6,7 @@ import MovePiece from "../Functions/MovePiece";
 import { boardContext } from "../App";
 import { useContext } from "react";
 import DestinationSquares from "../Functions/DestinationSquares";
-import Checkmate from "../Functions/Checkmate";
+import Mate from "../Functions/Mate";
 
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
@@ -72,12 +72,10 @@ function Square(squareProps) {
           nrOfFullMoves.current++;
         }
 
-        if (Checkmate(player, board, wKingState, bKingState, enPassantTarget)) {
-          if (wChecked || bChecked) {
-            console.log("this is triggerd")
+        if (Mate(player, board, wKingState, bKingState, enPassantTarget)) {
+          if (wChecked.current || bChecked.current) {
             checkmate.current = true;
           } else {
-            //stalemate
             stalemate.current = true;
           }
         }
@@ -100,7 +98,7 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === player && checkmate.current === false
+          squareProps.pieceColor === player && checkmate.current === false && stalemate.current === false
             ? dragRef
             : null
         } //This component will be dragable if it is that colors turn.

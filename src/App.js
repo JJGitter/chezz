@@ -101,7 +101,10 @@ function App() {
                   enPassantTarget,
                   nrOfHalfMoves,
                   nrOfFullMoves,
-                  checkmate
+                  checkmate,
+                  stalemate,
+                  wChecked,
+                  bChecked
                 );
               }}
             >
@@ -120,11 +123,12 @@ function App() {
                     nrOfFullMoves
                   )
                 );
-                console.log("enPassantTarget: " + enPassantTarget.current);
-                console.log(wKingState.current);
-                console.log(bKingState.current);
-                // console.log(wChecked.current);
-                // console.log(bChecked.current);
+                console.log("stalemate? " + stalemate.current)
+                // console.log("enPassantTarget: " + enPassantTarget.current);
+                // console.log(wKingState.current);
+                // console.log(bKingState.current);
+                console.log("wchecked? " +wChecked.current);
+                console.log("bchecked? " + bChecked.current);
                 // console.log("checkmate: " + checkmate.current)
               }}
             >
