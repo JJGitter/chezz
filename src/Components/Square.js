@@ -4,9 +4,10 @@ import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
 import MovePiece from "../Functions/MovePiece";
 import { boardContext } from "../App";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import DestinationSquares from "../Functions/DestinationSquares";
 import Mate from "../Functions/Mate";
+import CreateMoveNotation from "../Functions/CreateMoveNotation";
 
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
@@ -27,6 +28,7 @@ function Square(squareProps) {
     stalemate,
     nrOfHalfMoves,
     nrOfFullMoves,
+    moveHistory,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -51,7 +53,7 @@ function Square(squareProps) {
           enPassantTarget
         ).includes(squareProps.index)
       ) {
-        MovePiece(
+        let isCapture = MovePiece(
           board,
           setBoard,
           item.piece,
@@ -80,6 +82,20 @@ function Square(squareProps) {
           }
         }
 
+        CreateMoveNotation(
+          board,
+          item,
+          isCapture,
+          wChecked,
+          bChecked,
+          squareProps.index,
+          wKingState,
+          bKingState,
+          enPassantTarget,
+          moveHistory,
+          checkmate
+        );
+
         setPlayer(player === "white" ? "black" : "white");
       }
     },
@@ -98,7 +114,9 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === player && checkmate.current === false && stalemate.current === false
+          squareProps.pieceColor === player &&
+          checkmate.current === false &&
+          stalemate.current === false
             ? dragRef
             : null
         } //This component will be dragable if it is that colors turn.

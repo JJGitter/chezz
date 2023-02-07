@@ -1,5 +1,6 @@
 import React from "react";
 import Square from "../Components/Square";
+import CreateTempBoard from "./CreateTempBoard";
 import { stringMerge } from "./DestinationSquares";
 import UnderEnemyControl from "./UnderEnemyControl";
 
@@ -45,7 +46,7 @@ function MovePiece(
     nrOfHalfMoves.current++;
   }
 
-  let tempBoard = [...board];
+  let tempBoard = CreateTempBoard(board);
 
   //Remove the highlight on the last move
   //_____________________________________________
@@ -349,8 +350,12 @@ function MovePiece(
   //_____________________________________________
   //_____________________________________________
 
+  let isCapture = board[toRowIndex][toColumnIndex].props.pieceType !== "";
   //Update the board state
   setBoard(tempBoard);
+
+  //return true if the move is a capture
+  return isCapture;
 }
 
 export default MovePiece;

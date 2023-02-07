@@ -37,6 +37,7 @@ function App() {
   const lastMove = useRef({ from: "", to: "" });
   const nrOfHalfMoves = useRef(0);
   const nrOfFullMoves = useRef(0);
+  const moveHistory = useRef([]);
 
   return (
     <boardContext.Provider
@@ -55,6 +56,7 @@ function App() {
         stalemate,
         nrOfHalfMoves,
         nrOfFullMoves,
+        moveHistory,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -123,11 +125,11 @@ function App() {
                     nrOfFullMoves
                   )
                 );
-                console.log("stalemate? " + stalemate.current)
+                console.log("stalemate? " + stalemate.current);
                 // console.log("enPassantTarget: " + enPassantTarget.current);
                 // console.log(wKingState.current);
                 // console.log(bKingState.current);
-                console.log("wchecked? " +wChecked.current);
+                console.log("wchecked? " + wChecked.current);
                 console.log("bchecked? " + bChecked.current);
                 // console.log("checkmate: " + checkmate.current)
               }}
@@ -147,8 +149,8 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>Detect stalemate</li>
               <li>store the move history</li>
+              <li>Display the move history</li>
               <li>Detect 3 move repetition</li>
               <li>make it possible to choose promotion piece</li>
               <li>material count</li>
