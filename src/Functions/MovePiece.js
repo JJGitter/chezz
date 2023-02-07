@@ -3,6 +3,7 @@ import Square from "../Components/Square";
 import CreateTempBoard from "./CreateTempBoard";
 import { stringMerge } from "./DestinationSquares";
 import UnderEnemyControl from "./UnderEnemyControl";
+import Mate from "./Mate";
 
 export function stringSplit(string) {
   //This function will split the string of square id such as "C4" and return columnindex=2 and rowindex=4
@@ -29,7 +30,9 @@ function MovePiece(
   wChecked,
   bChecked,
   lastMove,
-  nrOfHalfMoves
+  nrOfHalfMoves,
+  checkmate,
+  stalemate
 ) {
   enPassantTarget.current = ""; //reset the enPassanttarget every time a new piece is moved
 
@@ -296,7 +299,9 @@ function MovePiece(
     }
 
     if (
-      UnderEnemyControl(tempBoard, "black").includes(bKingState.current.position)
+      UnderEnemyControl(tempBoard, "black").includes(
+        bKingState.current.position
+      )
     ) {
       //if the black king position is targeted by white
       bChecked.current = true;
@@ -330,7 +335,9 @@ function MovePiece(
       }
     }
     if (
-      UnderEnemyControl(tempBoard, "white").includes(wKingState.current.position)
+      UnderEnemyControl(tempBoard, "white").includes(
+        wKingState.current.position
+      )
     ) {
       //if the white king position is targeted by black
       wChecked.current = true;
@@ -348,6 +355,20 @@ function MovePiece(
     }
   }
   //Handle check
+  //_____________________________________________
+  //_____________________________________________
+
+  //Checkmate or stalemate?
+  //_____________________________________________
+  //_____________________________________________
+  if (Mate(player, tempBoard, wKingState, bKingState, enPassantTarget)) {
+    if (wChecked.current || bChecked.current) {
+      checkmate.current = true;
+    } else {
+      stalemate.current = true;
+    }
+  }
+  //Checkmate or stalemate?
   //_____________________________________________
   //_____________________________________________
 

@@ -25,13 +25,13 @@ function canMultiplePiecesReachThisSquare(
     true
   );
 
-  //if none of the destinations from the "toSquare" include a piece of the same type and color as movePiece, set multiplePiecesCanReach to false 
+  //if none of the destinations from the "toSquare" include a piece of the same type and color as movePiece, set multiplePiecesCanReach to false
   multiplePiecesCanReach = !destinations.every((dest) => {
     let [col, row] = stringSplit(dest);
     return (
       board[row][col].props.pieceType !== movedItem.piece ||
       board[row][col].props.pieceColor !== movedItem.pieceColor ||
-      board[row][col].props.index === movedItem.fromCell    //don't count the square that our piece just moved from
+      board[row][col].props.index === movedItem.fromCell //don't count the square that our piece just moved from
     );
   });
 
@@ -55,16 +55,18 @@ function CreateMoveNotation(
   //Use useEffect so that this function fires after board is updated after a move.
 
   let move = "";
+  let [fromColIndex] = stringSplit(movedItem.fromCell);
+  let [toColIndex] = stringSplit(toSquare);
 
   if (movedItem.piece === "Knight") {
     move = "N";
-  }else if(movedItem.piece === "Rook"){
+  } else if (movedItem.piece === "Rook") {
     move = "R";
-  } else if(movedItem.piece === "Bishop"){
+  } else if (movedItem.piece === "Bishop") {
     move = "B";
-  }else if(movedItem.piece === "Queen"){
+  } else if (movedItem.piece === "Queen") {
     move = "Q";
-  }else if(movedItem.piece === "King"){
+  } else if (movedItem.piece === "King") {
     move = "K";
   }
 
@@ -72,6 +74,7 @@ function CreateMoveNotation(
 
   if (
     movedItem.piece !== "Pawn" &&
+    movedItem.piece !== "King" &&
     canMultiplePiecesReachThisSquare(
       board,
       movedItem,
@@ -83,16 +86,29 @@ function CreateMoveNotation(
   ) {
     //Add the starting column if there are multiple pieces of the same type that can reach the destination (not applied for pawns)
     move = move + fromCol;
-  } else if (movedItem.piece === "Pawn" && isCapture) {
-    //Add the starting column if a the move is a pawn capture
-    move = move + fromCol;
+  } else if (movedItem.piece === "Pawn" && toColIndex - fromColIndex !== 0) {
+    //Add the starting column if a the move is a pawn capture (or enPassant).
+    move = move + fromCol + "x";
   }
 
-  if (isCapture) {
+  if (isCapture && movedItem.piece !== "Pawn") {
     move = move + "x";
   }
 
   move = move + toSquare;
+
+  //Handle castles
+  //_______________
+
+  if (movedItem.piece === "King") {
+    if (toColIndex - fromColIndex === 2) {
+      move = "O-O";
+    } else if (toColIndex - fromColIndex === -2) {
+      move = "O-O-O";
+    }
+  }
+  //Handle castles
+  //_______________
 
   const [, toRow] = toSquare.split("");
   if (movedItem.piece === "Pawn" && (toRow === "1" || toRow === "8")) {

@@ -51,7 +51,6 @@ function Mate(player, board, wKingState, bKingState, enPassantTarget) {
       wKingState,
       bKingState
     );
-    console.log("king has legal moves? " + kingDestinations);
     if (kingDestinations.length === 0) {
       //if black king has no moves, check if the other pieces have any moves
       isMate = !anyLegalMoves(
