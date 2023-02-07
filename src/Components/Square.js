@@ -75,6 +75,7 @@ function Square(squareProps) {
         }
 
         if (Mate(player, board, wKingState, bKingState, enPassantTarget)) {
+          console.log("is black checked? " + bChecked.current)
           if (wChecked.current || bChecked.current) {
             checkmate.current = true;
           } else {
@@ -82,19 +83,19 @@ function Square(squareProps) {
           }
         }
 
-        CreateMoveNotation(
-          board,
-          item,
-          isCapture,
-          wChecked,
-          bChecked,
-          squareProps.index,
-          wKingState,
-          bKingState,
-          enPassantTarget,
-          moveHistory,
-          checkmate
-        );
+        // CreateMoveNotation(
+        //   board,
+        //   item,
+        //   isCapture,
+        //   wChecked,
+        //   bChecked,
+        //   squareProps.index,
+        //   wKingState,
+        //   bKingState,
+        //   enPassantTarget,
+        //   moveHistory,
+        //   checkmate
+        // );
 
         setPlayer(player === "white" ? "black" : "white");
       }

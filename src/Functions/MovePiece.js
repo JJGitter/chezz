@@ -47,6 +47,7 @@ function MovePiece(
   }
 
   let tempBoard = CreateTempBoard(board);
+  //let tempBoard = [...board];
 
   //Remove the highlight on the last move
   //_____________________________________________
@@ -295,7 +296,7 @@ function MovePiece(
     }
 
     if (
-      UnderEnemyControl(board, "black").includes(bKingState.current.position)
+      UnderEnemyControl(tempBoard, "black").includes(bKingState.current.position)
     ) {
       //if the black king position is targeted by white
       bChecked.current = true;
@@ -329,7 +330,7 @@ function MovePiece(
       }
     }
     if (
-      UnderEnemyControl(board, "white").includes(wKingState.current.position)
+      UnderEnemyControl(tempBoard, "white").includes(wKingState.current.position)
     ) {
       //if the white king position is targeted by black
       wChecked.current = true;
