@@ -13,14 +13,16 @@ function SetupFromFEN(
   checkmate,
   stalemate,
   wChecked,
-  bChecked
+  bChecked,
+  moveHistory
 ) {
+  moveHistory.current = []; //reset the move history
   let tempBoard = CreateTempBoard(board);
   //const FEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
   //const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 25 9";
   //  const FEN = "8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1"
   //const FEN = "8/5k2/3p4/1p1Pp2p/pP2Pp1P/P4P1K/8/8 b - - 99 50";
-  const FEN = "rnbqkbnr/pppp2pp/4p3/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 2" //Ready to enPassant
+  const FEN = "rnbqkbnr/pppp2pp/4p3/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 2"; //Ready to enPassant
   //const FEN = "r3k2r/pppq1ppp/2np1n2/2b1pb2/2B1PB2/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 5 7" //Ready to castle
   //const FEN = "rn2n1k1/ppp2ppp/8/2N5/2Pp4/8/PPP2PPP/R1B1R1K1 w - - 1 17";        //Back rank rook mate
   //const FEN = "rnbbk1nr/pp1p1ppp/2p1p3/8/5PP1/q7/PPPPPKBP/RNB2QNR b kq - 7 6"; //Mate in one with Bishop
@@ -92,8 +94,7 @@ function SetupFromFEN(
       if (j > 0) {
         currentCol = currentCol + 1;
       }
-      // console.log("row: " + currentRow);
-      // console.log("col: " + currentCol);
+
       tempBoard[currentRow][currentCol] = (
         <Square
           key={board[currentRow][currentCol].props.index}
@@ -103,8 +104,6 @@ function SetupFromFEN(
           pieceColor={pieceColor}
         />
       );
-
-      // console.log(tempBoard[currentRow][currentCol].props.pieceType);
     }
 
     currentCol++;

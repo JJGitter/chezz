@@ -51,8 +51,7 @@ function CreateMoveNotation(
   moveHistory,
   checkmate
 ) {
-  //Create an array of arrays containing all the moves of a game. [[d4, d5],[Nf3, Nf6]]
-  //Use useEffect so that this function fires after board is updated after a move.
+  //Create an array containing all the moves of the game.
 
   let move = "";
   let [fromColIndex] = stringSplit(movedItem.fromCell);
@@ -120,8 +119,6 @@ function CreateMoveNotation(
   } else if (wChecked.current || bChecked.current) {
     move = move + "+";
   }
-
-  console.log(move);
   moveHistory.current.push(move);
 
   return moveHistory.current;

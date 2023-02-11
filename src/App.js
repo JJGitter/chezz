@@ -106,7 +106,8 @@ function App() {
                   checkmate,
                   stalemate,
                   wChecked,
-                  bChecked
+                  bChecked,
+                  moveHistory
                 );
               }}
             >
@@ -125,7 +126,7 @@ function App() {
                     nrOfFullMoves
                   )
                 );
-               //console.log("stalemate? " + stalemate.current);
+                //console.log("stalemate? " + stalemate.current);
                 console.log("enPassantTarget: " + enPassantTarget.current);
                 // console.log(wKingState.current);
                 // console.log(bKingState.current);
@@ -149,13 +150,11 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>store the move history</li>
-              <li>Display the move history</li>
               <li>Detect 3 move repetition</li>
-              <li>make it possible to choose promotion piece</li>
-              <li>material count</li>
-              <li>add time control</li>
-              <li>put the game on a website</li>
+              <li>Make it possible to choose promotion piece</li>
+              <li>Material count</li>
+              <li>Add time control</li>
+              <li>Put the game on a website</li>
             </ul>
           </div>
         </div>

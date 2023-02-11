@@ -22,12 +22,20 @@
 
 .NotationBox {
   height: 40vh;
-  width: 40vh;  
+  width: 40vh;
   border: 2px solid black;
   display: flex;
   flex-direction: row;
-  justify-content: baseline;
   flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: auto;
+}
+
+.NotationElement {
+  align-self: flex-start;
+  font-weight: bold;
+  color: grey;
+  font-size: 2.4vh;
 }
 
 .row {
@@ -68,7 +76,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 5px solid purple;
 }
 
 /* main axis is defined by flex-direction*/
