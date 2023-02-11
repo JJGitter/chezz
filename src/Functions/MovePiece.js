@@ -34,8 +34,6 @@ function MovePiece(
   checkmate,
   stalemate
 ) {
-  enPassantTarget.current = ""; //reset the enPassanttarget every time a new piece is moved
-
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
 
@@ -96,17 +94,8 @@ function MovePiece(
     />
   );
 
-  //add enPassant target
-  if (pieceType === "Pawn" && Math.abs(toRowIndex - fromRowIndex) === 2) {
-    //set target to the square behind the pawn
-    enPassantTarget.current = stringMerge(
-      toColumnIndex,
-      Math.min(fromRowIndex, toRowIndex) + 1
-    );
-  }
-
   //if enPassant is performed, remove the captured pawn
-  if (toSquare === enPassantTarget && pieceType === "Pawn") {
+  if (toSquare === enPassantTarget.current && pieceType === "Pawn") {
     tempBoard[fromRowIndex][toColumnIndex] = (
       <Square
         key={board[fromRowIndex][toColumnIndex].props.index}
@@ -115,6 +104,17 @@ function MovePiece(
         pieceType=""
         pieceColor=""
       />
+    );
+  }
+
+  enPassantTarget.current = ""; //reset the enPassanttarget every time a new piece is moved
+
+  //add enPassant target
+  if (pieceType === "Pawn" && Math.abs(toRowIndex - fromRowIndex) === 2) {
+    //set target to the square behind the pawn
+    enPassantTarget.current = stringMerge(
+      toColumnIndex,
+      Math.min(fromRowIndex, toRowIndex) + 1
     );
   }
 
@@ -373,6 +373,7 @@ function MovePiece(
   //_____________________________________________
 
   let isCapture = board[toRowIndex][toColumnIndex].props.pieceType !== "";
+
   //Update the board state
   setBoard(tempBoard);
 

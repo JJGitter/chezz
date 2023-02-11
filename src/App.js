@@ -6,13 +6,12 @@ import { DndProvider } from "react-dnd";
 import { useRef } from "react";
 import SetupFromFEN from "./Functions/SetupFromFEN";
 import CreateFEN from "./Functions/CreateFEN";
+import NotationBox from "./Components/NotationBox";
 
 export const boardContext = React.createContext();
-let renderCount = 0;
 
 function App() {
-  renderCount++;
-  console.log("render " + renderCount);
+  console.log("----------------------------------------");
   const [board, setBoard] = useState(SetupBoard);
   const [flippedBoard, setflippedBoard] = useState(false);
 
@@ -84,6 +83,7 @@ function App() {
               <div className="row">{board[0].slice().reverse()}</div>
             </div>
           )}
+          {NotationBox(moveHistory, player, nrOfFullMoves)}
           {checkmate.current ? (
             <div style={{ fontSize: 40 }}>CHECKMATE</div>
           ) : stalemate.current ? (
@@ -125,12 +125,12 @@ function App() {
                     nrOfFullMoves
                   )
                 );
-                console.log("stalemate? " + stalemate.current);
-                // console.log("enPassantTarget: " + enPassantTarget.current);
+               //console.log("stalemate? " + stalemate.current);
+                console.log("enPassantTarget: " + enPassantTarget.current);
                 // console.log(wKingState.current);
                 // console.log(bKingState.current);
-                console.log("wchecked? " + wChecked.current);
-                console.log("bchecked? " + bChecked.current);
+                //console.log("wchecked? " + wChecked.current);
+                //console.log("bchecked? " + bChecked.current);
                 // console.log("checkmate: " + checkmate.current)
               }}
             >

@@ -122,7 +122,7 @@ function CreateMoveNotation(
   }
 
   console.log(move);
-  //   moveHistory.current = moveHistory.current.push(move);
+  moveHistory.current.push(move);
 
   return moveHistory.current;
 }

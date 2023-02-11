@@ -20,6 +20,16 @@
   flex-direction: column;
 }
 
+.NotationBox {
+  height: 40vh;
+  width: 40vh;  
+  border: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: baseline;
+  flex-wrap: wrap;
+}
+
 .row {
   display: flex;
   flex-direction: row;
