@@ -32,11 +32,12 @@ function App() {
 
   const enPassantTarget = useRef("");
   const checkmate = useRef(false);
-  const stalemate = useRef(false);
+  const draw = useRef(false);
   const lastMove = useRef({ from: "", to: "" });
   const nrOfHalfMoves = useRef(0);
   const nrOfFullMoves = useRef(0);
   const moveHistory = useRef([]);
+  const boardHistory = useRef(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]);
 
   return (
     <boardContext.Provider
@@ -52,10 +53,11 @@ function App() {
         bChecked,
         checkmate,
         lastMove,
-        stalemate,
+        draw,
         nrOfHalfMoves,
         nrOfFullMoves,
         moveHistory,
+        boardHistory,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -86,8 +88,8 @@ function App() {
           {NotationBox(moveHistory, player, nrOfFullMoves)}
           {checkmate.current ? (
             <div style={{ fontSize: 40 }}>CHECKMATE</div>
-          ) : stalemate.current ? (
-            <div style={{ fontSize: 40 }}>STALEMATE</div>
+          ) : draw.current ? (
+            <div style={{ fontSize: 40 }}>DRAW</div>
           ) : (
             <div style={{ fontSize: 25 }}>{player} to move</div>
           )}
@@ -104,10 +106,11 @@ function App() {
                   nrOfHalfMoves,
                   nrOfFullMoves,
                   checkmate,
-                  stalemate,
+                  draw,
                   wChecked,
                   bChecked,
-                  moveHistory
+                  moveHistory,
+                  boardHistory
                 );
               }}
             >
@@ -126,8 +129,9 @@ function App() {
                     nrOfFullMoves
                   )
                 );
-                //console.log("stalemate? " + stalemate.current);
-                console.log("enPassantTarget: " + enPassantTarget.current);
+                //console.log("draw? " + draw.current);
+                //console.log("enPassantTarget: " + enPassantTarget.current);
+                // console.log(boardHistory.current);
                 // console.log(wKingState.current);
                 // console.log(bKingState.current);
                 //console.log("wchecked? " + wChecked.current);
@@ -150,7 +154,6 @@ function App() {
               Task List
             </h3>
             <ul>
-              <li>Detect 3 move repetition</li>
               <li>Make it possible to choose promotion piece</li>
               <li>Material count</li>
               <li>Add time control</li>

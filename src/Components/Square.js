@@ -24,10 +24,11 @@ function Square(squareProps) {
     bChecked,
     checkmate,
     lastMove,
-    stalemate,
+    draw,
     nrOfHalfMoves,
     nrOfFullMoves,
     moveHistory,
+    boardHistory,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -68,7 +69,8 @@ function Square(squareProps) {
           lastMove,
           nrOfHalfMoves,
           checkmate,
-          stalemate
+          draw,
+          boardHistory
         );
 
         if (player === "black") {
@@ -109,7 +111,7 @@ function Square(squareProps) {
         ref={
           squareProps.pieceColor === player &&
           checkmate.current === false &&
-          stalemate.current === false
+          draw.current === false
             ? dragRef
             : null
         } //This component will be dragable if it is that colors turn.

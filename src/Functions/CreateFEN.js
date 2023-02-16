@@ -5,7 +5,9 @@ function CreateFEN(
   bKingState,
   enPassantTarget,
   nrOfHalfMoves,
-  nrOfFullMoves
+  nrOfFullMoves,
+  boardHistory,
+  creatingBoardHistory
 ) {
   "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
   let FEN = "";
@@ -51,43 +53,48 @@ function CreateFEN(
     }
   }
 
-  if (player === "white") {
-    FEN = FEN + " w ";
+  //if creating board history, stop appending to the string, otherwise continue to add player and castlingrights and enpassanttarget.
+  if (creatingBoardHistory) {
+    boardHistory.current.push(FEN);
   } else {
-    FEN = FEN + " b ";
+    if (player === "white") {
+      FEN = FEN + " w ";
+    } else {
+      FEN = FEN + " b ";
+    }
+
+    if (
+      !wKingState.current.hasKSideCastlingRights &&
+      !wKingState.current.hasQSideCastlingRights &&
+      !bKingState.current.hasKSideCastlingRights &&
+      !bKingState.current.hasQSideCastlingRights
+    ) {
+      FEN = FEN + "-";
+    } else {
+      if (wKingState.current.hasKSideCastlingRights) {
+        FEN = FEN + "K";
+      }
+      if (wKingState.current.hasQSideCastlingRights) {
+        FEN = FEN + "Q";
+      }
+      if (bKingState.current.hasKSideCastlingRights) {
+        FEN = FEN + "k";
+      }
+      if (bKingState.current.hasQSideCastlingRights) {
+        FEN = FEN + "q";
+      }
+    }
+
+    if (enPassantTarget.current !== "") {
+      FEN = FEN + " " + enPassantTarget.current + " ";
+    } else {
+      FEN = FEN + " - ";
+    }
+
+    FEN = FEN + nrOfHalfMoves.current + " ";
+
+    FEN = FEN + nrOfFullMoves.current;
   }
-
-  if (
-    !wKingState.current.hasKSideCastlingRights &&
-    !wKingState.current.hasQSideCastlingRights &&
-    !bKingState.current.hasKSideCastlingRights &&
-    !bKingState.current.hasQSideCastlingRights
-  ) {
-    FEN = FEN + "-";
-  } else {
-    if (wKingState.current.hasKSideCastlingRights) {
-      FEN = FEN + "K";
-    }
-    if (wKingState.current.hasQSideCastlingRights) {
-      FEN = FEN + "Q";
-    }
-    if (bKingState.current.hasKSideCastlingRights) {
-      FEN = FEN + "k";
-    }
-    if (bKingState.current.hasQSideCastlingRights) {
-      FEN = FEN + "q";
-    }
-  }
-
-  if (enPassantTarget.current !== "") {
-    FEN = FEN + " " + enPassantTarget.current + " ";
-  } else {
-    FEN = FEN + " - ";
-  }
-
-  FEN = FEN + nrOfHalfMoves.current + " ";
-
-  FEN = FEN + nrOfFullMoves.current;
 
   return FEN;
 }

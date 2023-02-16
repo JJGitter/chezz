@@ -4,6 +4,7 @@ import CreateTempBoard from "./CreateTempBoard";
 import { stringMerge } from "./DestinationSquares";
 import UnderEnemyControl from "./UnderEnemyControl";
 import Mate from "./Mate";
+import CreateFEN from "./CreateFEN";
 
 export function stringSplit(string) {
   //This function will split the string of square id such as "C4" and return columnindex=2 and rowindex=4
@@ -32,7 +33,8 @@ function MovePiece(
   lastMove,
   nrOfHalfMoves,
   checkmate,
-  stalemate
+  draw,
+  boardHistory
 ) {
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
@@ -358,6 +360,38 @@ function MovePiece(
   //_____________________________________________
   //_____________________________________________
 
+  //add board state to the boardHistory.current array.
+  CreateFEN(
+    tempBoard,
+    player,
+    wKingState,
+    bKingState,
+    null,
+    null,
+    null,
+    boardHistory,
+    true
+  );
+
+  //check for 3 move repetition
+  //_____________________________________________
+  //_____________________________________________
+  let occursTwice = false;
+  for (let i = 0; i < boardHistory.current.length - 1; i++) {
+    if (
+      boardHistory.current[i] ===
+      boardHistory.current[boardHistory.current.length - 1]
+    ) {
+      if (occursTwice) {
+        draw.current = true;
+      }
+      occursTwice = true;
+    }
+  }
+  //check for 3 move repetition
+  //_____________________________________________
+  //_____________________________________________
+
   //Checkmate or stalemate?
   //_____________________________________________
   //_____________________________________________
@@ -365,7 +399,8 @@ function MovePiece(
     if (wChecked.current || bChecked.current) {
       checkmate.current = true;
     } else {
-      stalemate.current = true;
+      //stalemate
+      draw.current = true;
     }
   }
   //Checkmate or stalemate?
