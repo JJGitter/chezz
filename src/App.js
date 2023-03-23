@@ -7,6 +7,7 @@ import { useRef } from "react";
 import SetupFromFEN from "./Functions/SetupFromFEN";
 import CreateFEN from "./Functions/CreateFEN";
 import NotationBox from "./Components/NotationBox";
+import ChessTimer from "./Components/ChessTimer";
 
 export const boardContext = React.createContext();
 
@@ -14,7 +15,8 @@ function App() {
   console.log("----------------------------------------");
   const [board, setBoard] = useState(SetupBoard);
   const [flippedBoard, setflippedBoard] = useState(false);
-
+  const [whiteTimerOn, setWhiteTimerOn] = useState(true);
+  const [blackTimerOn, setBlackTimerOn] = useState(false);
   const [player, setPlayer] = useState("white");
 
   const bKingState = useRef({
@@ -58,6 +60,10 @@ function App() {
         nrOfFullMoves,
         moveHistory,
         boardHistory,
+        whiteTimerOn,
+        setWhiteTimerOn,
+        blackTimerOn,
+        setBlackTimerOn,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -85,7 +91,19 @@ function App() {
               <div className="row">{board[0].slice().reverse()}</div>
             </div>
           )}
-          {NotationBox(moveHistory, player, nrOfFullMoves)}
+          <div>
+            {!flippedBoard ? (
+              <ChessTimer timerOn={blackTimerOn} setTimerOn={setBlackTimerOn} />
+            ) : (
+              <ChessTimer timerOn={whiteTimerOn} setTimerOn={setWhiteTimerOn} />
+            )}
+            {NotationBox(moveHistory, player, nrOfFullMoves)}
+            {flippedBoard ? (
+              <ChessTimer timerOn={blackTimerOn} setTimerOn={setBlackTimerOn} />
+            ) : (
+              <ChessTimer timerOn={whiteTimerOn} setTimerOn={setWhiteTimerOn} />
+            )}
+          </div>
           {checkmate.current ? (
             <div style={{ fontSize: 40 }}>CHECKMATE</div>
           ) : draw.current ? (
