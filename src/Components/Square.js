@@ -29,10 +29,6 @@ function Square(squareProps) {
     nrOfFullMoves,
     moveHistory,
     boardHistory,
-    whiteTimerOn,
-    setWhiteTimerOn,
-    blackTimerOn,
-    setBlackTimerOn,
   } = useContext(boardContext);
 
   const [dragProps, dragRef] = useDrag({
@@ -96,8 +92,6 @@ function Square(squareProps) {
         );
 
         setPlayer(player === "white" ? "black" : "white");
-        setWhiteTimerOn(!whiteTimerOn);
-        setBlackTimerOn(!blackTimerOn);
       }
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver() }), //Collects isOver into dropProps

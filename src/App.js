@@ -15,8 +15,6 @@ function App() {
   console.log("----------------------------------------");
   const [board, setBoard] = useState(SetupBoard);
   const [flippedBoard, setflippedBoard] = useState(false);
-  const [whiteTimerOn, setWhiteTimerOn] = useState(true);
-  const [blackTimerOn, setBlackTimerOn] = useState(false);
   const [player, setPlayer] = useState("white");
 
   const bKingState = useRef({
@@ -60,10 +58,6 @@ function App() {
         nrOfFullMoves,
         moveHistory,
         boardHistory,
-        whiteTimerOn,
-        setWhiteTimerOn,
-        blackTimerOn,
-        setBlackTimerOn,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -93,15 +87,15 @@ function App() {
           )}
           <div>
             {!flippedBoard ? (
-              <ChessTimer timerOn={blackTimerOn} setTimerOn={setBlackTimerOn} />
+              <ChessTimer playerColor={player} clockColor={"black"} />
             ) : (
-              <ChessTimer timerOn={whiteTimerOn} setTimerOn={setWhiteTimerOn} />
+              <ChessTimer playerColor={player} clockColor={"white"} />
             )}
             {NotationBox(moveHistory, player, nrOfFullMoves)}
             {flippedBoard ? (
-              <ChessTimer timerOn={blackTimerOn} setTimerOn={setBlackTimerOn} />
+              <ChessTimer playerColor={player} clockColor={"black"} />
             ) : (
-              <ChessTimer timerOn={whiteTimerOn} setTimerOn={setWhiteTimerOn} />
+              <ChessTimer playerColor={player} clockColor={"white"} />
             )}
           </div>
           {checkmate.current ? (
