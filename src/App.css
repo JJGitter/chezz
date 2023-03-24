@@ -20,6 +20,26 @@
   flex-direction: column;
 }
 
+.TimerContainer {
+  border: 5px solid black;
+  height: 5vh;
+  width: 10vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Timer {
+  background-color: lightgrey;
+  font-size: 3.5vh;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
 .NotationBox {
   height: 40vh;
   width: 40vh;

@@ -1,21 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
 
 function ChessTimer({ playerColor, clockColor }) {
-  const [whiteTime, setWhiteTime] = useState(1800);
-  const [blackTime, setBlackTime] = useState(1800);
+  let nrOfSecondsInTimeControl = 600;
+  const [whiteTime, setWhiteTime] = useState(nrOfSecondsInTimeControl);
+  const [blackTime, setBlackTime] = useState(nrOfSecondsInTimeControl);
   let intervalRef = useRef(null);
+  let beforeFirstMoveRef = useRef(true); 
 
   useEffect(() => {
-    if (playerColor === "white") {
+    if (playerColor === "white" && !beforeFirstMoveRef.current) {
       //run white timer
       intervalRef.current = setInterval(() => {
         setWhiteTime((previousTime) => previousTime - 1);
       }, 1000);
-    } else {
+    } else if(playerColor === "black"){
       //run black timer
       intervalRef.current = setInterval(() => {
         setBlackTime((previousTime) => previousTime - 1);
       }, 1000);
+      beforeFirstMoveRef.current = false;
     }
     //clear interval when unmounting component
     return () => clearInterval(intervalRef.current);
@@ -38,16 +41,16 @@ function ChessTimer({ playerColor, clockColor }) {
   const blackSeconds = blackTime % 60;
 
   return (
-    <div>
+    <div className="TimerContainer">
       {clockColor === "white" ? (
-        <span>
-          White: {whiteMinutes < 10 ? "0" : ""}
+        <span className="Timer" style={(playerColor==="white" && !beforeFirstMoveRef.current) ? {background: "#fffff0"} : {}}>
+          {whiteMinutes < 10 ? "0" : ""}
           {whiteMinutes}:{whiteSeconds < 10 ? "0" : ""}
           {whiteSeconds}
         </span>
       ) : (
-        <span>
-          Black: {blackMinutes < 10 ? "0" : ""}
+        <span className="Timer" style={playerColor==="black" ? {background: "#fffff0"} : {}}>
+          {blackMinutes < 10 ? "0" : ""}
           {blackMinutes}:{blackSeconds < 10 ? "0" : ""}
           {blackSeconds}
         </span>
