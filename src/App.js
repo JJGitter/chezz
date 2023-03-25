@@ -17,6 +17,8 @@ function App() {
   const [flippedBoard, setflippedBoard] = useState(false);
   const [player, setPlayer] = useState("white");
 
+  const [gameOver, setGameOver] = useState({ scenario: "", isOver: false });
+
   const bKingState = useRef({
     hasKSideCastlingRights: true,
     hasQSideCastlingRights: true,
@@ -27,12 +29,11 @@ function App() {
     hasQSideCastlingRights: true,
     position: "e1",
   });
-  const wChecked = useRef(false); // wCheck = {current: false}
-  const bChecked = useRef(false); // bCheck = {current: false}
+  const wChecked = useRef(false); // wChecked = {current: false}
+  const bChecked = useRef(false); // bChecked = {current: false}
 
   const enPassantTarget = useRef("");
   const checkmate = useRef(false);
-  const draw = useRef(false);
   const lastMove = useRef({ from: "", to: "" });
   const nrOfHalfMoves = useRef(0);
   const nrOfFullMoves = useRef(0);
@@ -53,11 +54,12 @@ function App() {
         bChecked,
         checkmate,
         lastMove,
-        draw,
         nrOfHalfMoves,
         nrOfFullMoves,
         moveHistory,
         boardHistory,
+        gameOver,
+        setGameOver,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -87,21 +89,39 @@ function App() {
           )}
           <div>
             {!flippedBoard ? (
-              <ChessTimer playerColor={player} clockColor={"black"} />
+              <ChessTimer
+                playerColor={player}
+                clockColor={"black"}
+                gameOver={gameOver}
+                setGameOver={setGameOver}
+              />
             ) : (
-              <ChessTimer playerColor={player} clockColor={"white"} />
+              <ChessTimer
+                playerColor={player}
+                clockColor={"white"}
+                gameOver={gameOver}
+                setGameOver={setGameOver}
+              />
             )}
             {NotationBox(moveHistory, player, nrOfFullMoves)}
             {flippedBoard ? (
-              <ChessTimer playerColor={player} clockColor={"black"} />
+              <ChessTimer
+                playerColor={player}
+                clockColor={"black"}
+                gameOver={gameOver}
+                setGameOver={setGameOver}
+              />
             ) : (
-              <ChessTimer playerColor={player} clockColor={"white"} />
+              <ChessTimer
+                playerColor={player}
+                clockColor={"white"}
+                gameOver={gameOver}
+                setGameOver={setGameOver}
+              />
             )}
           </div>
-          {checkmate.current ? (
-            <div style={{ fontSize: 40 }}>CHECKMATE</div>
-          ) : draw.current ? (
-            <div style={{ fontSize: 40 }}>DRAW</div>
+          {gameOver.isOver ? (
+            <div style={{ fontSize: 40 }}>{gameOver.scenario}</div>
           ) : (
             <div style={{ fontSize: 25 }}>{player} to move</div>
           )}
@@ -118,7 +138,6 @@ function App() {
                   nrOfHalfMoves,
                   nrOfFullMoves,
                   checkmate,
-                  draw,
                   wChecked,
                   bChecked,
                   moveHistory,
@@ -141,14 +160,6 @@ function App() {
                     nrOfFullMoves
                   )
                 );
-                //console.log("draw? " + draw.current);
-                //console.log("enPassantTarget: " + enPassantTarget.current);
-                // console.log(boardHistory.current);
-                // console.log(wKingState.current);
-                // console.log(bKingState.current);
-                //console.log("wchecked? " + wChecked.current);
-                //console.log("bchecked? " + bChecked.current);
-                // console.log("checkmate: " + checkmate.current)
               }}
             >
               Test
@@ -166,10 +177,9 @@ function App() {
               Task List
             </h3>
             <ul>
+              <li>Put the game on a website</li>
               <li>Make it possible to choose promotion piece</li>
               <li>Material count</li>
-              <li>Add time control</li>
-              <li>Put the game on a website</li>
             </ul>
           </div>
         </div>

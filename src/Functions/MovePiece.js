@@ -33,8 +33,8 @@ function MovePiece(
   lastMove,
   nrOfHalfMoves,
   checkmate,
-  draw,
-  boardHistory
+  boardHistory,
+  setGameOver
 ) {
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
@@ -383,7 +383,7 @@ function MovePiece(
       boardHistory.current[boardHistory.current.length - 1]
     ) {
       if (occursTwice) {
-        draw.current = true;
+        setGameOver({ scenario: `Draw by repetition.`, isOver: true })
       }
       occursTwice = true;
     }
@@ -398,9 +398,10 @@ function MovePiece(
   if (Mate(player, tempBoard, wKingState, bKingState, enPassantTarget)) {
     if (wChecked.current || bChecked.current) {
       checkmate.current = true;
+      setGameOver({ scenario: `${player} wins by checkmate!`, isOver: true })
     } else {
       //stalemate
-      draw.current = true;
+      setGameOver({ scenario: `Draw by stalemate.`, isOver: true })
     }
   }
   //Checkmate or stalemate?

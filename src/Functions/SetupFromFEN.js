@@ -11,7 +11,6 @@ function SetupFromFEN(
   nrOfHalfMoves,
   nrOfFullMoves,
   checkmate,
-  draw,
   wChecked,
   bChecked,
   moveHistory,
@@ -35,7 +34,6 @@ function SetupFromFEN(
   let colorDescriptionIndex = null;
 
   checkmate.current = false;
-  draw.current = false;
   wChecked.current = false;
   bChecked.current = false;
 
