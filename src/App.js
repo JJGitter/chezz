@@ -168,7 +168,7 @@ function App() {
               Flip Board
             </button>
           </div>
-          <div className="taskList">
+          {/* <div className="taskList">
             <h3
               style={{
                 fontStyle: "normal",
@@ -181,7 +181,7 @@ function App() {
               <li>Make it possible to choose promotion piece</li>
               <li>Material count</li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </DndProvider>
     </boardContext.Provider>

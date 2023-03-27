@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 
 function ChessTimer({ playerColor, clockColor, gameOver, setGameOver }) {
-  let nrOfSecondsInTimeControl = 4;
+  let nrOfSecondsInTimeControl = 600;
   const [whiteTime, setWhiteTime] = useState(nrOfSecondsInTimeControl);
   const [blackTime, setBlackTime] = useState(nrOfSecondsInTimeControl);
   let intervalRef = useRef(null);
