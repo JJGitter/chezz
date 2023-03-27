@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/chezz/static/css/main.5826818b.css",
-    "main.js": "/chezz/static/js/main.48cf0d18.js",
+    "main.js": "/chezz/static/js/main.a3079396.js",
     "index.html": "/chezz/index.html",
     "main.5826818b.css.map": "/chezz/static/css/main.5826818b.css.map",
-    "main.48cf0d18.js.map": "/chezz/static/js/main.48cf0d18.js.map"
+    "main.a3079396.js.map": "/chezz/static/js/main.a3079396.js.map"
   },
   "entrypoints": [
     "static/css/main.5826818b.css",
-    "static/js/main.48cf0d18.js"
+    "static/js/main.a3079396.js"
   ]
 }
