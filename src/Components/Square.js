@@ -3,7 +3,7 @@ import Piece from "./Piece";
 import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
 import MovePiece from "../Functions/MovePiece";
-import { boardContext } from "../App";
+import { boardContext } from "./Game";
 import { useContext } from "react";
 import DestinationSquares from "../Functions/DestinationSquares";
 import CreateMoveNotation from "../Functions/CreateMoveNotation";
