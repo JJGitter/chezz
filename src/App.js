@@ -1,32 +1,46 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { io } from "socket.io-client";
 
 import Login from "./Components/Login";
 import Game from "./Components/Game";
+import Lobby from "./Components/Lobby";
+
+const socket = io("http://localhost:9000");
+
+export const userContext = React.createContext();
 
 function App() {
-  client();
+
+  const [user, setUser] = useState("");
+  const [room, setRoom] = useState("");
+
+  const joinRoom = () => {
+    if (user !== "" && room !== "") {
+      socket.emit("join_room", room);
+    }
+  };
+
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="chezz" element={<Game/>}/>
-        <Route path="login" element={<Login/>}/>
-      </Routes>
+      <userContext.Provider
+        value={{ user, setUser, room, setRoom, joinRoom, socket }}
+      >
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="login" element={<Login />} />
+          <Route path="chezz" element={<Game />} />
+          <Route path="lobby" element={<Lobby />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </userContext.Provider>
     </BrowserRouter>
   );
 }
 
 export default App;
 
-
-function client() {
-  const socket = io("http://localhost:9000");
-
-  console.log("Trying to connect to server");
-  socket.on("connect", () => {
-    console.log(`You connected to server with id: ${socket.id}`);
-    socket.emit("custom-event", 14, "randomString", { yolo: "swag" });
-  });
+function NoMatch() {
+  return <div>404. No match.</div>;
 }
