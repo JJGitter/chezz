@@ -9,10 +9,6 @@ const Login = () => {
     useContext(userContext);
 
   useEffect(() => {
-    // socket.on("receive_message", (data) => {
-    //   console.log(data);
-    //   setReceivedMessage(data);
-    // });
     socket.on("second_user_joined", () => {
       console.log("second user joined");
       navigate("/chezz");
