@@ -1,18 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
 
-
 const Login = () => {
   const navigate = useNavigate();
-  
-  const {
-    user,
-    setUser,
-    room,
-    setRoom,
-    joinRoom,
-  } = useContext(userContext);
+
+  const { user, setUser, room, setRoom, joinRoom, socket } =
+    useContext(userContext);
+
+  useEffect(() => {
+    // socket.on("receive_message", (data) => {
+    //   console.log(data);
+    //   setReceivedMessage(data);
+    // });
+    socket.on("second_user_joined", () => {
+      console.log("second user joined");
+      navigate("/chezz");
+    });
+  }, [socket, navigate]);
 
   return (
     <div>
@@ -38,27 +43,26 @@ const Login = () => {
           />
         </div>
         <form>
-        <div>
-          Enter game room:
-          <input
-            type="text"
-            value={room}
-            onChange={(input) => {
-              setRoom(input.target.value);
+          <div>
+            Enter game room:
+            <input
+              type="text"
+              value={room}
+              onChange={(input) => {
+                setRoom(input.target.value);
+              }}
+            />
+          </div>
+          <button
+            onClick={() => {
+              joinRoom();
+              navigate("/lobby");
             }}
-          />
-        </div>
-        <button
-          onClick={() => {
-            joinRoom();
-            navigate("/lobby");
-          }}
-        >
-          Start/Join Game
-        </button>
-
+          >
+            Start/Join Game
+          </button>
         </form>
-        
+
         {user !== "" && room !== "" ? (
           <div>
             Join as {user} in game room {room}.
@@ -70,5 +74,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

@@ -8,6 +8,7 @@ import SetupFromFEN from "../Functions/SetupFromFEN";
 import CreateFEN from "../Functions/CreateFEN";
 import NotationBox from "../Components/NotationBox";
 import ChessTimer from "../Components/ChessTimer";
+import GameChat from "./GameChat"; 
 
 export const boardContext = React.createContext();
 
@@ -41,6 +42,7 @@ function Game() {
   const boardHistory = useRef(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]);
 
   return (
+    <>
     <boardContext.Provider
       value={{
         board,
@@ -168,7 +170,9 @@ function Game() {
               Flip Board
             </button>
           </div>
-          <div className="taskList">
+          <GameChat/>
+
+          {/* <div className="taskList">
             <h3
               style={{
                 fontStyle: "normal",
@@ -177,18 +181,19 @@ function Game() {
               Task List
             </h3>
             <ul>
-              <li>Make it possible to play online with socket.io</li>
-              <li>User sign up screen</li>
-              <li>Create game screen </li>
+              <li>Chat Box beside the board</li>
+              <li>Resign button</li>
+              <li>Make it possible for clients in the same game room to alternate turns on the board</li>
               <li>Make it possible to change time control</li>
               <li>Make it possible to choose promotion piece</li>
               <li>Material count</li>
               <li>Format the buttons and texts</li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </DndProvider>
     </boardContext.Provider>
+    </>
   );
 }
 

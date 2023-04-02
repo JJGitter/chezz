@@ -7,20 +7,25 @@ import Login from "./Components/Login";
 import Game from "./Components/Game";
 import Lobby from "./Components/Lobby";
 
-const socket = io("http://localhost:9000");
+
 
 export const userContext = React.createContext();
 
 function App() {
-
   const [user, setUser] = useState("");
   const [room, setRoom] = useState("");
+
+  const socket = io("http://localhost:9000");
+
+
 
   const joinRoom = () => {
     if (user !== "" && room !== "") {
       socket.emit("join_room", room);
     }
   };
+  
+  
 
   return (
     <BrowserRouter>
