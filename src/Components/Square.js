@@ -2,11 +2,11 @@ import "../App.css";
 import Piece from "./Piece";
 import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
-import MovePiece from "../Functions/MovePiece";
 import { boardContext } from "./Game";
 import { useContext } from "react";
 import DestinationSquares from "../Functions/DestinationSquares";
-import CreateMoveNotation from "../Functions/CreateMoveNotation";
+import { userContext } from "../App";
+import { handlePieceMove } from "../Functions/handlePieceMove";
 
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
@@ -32,6 +32,8 @@ function Square(squareProps) {
     setGameOver,
   } = useContext(boardContext);
 
+  const { room, socket } = useContext(userContext);
+
   const [dragProps, dragRef] = useDrag({
     type: "piece",
     item: {
@@ -54,45 +56,34 @@ function Square(squareProps) {
           enPassantTarget
         ).includes(squareProps.index)
       ) {
-        let isCapture = MovePiece(
-          board,
-          setBoard,
-          item.piece,
-          item.pieceColor,
+        socket.emit(
+          "piece_moved",
+          room,
           item.fromCell,
           squareProps.index,
+          item.piece,
+          item.pieceColor
+        );
+        handlePieceMove(
+          item,
+          squareProps.index,
+          board,
+          setBoard,
           wKingState,
           bKingState,
           enPassantTarget,
           player,
+          setPlayer,
           wChecked,
           bChecked,
           lastMove,
           nrOfHalfMoves,
           checkmate,
           boardHistory,
-          setGameOver
+          setGameOver,
+          nrOfFullMoves,
+          moveHistory
         );
-
-        if (player === "black") {
-          nrOfFullMoves.current++;
-        }
-
-        CreateMoveNotation(
-          board,
-          item,
-          isCapture,
-          wChecked,
-          bChecked,
-          squareProps.index,
-          wKingState,
-          bKingState,
-          enPassantTarget,
-          moveHistory,
-          checkmate
-        );
-
-        setPlayer(player === "white" ? "black" : "white");
       }
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver() }), //Collects isOver into dropProps
@@ -110,9 +101,7 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === player && !gameOver.isOver
-            ? dragRef
-            : null
+          squareProps.pieceColor === player && !gameOver.isOver ? dragRef : null
         } //This component will be dragable if it is that colors turn and game is not over.
         className="PieceContainer"
         style={{ rotate: squareProps.rotate }}

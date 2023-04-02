@@ -1,5 +1,5 @@
 import "../App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import SetupBoard from "../Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
@@ -8,7 +8,9 @@ import SetupFromFEN from "../Functions/SetupFromFEN";
 import CreateFEN from "../Functions/CreateFEN";
 import NotationBox from "../Components/NotationBox";
 import ChessTimer from "../Components/ChessTimer";
-import GameChat from "./GameChat"; 
+import GameChat from "./GameChat";
+import { userContext } from "../App";
+import { handlePieceMove } from "../Functions/handlePieceMove";
 
 export const boardContext = React.createContext();
 
@@ -30,7 +32,7 @@ function Game() {
     hasQSideCastlingRights: true,
     position: "e1",
   });
-  const wChecked = useRef(false); // wChecked = {current: false}  
+  const wChecked = useRef(false); // wChecked = {current: false}
   const bChecked = useRef(false); // bChecked = {current: false}
 
   const enPassantTarget = useRef("");
@@ -41,138 +43,161 @@ function Game() {
   const moveHistory = useRef([]);
   const boardHistory = useRef(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]);
 
+
+  const { socket } = useContext(userContext);
+  const [opponentMoved, setOpponentMoved] = useState(false);
+  const [receivedItem, setReceivedItem] = useState({});
+  const [receivedToSquare, setReceivedToSquare] = useState("");
+
+  useEffect(() => {
+    socket.on("opponent_moved", (fromSquare, toSquare, pieceType, pieceColor) => {
+      setOpponentMoved(true);
+      setReceivedItem({
+        fromCell: fromSquare, //i.e. "c5"
+        piece: pieceType, //i.e. "Knight"
+        pieceColor: pieceColor,
+      })
+      setReceivedToSquare(toSquare);
+    });
+  }, [socket]);
+
+  if(opponentMoved){
+    setOpponentMoved(false);
+    handlePieceMove(receivedItem, receivedToSquare, board, setBoard, wKingState, bKingState, enPassantTarget, player, setPlayer, wChecked, bChecked, lastMove, nrOfHalfMoves, checkmate, boardHistory, setGameOver, nrOfFullMoves, moveHistory);
+  }
+
   return (
     <>
-    <boardContext.Provider
-      value={{
-        board,
-        setBoard,
-        player,
-        setPlayer,
-        wKingState,
-        bKingState,
-        enPassantTarget,
-        wChecked,
-        bChecked,
-        checkmate,
-        lastMove,
-        nrOfHalfMoves,
-        nrOfFullMoves,
-        moveHistory,
-        boardHistory,
-        gameOver,
-        setGameOver,
-      }}
-    >
-      <DndProvider backend={HTML5Backend}>
-        <div className="App">
-          {!flippedBoard ? (
-            <div className="Board">
-              <div className="row">{board[0]}</div>
-              <div className="row">{board[1]}</div>
-              <div className="row">{board[2]}</div>
-              <div className="row">{board[3]}</div>
-              <div className="row">{board[4]}</div>
-              <div className="row">{board[5]}</div>
-              <div className="row">{board[6]}</div>
-              <div className="row">{board[7]}</div>
-            </div>
-          ) : (
-            <div className="Board">
-              <div className="row">{board[7].slice().reverse()}</div>
-              <div className="row">{board[6].slice().reverse()}</div>
-              <div className="row">{board[5].slice().reverse()}</div>
-              <div className="row">{board[4].slice().reverse()}</div>
-              <div className="row">{board[3].slice().reverse()}</div>
-              <div className="row">{board[2].slice().reverse()}</div>
-              <div className="row">{board[1].slice().reverse()}</div>
-              <div className="row">{board[0].slice().reverse()}</div>
-            </div>
-          )}
-          <div>
+      <boardContext.Provider
+        value={{
+          board,
+          setBoard,
+          player,
+          setPlayer,
+          wKingState,
+          bKingState,
+          enPassantTarget,
+          wChecked,
+          bChecked,
+          checkmate,
+          lastMove,
+          nrOfHalfMoves,
+          nrOfFullMoves,
+          moveHistory,
+          boardHistory,
+          gameOver,
+          setGameOver,
+        }}
+      >
+        <DndProvider backend={HTML5Backend}>
+          <div className="App">
             {!flippedBoard ? (
-              <ChessTimer
-                playerColor={player}
-                clockColor={"black"}
-                gameOver={gameOver}
-                setGameOver={setGameOver}
-              />
+              <div className="Board">
+                <div className="row">{board[0]}</div>
+                <div className="row">{board[1]}</div>
+                <div className="row">{board[2]}</div>
+                <div className="row">{board[3]}</div>
+                <div className="row">{board[4]}</div>
+                <div className="row">{board[5]}</div>
+                <div className="row">{board[6]}</div>
+                <div className="row">{board[7]}</div>
+              </div>
             ) : (
-              <ChessTimer
-                playerColor={player}
-                clockColor={"white"}
-                gameOver={gameOver}
-                setGameOver={setGameOver}
-              />
+              <div className="Board">
+                <div className="row">{board[7].slice().reverse()}</div>
+                <div className="row">{board[6].slice().reverse()}</div>
+                <div className="row">{board[5].slice().reverse()}</div>
+                <div className="row">{board[4].slice().reverse()}</div>
+                <div className="row">{board[3].slice().reverse()}</div>
+                <div className="row">{board[2].slice().reverse()}</div>
+                <div className="row">{board[1].slice().reverse()}</div>
+                <div className="row">{board[0].slice().reverse()}</div>
+              </div>
             )}
-            {NotationBox(moveHistory, player, nrOfFullMoves)}
-            {flippedBoard ? (
-              <ChessTimer
-                playerColor={player}
-                clockColor={"black"}
-                gameOver={gameOver}
-                setGameOver={setGameOver}
-              />
+            <div>
+              {!flippedBoard ? (
+                <ChessTimer
+                  playerColor={player}
+                  clockColor={"black"}
+                  gameOver={gameOver}
+                  setGameOver={setGameOver}
+                />
+              ) : (
+                <ChessTimer
+                  playerColor={player}
+                  clockColor={"white"}
+                  gameOver={gameOver}
+                  setGameOver={setGameOver}
+                />
+              )}
+              {NotationBox(moveHistory, player, nrOfFullMoves)}
+              {flippedBoard ? (
+                <ChessTimer
+                  playerColor={player}
+                  clockColor={"black"}
+                  gameOver={gameOver}
+                  setGameOver={setGameOver}
+                />
+              ) : (
+                <ChessTimer
+                  playerColor={player}
+                  clockColor={"white"}
+                  gameOver={gameOver}
+                  setGameOver={setGameOver}
+                />
+              )}
+            </div>
+            {gameOver.isOver ? (
+              <div style={{ fontSize: 40 }}>{gameOver.scenario}</div>
             ) : (
-              <ChessTimer
-                playerColor={player}
-                clockColor={"white"}
-                gameOver={gameOver}
-                setGameOver={setGameOver}
-              />
+              <div style={{ fontSize: 25 }}>{player} to move</div>
             )}
-          </div>
-          {gameOver.isOver ? (
-            <div style={{ fontSize: 40 }}>{gameOver.scenario}</div>
-          ) : (
-            <div style={{ fontSize: 25 }}>{player} to move</div>
-          )}
-          <div className="ButtonList">
-            <button
-              onClick={() => {
-                SetupFromFEN(
-                  board,
-                  setBoard,
-                  setPlayer,
-                  wKingState,
-                  bKingState,
-                  enPassantTarget,
-                  nrOfHalfMoves,
-                  nrOfFullMoves,
-                  checkmate,
-                  wChecked,
-                  bChecked,
-                  moveHistory,
-                  boardHistory
-                );
-              }}
-            >
-              SetupFromFEN
-            </button>
-            <button
-              onClick={() => {
-                console.log(
-                  CreateFEN(
+            <div className="ButtonList">
+              <button
+                onClick={() => {
+                  SetupFromFEN(
                     board,
-                    player,
+                    setBoard,
+                    setPlayer,
                     wKingState,
                     bKingState,
                     enPassantTarget,
                     nrOfHalfMoves,
-                    nrOfFullMoves
-                  )
-                );
-              }}
-            >
-              Test
-            </button>
-            <button onClick={() => setflippedBoard(!flippedBoard)}>
-              Flip Board
-            </button>
-          </div>
-          <GameChat/>
+                    nrOfFullMoves,
+                    checkmate,
+                    wChecked,
+                    bChecked,
+                    moveHistory,
+                    boardHistory
+                  );
+                }}
+              >
+                SetupFromFEN
+              </button>
+              <button
+                onClick={() => {
+                  console.log(
+                    CreateFEN(
+                      board,
+                      player,
+                      wKingState,
+                      bKingState,
+                      enPassantTarget,
+                      nrOfHalfMoves,
+                      nrOfFullMoves
+                    )
+                  );
+                }}
+              >
+                Test
+              </button>
+              <button onClick={() => setflippedBoard(!flippedBoard)}>
+                Flip Board
+              </button>
+            </div>
+            <GameChat />
 
-          {/* <div className="taskList">
+            {/* <div className="taskList">
             <h3
               style={{
                 fontStyle: "normal",
@@ -190,9 +215,9 @@ function Game() {
               <li>Format the buttons and texts</li>
             </ul>
           </div> */}
-        </div>
-      </DndProvider>
-    </boardContext.Provider>
+          </div>
+        </DndProvider>
+      </boardContext.Provider>
     </>
   );
 }
