@@ -32,7 +32,7 @@ function Square(squareProps) {
     setGameOver,
   } = useContext(boardContext);
 
-  const { room, socket } = useContext(userContext);
+  const { room, socket, userColor_ref } = useContext(userContext);
 
   const [dragProps, dragRef] = useDrag({
     type: "piece",
@@ -91,7 +91,7 @@ function Square(squareProps) {
 
   return (
     <div
-      ref={dropRef} //This component will be able to accept dragged items corresponding to dropRef
+      ref={player === userColor_ref.current ? dropRef : null} //This component will be able to accept dragged items corresponding to dropRef if it is that users turn
       className={squareProps.color + "Square"}
       style={
         dropProps.isOver
@@ -101,8 +101,8 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === player && !gameOver.isOver ? dragRef : null
-        } //This component will be dragable if it is that colors turn and game is not over.
+          squareProps.pieceColor === userColor_ref.current && !gameOver.isOver ? dragRef : null
+        } //This component will be dragable if it matches the users color and game is not over.
         className="PieceContainer"
         style={{ rotate: squareProps.rotate }}
       >
