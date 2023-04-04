@@ -1,7 +1,27 @@
 import React, { useEffect, useState, useRef } from "react";
 
-function ChessTimer({ playerColor, clockColor, gameOver, setGameOver }) {
-  let nrOfSecondsInTimeControl = 600;
+function ChessTimer({
+  playerColor,
+  clockColor,
+  gameOver,
+  setGameOver,
+  selectedTimeControl_ref,
+}) {
+  console.log(selectedTimeControl_ref.current);
+  let nrOfSecondsInTimeControl;
+  switch (selectedTimeControl_ref.current) {
+    case "classical":
+      nrOfSecondsInTimeControl = 1800;
+      break;
+    case "rapid":
+      nrOfSecondsInTimeControl = 600;
+      break;
+    case "blitz":
+      nrOfSecondsInTimeControl = 180;
+      break;
+    default:
+      nrOfSecondsInTimeControl = 60;
+  }
   const [whiteTime, setWhiteTime] = useState(nrOfSecondsInTimeControl);
   const [blackTime, setBlackTime] = useState(nrOfSecondsInTimeControl);
   let intervalRef = useRef(null);

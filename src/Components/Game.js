@@ -16,8 +16,10 @@ export const boardContext = React.createContext();
 
 function Game() {
   console.log("----------------------------------------");
+  const { user, socket, selectedTimeControl_ref, userColor_ref } = useContext(userContext);
+
   const [board, setBoard] = useState(SetupBoard);
-  const [flippedBoard, setflippedBoard] = useState(false);
+  const [flippedBoard, setflippedBoard] = useState(userColor_ref.current === "white" ? false : true); // usercolor does not have time to update before this is run. Maybe usercolor should be a useRef?
   const [player, setPlayer] = useState("white");
 
   const [gameOver, setGameOver] = useState({ scenario: "", isOver: false });
@@ -44,7 +46,6 @@ function Game() {
   const boardHistory = useRef(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]);
 
 
-  const { socket } = useContext(userContext);
   const [opponentMoved, setOpponentMoved] = useState(false);
   const [receivedItem, setReceivedItem] = useState({});
   const [receivedToSquare, setReceivedToSquare] = useState("");
@@ -121,6 +122,7 @@ function Game() {
                   clockColor={"black"}
                   gameOver={gameOver}
                   setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
                 />
               ) : (
                 <ChessTimer
@@ -128,6 +130,7 @@ function Game() {
                   clockColor={"white"}
                   gameOver={gameOver}
                   setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
                 />
               )}
               {NotationBox(moveHistory, player, nrOfFullMoves)}
@@ -137,6 +140,7 @@ function Game() {
                   clockColor={"black"}
                   gameOver={gameOver}
                   setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
                 />
               ) : (
                 <ChessTimer
@@ -144,6 +148,7 @@ function Game() {
                   clockColor={"white"}
                   gameOver={gameOver}
                   setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
                 />
               )}
             </div>
