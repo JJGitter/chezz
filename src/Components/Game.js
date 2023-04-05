@@ -1,5 +1,6 @@
+import { TaskList } from "./TaskList";
 import "../App.css";
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SetupBoard from "../Functions/SetupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
@@ -16,10 +17,13 @@ export const boardContext = React.createContext();
 
 function Game() {
   console.log("----------------------------------------");
-  const { user, socket, selectedTimeControl_ref, userColor_ref } = useContext(userContext);
+  const { user, room, socket, selectedTimeControl_ref, userColor_ref } =
+    useContext(userContext);
 
   const [board, setBoard] = useState(SetupBoard);
-  const [flippedBoard, setflippedBoard] = useState(userColor_ref.current === "white" ? false : true); // usercolor does not have time to update before this is run. Maybe usercolor should be a useRef?
+  const [flippedBoard, setflippedBoard] = useState(
+    userColor_ref.current === "white" ? false : true
+  ); // usercolor does not have time to update before this is run. Maybe usercolor should be a useRef?
   const [player, setPlayer] = useState("white");
 
   const [gameOver, setGameOver] = useState({ scenario: "", isOver: false });
@@ -45,27 +49,81 @@ function Game() {
   const moveHistory = useRef([]);
   const boardHistory = useRef(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]);
 
-
   const [opponentMoved, setOpponentMoved] = useState(false);
   const [receivedItem, setReceivedItem] = useState({});
   const [receivedToSquare, setReceivedToSquare] = useState("");
+  const [displayDrawOffer, setDisplayDrawOffer] = useState(false);
 
   useEffect(() => {
-    socket.on("opponent_moved", (fromSquare, toSquare, pieceType, pieceColor) => {
-      setOpponentMoved(true);
-      setReceivedItem({
-        fromCell: fromSquare, //i.e. "c5"
-        piece: pieceType, //i.e. "Knight"
-        pieceColor: pieceColor,
-      })
-      setReceivedToSquare(toSquare);
+    socket.on(
+      "opponent_moved",
+      (fromSquare, toSquare, pieceType, pieceColor) => {
+        setOpponentMoved(true);
+        setReceivedItem({
+          fromCell: fromSquare, //i.e. "c5"
+          piece: pieceType, //i.e. "Knight"
+          pieceColor: pieceColor,
+        });
+        setReceivedToSquare(toSquare);
+      }
+    );
+    socket.on("opponent_resigns", (opponentColor) => {
+      setGameOver({ scenario: `${opponentColor} resigns`, isOver: true });
+    });
+    socket.on("receive_draw_offer", () => {
+      setDisplayDrawOffer(true);
+    });
+    socket.on("receive_draw_accepted", () => {
+      setGameOver({ scenario: "Draw by agreement", isOver: true });
     });
   }, [socket]);
 
-  if(opponentMoved){
+  if (opponentMoved) {
     setOpponentMoved(false);
-    handlePieceMove(receivedItem, receivedToSquare, board, setBoard, wKingState, bKingState, enPassantTarget, player, setPlayer, wChecked, bChecked, lastMove, nrOfHalfMoves, checkmate, boardHistory, setGameOver, nrOfFullMoves, moveHistory);
+    handlePieceMove(
+      receivedItem,
+      receivedToSquare,
+      board,
+      setBoard,
+      wKingState,
+      bKingState,
+      enPassantTarget,
+      player,
+      setPlayer,
+      wChecked,
+      bChecked,
+      lastMove,
+      nrOfHalfMoves,
+      checkmate,
+      boardHistory,
+      setGameOver,
+      nrOfFullMoves,
+      moveHistory
+    );
   }
+
+  const DisplayDrawOffer = () => {
+    return (
+      <>
+        Opponent offers a draw.
+        <button
+          onClick={() => {
+            setGameOver({ scenario: "Draw by agreement", isOver: true });
+            socket.emit("draw_accepted", room);
+          }}
+        >
+          Accept
+        </button>
+        <button
+          onClick={() => {
+            setDisplayDrawOffer(false);
+          }}
+        >
+          Decline
+        </button>
+      </>
+    );
+  };
 
   return (
     <>
@@ -154,6 +212,8 @@ function Game() {
             </div>
             {gameOver.isOver ? (
               <div style={{ fontSize: 40 }}>{gameOver.scenario}</div>
+            ) : displayDrawOffer ? (
+              <DisplayDrawOffer />
             ) : (
               <div style={{ fontSize: 25 }}>{player} to move</div>
             )}
@@ -199,27 +259,28 @@ function Game() {
               <button onClick={() => setflippedBoard(!flippedBoard)}>
                 Flip Board
               </button>
+              <button
+                onClick={() => {
+                  setGameOver({
+                    scenario: `${userColor_ref.current} resigns`,
+                    isOver: true,
+                  });
+                  socket.emit("resign", room, userColor_ref.current);
+                }}
+              >
+                Resign
+              </button>
+              <button
+                onClick={() => {
+                  socket.emit("offer_draw", room);
+                }}
+              >
+                Offer Draw
+              </button>
             </div>
             <GameChat />
 
-            {/* <div className="taskList">
-            <h3
-              style={{
-                fontStyle: "normal",
-              }}
-            >
-              Task List
-            </h3>
-            <ul>
-              <li>Chat Box beside the board</li>
-              <li>Resign button</li>
-              <li>Make it possible for clients in the same game room to alternate turns on the board</li>
-              <li>Make it possible to change time control</li>
-              <li>Make it possible to choose promotion piece</li>
-              <li>Material count</li>
-              <li>Format the buttons and texts</li>
-            </ul>
-          </div> */}
+            <TaskList />
           </div>
         </DndProvider>
       </boardContext.Provider>

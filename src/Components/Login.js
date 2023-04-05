@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
+import { TaskList } from "./TaskList";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ const Login = () => {
         selectedTimeControl_ref={selectedTimeControl_ref}
         setUserColor={setUserColor}
       />
+      <TaskList/>
     </div>
   );
 };
