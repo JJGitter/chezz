@@ -101,7 +101,9 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === userColor_ref.current && !gameOver.isOver ? dragRef : null
+          squareProps.pieceColor === userColor_ref.current && !gameOver.isOver
+            ? dragRef
+            : null
         } //This component will be dragable if it matches the users color and game is not over.
         className="PieceContainer"
         style={{ rotate: squareProps.rotate }}

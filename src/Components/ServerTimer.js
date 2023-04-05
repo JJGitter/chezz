@@ -1,15 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { userContext } from "../App";
 
-function ChessTimer({
+function ServerTimer({
   playerColor,
   clockColor,
-  gameOver,
   setGameOver,
   selectedTimeControl_ref,
-  beforeFirstMove_ref
+  beforeFirstMove_ref,
 }) {
-  console.log(selectedTimeControl_ref.current);
+  const { socket } = useContext(userContext);
   let nrOfSecondsInTimeControl;
+
   switch (selectedTimeControl_ref.current) {
     case "classical":
       nrOfSecondsInTimeControl = 1800;
@@ -25,45 +26,22 @@ function ChessTimer({
   }
   const [whiteTime, setWhiteTime] = useState(nrOfSecondsInTimeControl);
   const [blackTime, setBlackTime] = useState(nrOfSecondsInTimeControl);
-  let intervalRef = useRef(null);
 
   useEffect(() => {
-    if (playerColor === "white" && !beforeFirstMove_ref.current) {
-      //run white timer
-      intervalRef.current = setInterval(() => {
-        if (!gameOver.isOver) {
-          setWhiteTime((previousTime) => previousTime - 1);
-        }
-      }, 1000);
-    } else if (playerColor === "black") {
-      //run black timer
-      intervalRef.current = setInterval(() => {
-        if (!gameOver.isOver) {
-          setBlackTime((previousTime) => previousTime - 1);
-        }
-      }, 1000);
+    socket.on("time_from_server", (whiteTime, blackTime) => {
       beforeFirstMove_ref.current = false;
-    }
-    //clear interval when unmounting component
-    return () => clearInterval(intervalRef.current);
-  }, [playerColor, gameOver, beforeFirstMove_ref]);
+      setWhiteTime(whiteTime);
+      setBlackTime(blackTime);
+    });
+  }, [socket, beforeFirstMove_ref]);
 
   useEffect(() => {
-    //pause timer when it reaches zero
     if (whiteTime === 0) {
-      clearInterval(intervalRef.current);
-      setGameOver({ scenario: "Black wins on time.", isOver: true });
+      setGameOver({ scenario: "Black wins on time", isOver: true });
+    } else if (blackTime === 0) {
+      setGameOver({ scenario: "White wins on time", isOver: true });
     }
-    if (blackTime === 0) {
-      clearInterval(intervalRef.current);
-      setGameOver({ scenario: "White wins on time.", isOver: true });
-    }
-  }, [blackTime, setGameOver, whiteTime]);
-
-  //If checkmate or draw, stop the timer
-  if (gameOver.isOver === true) {
-    clearInterval(intervalRef.current);
-  }
+  }, [whiteTime, blackTime, setGameOver]);
 
   const whiteMinutes = Math.floor(whiteTime / 60);
   const whiteSeconds = whiteTime % 60;
@@ -100,4 +78,4 @@ function ChessTimer({
   );
 }
 
-export default ChessTimer;
+export default ServerTimer;

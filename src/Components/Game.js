@@ -9,6 +9,7 @@ import SetupFromFEN from "../Functions/SetupFromFEN";
 import CreateFEN from "../Functions/CreateFEN";
 import NotationBox from "../Components/NotationBox";
 import ChessTimer from "../Components/ChessTimer";
+import ServerTimer from "./ServerTimer";
 import GameChat from "./GameChat";
 import { userContext } from "../App";
 import { handlePieceMove } from "../Functions/handlePieceMove";
@@ -27,6 +28,7 @@ function Game() {
   const [player, setPlayer] = useState("white");
 
   const [gameOver, setGameOver] = useState({ scenario: "", isOver: false });
+  let beforeFirstMove_ref = useRef(true);
 
   const bKingState = useRef({
     hasKSideCastlingRights: true,
@@ -175,12 +177,50 @@ function Game() {
             )}
             <div>
               {!flippedBoard ? (
+                <ServerTimer
+                  playerColor={player}
+                  clockColor={"black"}
+                  setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
+                />
+              ) : (
+                <ServerTimer
+                  playerColor={player}
+                  clockColor={"white"}
+                  setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
+                />
+              )}
+              {NotationBox(moveHistory, player, nrOfFullMoves)}
+              {flippedBoard ? (
+                <ServerTimer
+                  playerColor={player}
+                  clockColor={"black"}
+                  setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
+                />
+              ) : (
+                <ServerTimer
+                  playerColor={player}
+                  clockColor={"white"}
+                  setGameOver={setGameOver}
+                  selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
+                />
+              )}
+            </div>
+            {/* <div>
+              {!flippedBoard ? (
                 <ChessTimer
                   playerColor={player}
                   clockColor={"black"}
                   gameOver={gameOver}
                   setGameOver={setGameOver}
                   selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
                 />
               ) : (
                 <ChessTimer
@@ -189,6 +229,7 @@ function Game() {
                   gameOver={gameOver}
                   setGameOver={setGameOver}
                   selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
                 />
               )}
               {NotationBox(moveHistory, player, nrOfFullMoves)}
@@ -199,6 +240,7 @@ function Game() {
                   gameOver={gameOver}
                   setGameOver={setGameOver}
                   selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
                 />
               ) : (
                 <ChessTimer
@@ -207,16 +249,15 @@ function Game() {
                   gameOver={gameOver}
                   setGameOver={setGameOver}
                   selectedTimeControl_ref={selectedTimeControl_ref}
+                  beforeFirstMove_ref={beforeFirstMove_ref}
                 />
               )}
-            </div>
+            </div> */}
             {gameOver.isOver ? (
               <div style={{ fontSize: 40 }}>{gameOver.scenario}</div>
             ) : displayDrawOffer ? (
               <DisplayDrawOffer />
-            ) : (
-              <div style={{ fontSize: 25 }}>{player} to move</div>
-            )}
+            ) : null}
             <div className="ButtonList">
               <button
                 onClick={() => {
