@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
 import { TaskList } from "./TaskList";
+import CreatedGamesList from "./CreatedGamesList";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Login = () => {
 
   const joinRoom = () => {
     if (user !== "" && room !== "") {
-      socket.emit("join_room", room);
+      socket.emit("create_game", user, selectedTimeControl, room);
     }
   };
 
@@ -67,6 +68,8 @@ const Login = () => {
       <h1>CHEZZ</h1>
 
       <LocalGameForm navigate={navigate} />
+      <h2>Online Game</h2>
+      <h3>Create</h3>
       <OnlineGameForm
         user={user}
         setUser={setUser}
@@ -81,7 +84,9 @@ const Login = () => {
         selectedTimeControl_ref={selectedTimeControl_ref}
         setUserColor={setUserColor}
       />
-      <TaskList/>
+      <h3>Join</h3>
+      <CreatedGamesList />
+      <TaskList />
     </div>
   );
 };
@@ -119,7 +124,6 @@ function OnlineGameForm({
 }) {
   return (
     <>
-      <h2>Online Game</h2>
       <div className="colorSelection">
         <button
           style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
@@ -210,7 +214,7 @@ function OnlineGameForm({
               Enter game room {room} as {user}
             </div>
           ) : (
-            "Create/Join Game"
+            "Create Game"
           )}
         </button>
       </form>
