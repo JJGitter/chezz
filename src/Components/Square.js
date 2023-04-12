@@ -32,7 +32,7 @@ function Square(squareProps) {
     setGameOver,
   } = useContext(boardContext);
 
-  const { room, socket, userColor_ref } = useContext(userContext);
+  const { socket, userColor_ref } = useContext(userContext);
 
   const [dragProps, dragRef] = useDrag({
     type: "piece",
@@ -58,7 +58,6 @@ function Square(squareProps) {
       ) {
         socket.emit(
           "piece_moved",
-          room,
           item.fromCell,
           squareProps.index,
           item.piece,

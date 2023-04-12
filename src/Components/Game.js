@@ -18,7 +18,7 @@ export const boardContext = React.createContext();
 
 function Game() {
   console.log("----------------------------------------");
-  const { user, room, socket, selectedTimeControl_ref, userColor_ref } =
+  const { socket, selectedTimeControl_ref, userColor_ref } =
     useContext(userContext);
 
   const [board, setBoard] = useState(SetupBoard);
@@ -111,7 +111,7 @@ function Game() {
         <button
           onClick={() => {
             setGameOver({ scenario: "Draw by agreement", isOver: true });
-            socket.emit("draw_accepted", room);
+            socket.emit("draw_accepted");
           }}
         >
           Accept
@@ -306,14 +306,14 @@ function Game() {
                     scenario: `${userColor_ref.current} resigns`,
                     isOver: true,
                   });
-                  socket.emit("resign", room, userColor_ref.current);
+                  socket.emit("resign", userColor_ref.current);
                 }}
               >
                 Resign
               </button>
               <button
                 onClick={() => {
-                  socket.emit("offer_draw", room);
+                  socket.emit("offer_draw");
                 }}
               >
                 Offer Draw

@@ -10,7 +10,6 @@ export function TaskList() {
         Task List
       </h3>
       <ul>
-        <li>Redesign how you join a created game</li>
         <li>Fix the color assigning so that game creator becomes the color he chooses</li>
         <li>Local play support </li>
         <li>Style the login screen</li>

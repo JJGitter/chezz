@@ -10,8 +10,6 @@ const Login = () => {
   const {
     user,
     setUser,
-    room,
-    setRoom,
     socket,
     selectedColor,
     setSelectedColor,
@@ -24,8 +22,8 @@ const Login = () => {
   } = useContext(userContext);
 
   const joinRoom = () => {
-    if (user !== "" && room !== "") {
-      socket.emit("create_game", user, selectedTimeControl, room);
+    if (user !== "") {
+      socket.emit("create_game", user, selectedTimeControl);
     }
   };
 
@@ -34,11 +32,11 @@ const Login = () => {
     socket.on("server_request_for_gameData", () => {
       console.log("server requested my game data");
       console.log(`sending time control: ${selectedTimeControl} to server`);
-      socket.emit("gameData_to_server", room, userColor, selectedTimeControl);
+      socket.emit("gameData_to_server", userColor, selectedTimeControl);
       navigate("/chezz");
     });
     // return () => socket.off("server_request_for_gameData");
-  }, [socket, room, userColor, selectedTimeControl, navigate]);
+  }, [socket, userColor, selectedTimeControl, navigate]);
 
   useEffect(() => {
     async function receiveGameData() {
@@ -73,8 +71,6 @@ const Login = () => {
       <OnlineGameForm
         user={user}
         setUser={setUser}
-        room={room}
-        setRoom={setRoom}
         joinRoom={joinRoom}
         navigate={navigate}
         selectedColor={selectedColor}
@@ -111,8 +107,6 @@ function LocalGameForm({ navigate }) {
 function OnlineGameForm({
   user,
   setUser,
-  room,
-  setRoom,
   joinRoom,
   navigate,
   selectedColor,
@@ -195,27 +189,13 @@ function OnlineGameForm({
             setUser(input.target.value);
           }}
         />
-        <input
-          type="text"
-          placeholder="Room ID..."
-          value={room}
-          onChange={(input) => {
-            setRoom(input.target.value);
-          }}
-        />
         <button
           onClick={() => {
             joinRoom();
             navigate("/lobby");
           }}
         >
-          {user !== "" && room !== "" ? (
-            <div>
-              Enter game room {room} as {user}
-            </div>
-          ) : (
-            "Create Game"
-          )}
+          {user !== "" ? <div>Create Game as {user}</div> : "Create Game"}
         </button>
       </form>
     </>

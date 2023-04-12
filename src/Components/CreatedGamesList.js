@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { userContext } from "../App";
 
 function CreatedGamesList() {
-  const { socket, setRoom } = useContext(userContext);
+  const { socket } = useContext(userContext);
 
   const [createdGames, setCreatedGames] = useState([]);
 
@@ -40,7 +40,7 @@ function CreatedGamesList() {
 
   function handleJoinGame(game) {
     return () => {
-      setRoom(game.room);
+      console.log("Requesting to join room" + game.room);
       socket.emit("join_game_request", game.room);
     };
   }

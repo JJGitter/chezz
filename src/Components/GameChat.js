@@ -3,7 +3,7 @@ import { userContext } from "../App";
 import ScrollToBottom from "react-scroll-to-bottom";
 
 function GameChat() {
-  const { user, room, socket } = useContext(userContext);
+  const { user, socket } = useContext(userContext);
 
   const [messageToSend, setMessageToSend] = useState("");
   const [messageList, setMessageList] = useState([]);
@@ -12,7 +12,6 @@ function GameChat() {
     if (messageToSend !== "") {
       let messageTime = new Date(Date.now());
       const messageData = {
-        room: room,
         sendingUser: user,
         message: messageToSend,
         time:
