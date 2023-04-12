@@ -8,7 +8,6 @@ function ChessTimer({
   selectedTimeControl_ref,
   beforeFirstMove_ref
 }) {
-  console.log(selectedTimeControl_ref.current);
   let nrOfSecondsInTimeControl;
   switch (selectedTimeControl_ref.current) {
     case "classical":

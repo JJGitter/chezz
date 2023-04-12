@@ -18,12 +18,12 @@ export const boardContext = React.createContext();
 
 function Game() {
   console.log("----------------------------------------");
-  const { socket, selectedTimeControl_ref, userColor_ref } =
+  const { socket, selectedTimeControl_ref, userColor_ref, isOnlinePlay_ref } =
     useContext(userContext);
 
   const [board, setBoard] = useState(SetupBoard);
   const [flippedBoard, setflippedBoard] = useState(
-    userColor_ref.current === "white" ? false : true
+    userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false
   ); // usercolor does not have time to update before this is run. Maybe usercolor should be a useRef?
   const [player, setPlayer] = useState("white");
 
@@ -57,28 +57,30 @@ function Game() {
   const [displayDrawOffer, setDisplayDrawOffer] = useState(false);
 
   useEffect(() => {
-    socket.on(
-      "opponent_moved",
-      (fromSquare, toSquare, pieceType, pieceColor) => {
-        setOpponentMoved(true);
-        setReceivedItem({
-          fromCell: fromSquare, //i.e. "c5"
-          piece: pieceType, //i.e. "Knight"
-          pieceColor: pieceColor,
-        });
-        setReceivedToSquare(toSquare);
-      }
-    );
-    socket.on("opponent_resigns", (opponentColor) => {
-      setGameOver({ scenario: `${opponentColor} resigns`, isOver: true });
-    });
-    socket.on("receive_draw_offer", () => {
-      setDisplayDrawOffer(true);
-    });
-    socket.on("receive_draw_accepted", () => {
-      setGameOver({ scenario: "Draw by agreement", isOver: true });
-    });
-  }, [socket]);
+    if (isOnlinePlay_ref.current) {
+      socket.on(
+        "opponent_moved",
+        (fromSquare, toSquare, pieceType, pieceColor) => {
+          setOpponentMoved(true);
+          setReceivedItem({
+            fromCell: fromSquare, //i.e. "c5"
+            piece: pieceType, //i.e. "Knight"
+            pieceColor: pieceColor,
+          });
+          setReceivedToSquare(toSquare);
+        }
+      );
+      socket.on("opponent_resigns", (opponentColor) => {
+        setGameOver({ scenario: `${opponentColor} resigns`, isOver: true });
+      });
+      socket.on("receive_draw_offer", () => {
+        setDisplayDrawOffer(true);
+      });
+      socket.on("receive_draw_accepted", () => {
+        setGameOver({ scenario: "Draw by agreement", isOver: true });
+      });
+    }
+  }, [socket, isOnlinePlay_ref]);
 
   if (opponentMoved) {
     setOpponentMoved(false);
@@ -176,83 +178,10 @@ function Game() {
               </div>
             )}
             <div>
-              {!flippedBoard ? (
-                <ServerTimer
-                  playerColor={player}
-                  clockColor={"black"}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              ) : (
-                <ServerTimer
-                  playerColor={player}
-                  clockColor={"white"}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              )}
+              {DisplayTopClock(isOnlinePlay_ref)}
               {NotationBox(moveHistory, player, nrOfFullMoves)}
-              {flippedBoard ? (
-                <ServerTimer
-                  playerColor={player}
-                  clockColor={"black"}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              ) : (
-                <ServerTimer
-                  playerColor={player}
-                  clockColor={"white"}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              )}
+              {DisplayBottomClock(isOnlinePlay_ref)}
             </div>
-            {/* <div>
-              {!flippedBoard ? (
-                <ChessTimer
-                  playerColor={player}
-                  clockColor={"black"}
-                  gameOver={gameOver}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              ) : (
-                <ChessTimer
-                  playerColor={player}
-                  clockColor={"white"}
-                  gameOver={gameOver}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              )}
-              {NotationBox(moveHistory, player, nrOfFullMoves)}
-              {flippedBoard ? (
-                <ChessTimer
-                  playerColor={player}
-                  clockColor={"black"}
-                  gameOver={gameOver}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              ) : (
-                <ChessTimer
-                  playerColor={player}
-                  clockColor={"white"}
-                  gameOver={gameOver}
-                  setGameOver={setGameOver}
-                  selectedTimeControl_ref={selectedTimeControl_ref}
-                  beforeFirstMove_ref={beforeFirstMove_ref}
-                />
-              )}
-            </div> */}
             {gameOver.isOver ? (
               <div style={{ fontSize: 40 }}>{gameOver.scenario}</div>
             ) : displayDrawOffer ? (
@@ -327,6 +256,96 @@ function Game() {
       </boardContext.Provider>
     </>
   );
+
+  function DisplayBottomClock(isOnlinePlay_ref) {
+    let clock = null;
+
+    if (isOnlinePlay_ref.current) {
+      clock = flippedBoard ? (
+        <ServerTimer
+          playerColor={player}
+          clockColor={"black"}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      ) : (
+        <ServerTimer
+          playerColor={player}
+          clockColor={"white"}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      );
+    } else {
+      clock = flippedBoard ? (
+        <ChessTimer
+          playerColor={player}
+          clockColor={"black"}
+          gameOver={gameOver}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      ) : (
+        <ChessTimer
+          playerColor={player}
+          clockColor={"white"}
+          gameOver={gameOver}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      );
+    }
+    return clock;
+  }
+
+  function DisplayTopClock(isOnlinePlay_ref) {
+    let clock = null;
+
+    if (isOnlinePlay_ref.current) {
+      clock = !flippedBoard ? (
+        <ServerTimer
+          playerColor={player}
+          clockColor={"black"}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      ) : (
+        <ServerTimer
+          playerColor={player}
+          clockColor={"white"}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      );
+    } else {
+      clock = !flippedBoard ? (
+        <ChessTimer
+          playerColor={player}
+          clockColor={"black"}
+          gameOver={gameOver}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      ) : (
+        <ChessTimer
+          playerColor={player}
+          clockColor={"white"}
+          gameOver={gameOver}
+          setGameOver={setGameOver}
+          selectedTimeControl_ref={selectedTimeControl_ref}
+          beforeFirstMove_ref={beforeFirstMove_ref}
+        />
+      );
+    }
+    return clock;
+  }
 }
 
 export default Game;

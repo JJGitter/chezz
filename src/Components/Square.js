@@ -32,7 +32,7 @@ function Square(squareProps) {
     setGameOver,
   } = useContext(boardContext);
 
-  const { socket, userColor_ref } = useContext(userContext);
+  const { socket, userColor_ref, isOnlinePlay_ref } = useContext(userContext);
 
   const [dragProps, dragRef] = useDrag({
     type: "piece",
@@ -56,13 +56,16 @@ function Square(squareProps) {
           enPassantTarget
         ).includes(squareProps.index)
       ) {
-        socket.emit(
-          "piece_moved",
-          item.fromCell,
-          squareProps.index,
-          item.piece,
-          item.pieceColor
-        );
+        if (isOnlinePlay_ref.current) {
+          socket.emit(
+            "piece_moved",
+            item.fromCell,
+            squareProps.index,
+            item.piece,
+            item.pieceColor
+          );
+        }
+
         handlePieceMove(
           item,
           squareProps.index,
@@ -90,7 +93,13 @@ function Square(squareProps) {
 
   return (
     <div
-      ref={player === userColor_ref.current ? dropRef : null} //This component will be able to accept dragged items corresponding to dropRef if it is that users turn
+      ref={
+        isOnlinePlay_ref.current
+          ? player === userColor_ref.current
+            ? dropRef
+            : null
+          : dropRef
+      } //In online play, this component will be able to accept dragged items corresponding to dropRef if it is that users turn
       className={squareProps.color + "Square"}
       style={
         dropProps.isOver
@@ -100,7 +109,12 @@ function Square(squareProps) {
     >
       <div
         ref={
-          squareProps.pieceColor === userColor_ref.current && !gameOver.isOver
+          isOnlinePlay_ref.current
+            ? squareProps.pieceColor === userColor_ref.current &&
+              !gameOver.isOver
+              ? dragRef
+              : null
+            : player === squareProps.pieceColor && !gameOver.isOver
             ? dragRef
             : null
         } //This component will be dragable if it matches the users color and game is not over.

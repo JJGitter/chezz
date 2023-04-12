@@ -20,11 +20,13 @@ function App() {
   const userColor_ref = useRef(Math.random() >= 0.5 ? "white" : "black");
   const selectedTimeControl_ref = useRef(selectedTimeControl);
 
+  const isOnlinePlay_ref = useRef(true);
+
   console.log("app fires")
   return (
     <BrowserRouter>
       <userContext.Provider
-        value={{ user, setUser, socket, selectedColor, setSelectedColor, selectedTimeControl, setSelectedTimeControl, selectedTimeControl_ref, userColor_ref }}
+        value={{ user, setUser, socket, selectedColor, setSelectedColor, selectedTimeControl, setSelectedTimeControl, selectedTimeControl_ref, userColor_ref, isOnlinePlay_ref }}
       >
         <Routes>
           <Route path="/" element={<Login />} />

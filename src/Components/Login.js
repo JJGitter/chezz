@@ -17,6 +17,7 @@ const Login = () => {
     setSelectedTimeControl,
     selectedTimeControl_ref,
     userColor_ref,
+    isOnlinePlay_ref,
   } = useContext(userContext);
 
   const joinRoom = () => {
@@ -30,7 +31,11 @@ const Login = () => {
     socket.on("server_request_for_gameData", () => {
       console.log("server requested my game data");
       console.log(`sending time control: ${selectedTimeControl} to server`);
-      socket.emit("gameData_to_server", userColor_ref.current, selectedTimeControl);
+      socket.emit(
+        "gameData_to_server",
+        userColor_ref.current,
+        selectedTimeControl
+      );
       navigate("/chezz");
     });
     // return () => socket.off("server_request_for_gameData");
@@ -63,7 +68,7 @@ const Login = () => {
     <div>
       <h1>CHEZZ</h1>
 
-      <LocalGameForm navigate={navigate} />
+      <LocalGameForm navigate={navigate} isOnlinePlay_ref={isOnlinePlay_ref} />
       <h2>Online Game</h2>
       <h3>Create</h3>
       <OnlineGameForm
@@ -87,12 +92,13 @@ const Login = () => {
 
 export default Login;
 
-function LocalGameForm({ navigate }) {
+function LocalGameForm({ navigate, isOnlinePlay_ref }) {
   return (
     <>
       <h2>Local Game</h2>
       <button
         onClick={() => {
+          isOnlinePlay_ref.current = false;
           navigate("/chezz");
         }}
       >
@@ -121,7 +127,7 @@ function OnlineGameForm({
           style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedColor("white");
-            userColor_ref.current="white";
+            userColor_ref.current = "white";
           }}
         >
           Play as White
@@ -130,7 +136,7 @@ function OnlineGameForm({
           style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedColor("black");
-            userColor_ref.current="black";
+            userColor_ref.current = "black";
           }}
         >
           Play as Black
@@ -140,7 +146,7 @@ function OnlineGameForm({
           onClick={() => {
             setSelectedColor("random");
             let randomColor = Math.random() >= 0.5 ? "white" : "black";
-            userColor_ref.current=randomColor;
+            userColor_ref.current = randomColor;
           }}
         >
           Randomize Color
