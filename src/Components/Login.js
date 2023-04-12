@@ -16,8 +16,6 @@ const Login = () => {
     selectedTimeControl,
     setSelectedTimeControl,
     selectedTimeControl_ref,
-    userColor,
-    setUserColor,
     userColor_ref,
   } = useContext(userContext);
 
@@ -32,11 +30,11 @@ const Login = () => {
     socket.on("server_request_for_gameData", () => {
       console.log("server requested my game data");
       console.log(`sending time control: ${selectedTimeControl} to server`);
-      socket.emit("gameData_to_server", userColor, selectedTimeControl);
+      socket.emit("gameData_to_server", userColor_ref.current, selectedTimeControl);
       navigate("/chezz");
     });
     // return () => socket.off("server_request_for_gameData");
-  }, [socket, userColor, selectedTimeControl, navigate]);
+  }, [socket, userColor_ref, selectedTimeControl, navigate]);
 
   useEffect(() => {
     async function receiveGameData() {
@@ -78,7 +76,7 @@ const Login = () => {
         selectedTimeControl={selectedTimeControl}
         setSelectedTimeControl={setSelectedTimeControl}
         selectedTimeControl_ref={selectedTimeControl_ref}
-        setUserColor={setUserColor}
+        userColor_ref={userColor_ref}
       />
       <h3>Join</h3>
       <CreatedGamesList />
@@ -114,20 +112,26 @@ function OnlineGameForm({
   selectedTimeControl,
   setSelectedTimeControl,
   selectedTimeControl_ref,
-  setUserColor,
+  userColor_ref,
 }) {
   return (
     <>
       <div className="colorSelection">
         <button
           style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
-          onClick={() => setSelectedColor("white")}
+          onClick={() => {
+            setSelectedColor("white");
+            userColor_ref.current="white";
+          }}
         >
           Play as White
         </button>
         <button
           style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
-          onClick={() => setSelectedColor("black")}
+          onClick={() => {
+            setSelectedColor("black");
+            userColor_ref.current="black";
+          }}
         >
           Play as Black
         </button>
@@ -135,8 +139,8 @@ function OnlineGameForm({
           style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedColor("random");
-            const randomColor = Math.random() >= 0.5 ? "white" : "black";
-            setUserColor(randomColor);
+            let randomColor = Math.random() >= 0.5 ? "white" : "black";
+            userColor_ref.current=randomColor;
           }}
         >
           Randomize Color
@@ -193,6 +197,7 @@ function OnlineGameForm({
           onClick={() => {
             joinRoom();
             navigate("/lobby");
+            console.log(userColor_ref.current);
           }}
         >
           {user !== "" ? <div>Create Game as {user}</div> : "Create Game"}

@@ -16,18 +16,15 @@ function App() {
 
   const [selectedColor, setSelectedColor] = useState("random");
   const [selectedTimeControl, setSelectedTimeControl] = useState("rapid");
-  const [userColor, setUserColor] = useState(
-    Math.random() >= 0.5 ? "white" : "black"
-  );
 
-  const userColor_ref = useRef(userColor);
+  const userColor_ref = useRef(Math.random() >= 0.5 ? "white" : "black");
   const selectedTimeControl_ref = useRef(selectedTimeControl);
 
   console.log("app fires")
   return (
     <BrowserRouter>
       <userContext.Provider
-        value={{ user, setUser, socket, selectedColor, setSelectedColor, selectedTimeControl, setSelectedTimeControl, selectedTimeControl_ref, userColor, setUserColor, userColor_ref }}
+        value={{ user, setUser, socket, selectedColor, setSelectedColor, selectedTimeControl, setSelectedTimeControl, selectedTimeControl_ref, userColor_ref }}
       >
         <Routes>
           <Route path="/" element={<Login />} />
