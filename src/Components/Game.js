@@ -18,8 +18,13 @@ export const boardContext = React.createContext();
 
 function Game() {
   console.log("----------------------------------------");
-  const { socket, selectedTimeControl_ref, userColor_ref, isOnlinePlay_ref, selectedFEN } =
-    useContext(userContext);
+  const {
+    socket,
+    selectedTimeControl_ref,
+    userColor_ref,
+    isOnlinePlay_ref,
+    selectedFEN,
+  } = useContext(userContext);
 
   const [board, setBoard] = useState(SetupBoard);
   const [flippedBoard, setflippedBoard] = useState(
@@ -57,8 +62,10 @@ function Game() {
   const [displayDrawOffer, setDisplayDrawOffer] = useState(false);
 
   useEffect(() => {
-    if(selectedFEN !== ""){
-      SetupFromFEN(selectedFEN, board,
+    if (selectedFEN !== "") {
+      SetupFromFEN(
+        selectedFEN,
+        board,
         setBoard,
         setPlayer,
         wKingState,
@@ -70,9 +77,10 @@ function Game() {
         wChecked,
         bChecked,
         moveHistory,
-        boardHistory)
+        boardHistory
+      );
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (isOnlinePlay_ref.current) {
@@ -266,6 +274,24 @@ function Game() {
               >
                 Offer Draw
               </button>
+              <button
+                onClick={() => {
+                  CopyToClipBoard(
+                    CreateFEN(
+                      board,
+                      player,
+                      wKingState,
+                      bKingState,
+                      enPassantTarget,
+                      nrOfHalfMoves,
+                      nrOfFullMoves,
+                      boardHistory
+                    )
+                  );
+                }}
+              >
+                Copy Current FEN
+              </button>
             </div>
             {isOnlinePlay_ref.current ? <GameChat /> : null}
 
@@ -275,6 +301,10 @@ function Game() {
       </boardContext.Provider>
     </>
   );
+
+  function CopyToClipBoard(text) {
+    navigator.clipboard.writeText(text);
+  }
 
   function DisplayBottomClock(isOnlinePlay_ref) {
     let clock = null;
