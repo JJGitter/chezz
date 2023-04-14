@@ -18,7 +18,7 @@ export const boardContext = React.createContext();
 
 function Game() {
   console.log("----------------------------------------");
-  const { socket, selectedTimeControl_ref, userColor_ref, isOnlinePlay_ref } =
+  const { socket, selectedTimeControl_ref, userColor_ref, isOnlinePlay_ref, selectedFEN } =
     useContext(userContext);
 
   const [board, setBoard] = useState(SetupBoard);
@@ -55,6 +55,24 @@ function Game() {
   const [receivedItem, setReceivedItem] = useState({});
   const [receivedToSquare, setReceivedToSquare] = useState("");
   const [displayDrawOffer, setDisplayDrawOffer] = useState(false);
+
+  useEffect(() => {
+    if(selectedFEN !== ""){
+      SetupFromFEN(selectedFEN, board,
+        setBoard,
+        setPlayer,
+        wKingState,
+        bKingState,
+        enPassantTarget,
+        nrOfHalfMoves,
+        nrOfFullMoves,
+        checkmate,
+        wChecked,
+        bChecked,
+        moveHistory,
+        boardHistory)
+    }
+  }, [])
 
   useEffect(() => {
     if (isOnlinePlay_ref.current) {
@@ -188,9 +206,10 @@ function Game() {
               <DisplayDrawOffer />
             ) : null}
             <div className="ButtonList">
-              <button
+              {/* <button
                 onClick={() => {
                   SetupFromFEN(
+                    "rn2n1k1/ppp2ppp/8/2N5/2Pp4/8/PPP2PPP/R1B1R1K1 w - - 1 17",
                     board,
                     setBoard,
                     setPlayer,
@@ -208,7 +227,7 @@ function Game() {
                 }}
               >
                 SetupFromFEN
-              </button>
+              </button> */}
               <button
                 onClick={() => {
                   console.log(
@@ -248,7 +267,7 @@ function Game() {
                 Offer Draw
               </button>
             </div>
-            <GameChat />
+            {isOnlinePlay_ref.current ? <GameChat /> : null}
 
             <TaskList />
           </div>

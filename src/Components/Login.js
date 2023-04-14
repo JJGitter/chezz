@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
 import { TaskList } from "./TaskList";
@@ -18,6 +18,8 @@ const Login = () => {
     selectedTimeControl_ref,
     userColor_ref,
     isOnlinePlay_ref,
+    selectedFEN,
+    setSelectedFEN,
   } = useContext(userContext);
 
   const joinRoom = () => {
@@ -67,10 +69,17 @@ const Login = () => {
   return (
     <div>
       <h1>CHEZZ</h1>
-
+      <h2>Game Options</h2>
+      <CreateGameForm
+        selectedTimeControl={selectedTimeControl}
+        setSelectedTimeControl={setSelectedTimeControl}
+        selectedTimeControl_ref={selectedTimeControl_ref}
+        selectedFEN={selectedFEN}
+        setSelectedFEN={setSelectedFEN}
+      />
+      <h2>Local Game</h2>
       <LocalGameForm navigate={navigate} isOnlinePlay_ref={isOnlinePlay_ref} />
       <h2>Online Game</h2>
-      <h3>Create</h3>
       <OnlineGameForm
         user={user}
         setUser={setUser}
@@ -78,9 +87,6 @@ const Login = () => {
         navigate={navigate}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        selectedTimeControl={selectedTimeControl}
-        setSelectedTimeControl={setSelectedTimeControl}
-        selectedTimeControl_ref={selectedTimeControl_ref}
         userColor_ref={userColor_ref}
       />
       <h3>Join</h3>
@@ -92,66 +98,15 @@ const Login = () => {
 
 export default Login;
 
-function LocalGameForm({ navigate, isOnlinePlay_ref }) {
-  return (
-    <>
-      <h2>Local Game</h2>
-      <button
-        onClick={() => {
-          isOnlinePlay_ref.current = false;
-          navigate("/chezz");
-        }}
-      >
-        Play Locally
-      </button>
-    </>
-  );
-}
-
-function OnlineGameForm({
-  user,
-  setUser,
-  joinRoom,
-  navigate,
-  selectedColor,
-  setSelectedColor,
+function CreateGameForm({
   selectedTimeControl,
   setSelectedTimeControl,
   selectedTimeControl_ref,
-  userColor_ref,
+  selectedFEN,
+  setSelectedFEN,
 }) {
   return (
     <>
-      <div className="colorSelection">
-        <button
-          style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
-          onClick={() => {
-            setSelectedColor("white");
-            userColor_ref.current = "white";
-          }}
-        >
-          Play as White
-        </button>
-        <button
-          style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
-          onClick={() => {
-            setSelectedColor("black");
-            userColor_ref.current = "black";
-          }}
-        >
-          Play as Black
-        </button>
-        <button
-          style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
-          onClick={() => {
-            setSelectedColor("random");
-            let randomColor = Math.random() >= 0.5 ? "white" : "black";
-            userColor_ref.current = randomColor;
-          }}
-        >
-          Randomize Color
-        </button>
-      </div>
       <div className="timeControlSelection">
         <button
           style={{ opacity: selectedTimeControl !== "classical" ? 0.5 : 1 }}
@@ -190,6 +145,77 @@ function OnlineGameForm({
           Bullet
         </button>
       </div>
+      <div className="inputFEN">
+        <input
+          type="text"
+          placeholder="FEN..."
+          value={selectedFEN}
+          onChange={(input) => {
+            setSelectedFEN(input.target.value);
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
+function LocalGameForm({ navigate, isOnlinePlay_ref }) {
+  return (
+    <>
+      <button
+        onClick={() => {
+          isOnlinePlay_ref.current = false;
+          navigate("/chezz");
+        }}
+      >
+        Play Locally
+      </button>
+    </>
+  );
+}
+
+function OnlineGameForm({
+  user,
+  setUser,
+  joinRoom,
+  navigate,
+  selectedColor,
+  setSelectedColor,
+  userColor_ref,
+}) {
+  return (
+    <>
+      <div className="colorSelection">
+        <button
+          style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
+          onClick={() => {
+            setSelectedColor("white");
+            userColor_ref.current = "white";
+          }}
+        >
+          Play as White
+        </button>
+        <button
+          style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
+          onClick={() => {
+            setSelectedColor("black");
+            userColor_ref.current = "black";
+          }}
+        >
+          Play as Black
+        </button>
+        <button
+          style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
+          onClick={() => {
+            setSelectedColor("random");
+            let randomColor = Math.random() >= 0.5 ? "white" : "black";
+            userColor_ref.current = randomColor;
+          }}
+        >
+          Randomize Color
+        </button>
+      </div>
+
       <form>
         <input
           type="text"
