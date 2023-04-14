@@ -10,7 +10,7 @@ export function TaskList() {
         Task List
       </h3>
       <ul>
-        <li>Move "setup from FEN" to login screen</li>
+        <li>Create a "copy current FEN" button on the game screen</li>
         <li>Style the login screen</li>
         <li>Style the game screen</li>
         <li>Manage the chat window sizing</li>

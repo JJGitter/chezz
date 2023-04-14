@@ -32,16 +32,16 @@ const Login = () => {
     console.log("now listening to server request for gameData");
     socket.on("server_request_for_gameData", () => {
       console.log("server requested my game data");
-      console.log(`sending time control: ${selectedTimeControl} to server`);
+      console.log(`sending time control: ${selectedTimeControl_ref.current} to server`);
       socket.emit(
         "gameData_to_server",
         userColor_ref.current,
-        selectedTimeControl
+        selectedTimeControl_ref.current
       );
       navigate("/chezz");
     });
     // return () => socket.off("server_request_for_gameData");
-  }, [socket, userColor_ref, selectedTimeControl, navigate]);
+  }, [socket, userColor_ref, selectedTimeControl_ref, navigate]);
 
   useEffect(() => {
     async function receiveGameData() {
