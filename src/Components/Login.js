@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
 import { TaskList } from "./TaskList";
@@ -23,6 +23,8 @@ const Login = () => {
     setSelectedFEN,
   } = useContext(userContext);
 
+  const [awaitingOpponent, setAwaitingOpponent] = useState(false);
+
   const joinRoom = () => {
     if (user !== "") {
       socket.emit("create_game", user, selectedTimeControl);
@@ -36,22 +38,25 @@ const Login = () => {
       console.log(
         `sending time control: ${selectedTimeControl_ref.current} to server`
       );
+      console.log(`sending FEN: ${selectedFEN} to server`);
       socket.emit(
         "gameData_to_server",
         userColor_ref.current,
-        selectedTimeControl_ref.current
+        selectedTimeControl_ref.current,
+        selectedFEN
       );
       navigate("/chezz");
     });
-    // return () => socket.off("server_request_for_gameData");
-  }, [socket, userColor_ref, selectedTimeControl_ref, navigate]);
+    return () => socket.removeAllListeners("server_request_for_gameData");
+  }, [socket, userColor_ref, selectedTimeControl_ref, navigate, selectedFEN]);
 
   useEffect(() => {
     async function receiveGameData() {
       await socket.on(
         "gameData_to_client",
-        (userColor_data, selectedTimeControl_data) => {
+        (userColor_data, selectedTimeControl_data, FEN_data) => {
           console.log("server sent me the game data from other client");
+          console.log("receiving" + FEN_data);
           console.log(
             `receiving time control: ${selectedTimeControl_data} from server`
           );
@@ -61,40 +66,66 @@ const Login = () => {
             userColor_ref.current = "white";
           }
           selectedTimeControl_ref.current = selectedTimeControl_data;
+          setSelectedFEN(FEN_data);
           navigate("/chezz");
         }
       );
     }
 
     receiveGameData();
-  }, [socket, selectedTimeControl_ref, userColor_ref, navigate]);
+    // return () => socket.removeAllListeners("gameData_to_client");
+  }, [
+    socket,
+    selectedTimeControl_ref,
+    userColor_ref,
+    navigate,
+    setSelectedFEN,
+  ]);
 
   return (
     <div className="loginScreenContainer">
       <h1 style={{ fontSize: 50 }}>CHEZZ</h1>
-      <h2 style={{ fontSize: 30 }}>Game Options</h2>
-      <CreateGameForm
-        selectedTimeControl={selectedTimeControl}
-        setSelectedTimeControl={setSelectedTimeControl}
-        selectedTimeControl_ref={selectedTimeControl_ref}
-        selectedFEN={selectedFEN}
-        setSelectedFEN={setSelectedFEN}
-      />
-      <h2 style={{ fontSize: 30 }}>Local Game</h2>
-      <LocalGameForm navigate={navigate} isOnlinePlay_ref={isOnlinePlay_ref} />
-      <h2 style={{ fontSize: 30 }}>Online Game</h2>
 
-      <div className="onlineSectionContainer">
-        <OnlineGameForm
-          user={user}
-          setUser={setUser}
-          joinRoom={joinRoom}
-          navigate={navigate}
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-          userColor_ref={userColor_ref}
-        />
-      </div>
+      {awaitingOpponent ? (
+        <div style={{fontSize: 100, color: "black"}}>Waiting for opponent to join...</div>
+      ) : (
+        <>
+          <h2 style={{ fontSize: 30 }}>Game Options</h2>
+          <CreateGameForm
+            selectedTimeControl={selectedTimeControl}
+            setSelectedTimeControl={setSelectedTimeControl}
+            selectedTimeControl_ref={selectedTimeControl_ref}
+            selectedFEN={selectedFEN}
+            setSelectedFEN={setSelectedFEN}
+          />
+          <h2 style={{ fontSize: 30 }}>Local Game</h2>
+          <LocalGameForm
+            navigate={navigate}
+            isOnlinePlay_ref={isOnlinePlay_ref}
+          />
+          <h2 style={{ fontSize: 30 }}>Online Game</h2>
+
+          <div className="onlineSectionContainer">
+            <OnlineGameForm
+              user={user}
+              setUser={setUser}
+              joinRoom={joinRoom}
+              setAwaitingOpponent={setAwaitingOpponent}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+              userColor_ref={userColor_ref}
+            />
+          </div>
+        </>
+      )}
+
+      {/* <button
+        onClick={() =>
+          console.log(socket.listeners("server_request_for_gameData").length)
+        }
+      >
+        test
+      </button> */}
     </div>
   );
 };
@@ -185,7 +216,7 @@ function OnlineGameForm({
   user,
   setUser,
   joinRoom,
-  navigate,
+  setAwaitingOpponent,
   selectedColor,
   setSelectedColor,
   userColor_ref,
@@ -246,7 +277,7 @@ function OnlineGameForm({
               id="startButton"
               onClick={() => {
                 joinRoom();
-                navigate("/lobby");
+                setAwaitingOpponent(true);
                 console.log(userColor_ref.current);
               }}
             >
