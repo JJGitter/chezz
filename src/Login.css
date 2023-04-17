@@ -12,7 +12,6 @@
 
 .onlineSectionContainer {
   display: flex;
-  flex-direction: row;
 }
 
 .onlineSection {
@@ -20,10 +19,46 @@
   flex-direction: column;
   align-items: center;
 }
+.createAndJoinGameSection {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.createGameHeader {
+  height: 45px;
+  border-radius: 6px;
+  background: #263238;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.createGameHeader p {
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+}
 
+.createGameSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  margin-right: 10px;
+  background-color: white;
+  border-radius: 10px;
+  border-color: black;
+  width: 300px;
+  height: 250px;
+  background-image: linear-gradient(#769656, white);
+
+}
 .colorSelection {
   display: flex;
   flex-direction: row;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #usernameInput {
@@ -34,6 +69,11 @@
   height: 40px;
   width: 150px;
   font-size: large;
+}
+
+.joinGameSection {
+  width: 300px;
+  padding-left: 10px;
 }
 
 #timeControlButton {
@@ -64,6 +104,7 @@
   width: 100px;
   border-color: white;
   border-radius: 6px;
+  border-color: black;
   font-weight: 1000;
   cursor: pointer;
 }
@@ -73,6 +114,7 @@
   border-color: black;
   border-radius: 6px;
   color: white;
+  border-color: black;
   font-weight: 1000;
   height: 40px;
   width: 100px;
@@ -85,6 +127,7 @@
   height: 40px;
   width: 100px;
   color: black;
+  border-color: black;
   font-weight: 1000;
   cursor: pointer;
 }
@@ -92,30 +135,36 @@
 .games_list_container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .games_list_header {
   height: 45px;
   border-radius: 6px;
   background: #263238;
-  position: relative;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .games_list_header p {
-  padding: 0 2em 0 3em;
   color: #fff;
   font-weight: 700;
+  font-size: 20px;
+  text-align: center;
 }
 
 .games_list_body {
-  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
   border-color: black;
-  width: 180px;
+  width: 300px;
   height: 250px;
   overflow-y: scroll;
+  background-image: linear-gradient(#769656, white);
 }
 
 .games_list_body .games_list_item {

@@ -202,53 +202,62 @@ function OnlineGameForm({
           setUser(input.target.value);
         }}
       />
-      <div className="createGameSection">
-        <div className="colorSelection">
-          <button
-            id="whiteSelection"
-            style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
-            onClick={() => {
-              setSelectedColor("white");
-              userColor_ref.current = "white";
-            }}
-          >
-            Play as White
-          </button>
-          <button
-            id="blackSelection"
-            style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
-            onClick={() => {
-              setSelectedColor("black");
-              userColor_ref.current = "black";
-            }}
-          >
-            Play as Black
-          </button>
-          <button
-            id="randomSelection"
-            style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
-            onClick={() => {
-              setSelectedColor("random");
-              let randomColor = Math.random() >= 0.5 ? "white" : "black";
-              userColor_ref.current = randomColor;
-            }}
-          >
-            Random Color
-          </button>
+
+      <div className="createAndJoinGameSection">
+        <div className="createGameContainer">
+          <div className="createGameHeader">
+            <p>Create a New Game</p>
+          </div>
+          <div className="createGameSection">
+            <div className="colorSelection">
+              <button
+                id="whiteSelection"
+                style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
+                onClick={() => {
+                  setSelectedColor("white");
+                  userColor_ref.current = "white";
+                }}
+              >
+                Play as White
+              </button>
+              <button
+                id="blackSelection"
+                style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
+                onClick={() => {
+                  setSelectedColor("black");
+                  userColor_ref.current = "black";
+                }}
+              >
+                Play as Black
+              </button>
+              <button
+                id="randomSelection"
+                style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
+                onClick={() => {
+                  setSelectedColor("random");
+                  let randomColor = Math.random() >= 0.5 ? "white" : "black";
+                  userColor_ref.current = randomColor;
+                }}
+              >
+                Random Color
+              </button>
+            </div>
+            <button
+              id="startButton"
+              onClick={() => {
+                joinRoom();
+                navigate("/lobby");
+                console.log(userColor_ref.current);
+              }}
+            >
+              Create
+            </button>
+          </div>
         </div>
-        <button
-          id="startButton"
-          onClick={() => {
-            joinRoom();
-            navigate("/lobby");
-            console.log(userColor_ref.current);
-          }}
-        >
-          Create
-        </button>
-      </div>
-      <div className="joinGameSection">
-        <CreatedGamesList />
+
+        <div className="joinGameSection">
+          <CreatedGamesList />
+        </div>
       </div>
     </div>
   );

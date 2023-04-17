@@ -56,7 +56,7 @@ function CreatedGamesList() {
   return (
     <div className="games_list_container">
       <div className="games_list_header">
-        <p>Join</p>
+        <p>Join a Published Game</p>
       </div>
 
       <div className="games_list_body">
