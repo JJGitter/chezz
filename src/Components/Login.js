@@ -87,7 +87,9 @@ const Login = () => {
       <h1 style={{ fontSize: 50 }}>CHEZZ</h1>
 
       {awaitingOpponent ? (
-        <div style={{fontSize: 100, color: "black"}}>Waiting for opponent to join...</div>
+        <div style={{ fontSize: 100, color: "black" }}>
+          Waiting for opponent to join...
+        </div>
       ) : (
         <>
           <h2 style={{ fontSize: 30 }}>Game Options</h2>
@@ -276,9 +278,12 @@ function OnlineGameForm({
             <button
               id="startButton"
               onClick={() => {
-                joinRoom();
-                setAwaitingOpponent(true);
-                console.log(userColor_ref.current);
+                if (user !== "") {
+                  joinRoom();
+                  setAwaitingOpponent(true);
+                } else {
+                  alert("Please enter your username.");
+                }
               }}
             >
               Publish

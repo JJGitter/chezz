@@ -2,45 +2,45 @@ import { useContext, useEffect, useState } from "react";
 import { userContext } from "../App";
 
 function CreatedGamesList() {
-  const { socket } = useContext(userContext);
+  const { socket, user } = useContext(userContext);
 
   const [createdGames, setCreatedGames] = useState([]);
-      // {
-    //   key: 'CsKKxQsBnJv5wlT7AAAd',
-    //   createdBy: 'DDDDDDDDDD',
-    //   timeControl: 'classical',
-    //   room: 5
-    // },
-    // {
-    //   key: 'dasdasffdgfghefqefdsfsdf',
-    //   createdBy: 'Joel',
-    //   timeControl: 'rapid',
-    //   room: 6
-    // },
-    // {
-    //   key: 'kijfhkoewjoicvfwjvjnbjr',
-    //   createdBy: 'Niko',
-    //   timeControl: 'bullet',
-    //   room: 10
-    // },
-    // {
-    //   key: 'asdadsadasfdsdfdfsgfdg',
-    //   createdBy: 'DDDDDDDDDD',
-    //   timeControl: 'classical',
-    //   room: 5
-    // },
-    // {
-    //   key: 'gfdgdfgjythythrt',
-    //   createdBy: 'Joel',
-    //   timeControl: 'rapid',
-    //   room: 6
-    // },
-    // {
-    //   key: 'vbcfvbgfjytjsdfrs',
-    //   createdBy: 'Niko',
-    //   timeControl: 'bullet',
-    //   room: 10
-    // }
+  // {
+  //   key: 'CsKKxQsBnJv5wlT7AAAd',
+  //   createdBy: 'DDDDDDDDDD',
+  //   timeControl: 'classical',
+  //   room: 5
+  // },
+  // {
+  //   key: 'dasdasffdgfghefqefdsfsdf',
+  //   createdBy: 'Joel',
+  //   timeControl: 'rapid',
+  //   room: 6
+  // },
+  // {
+  //   key: 'kijfhkoewjoicvfwjvjnbjr',
+  //   createdBy: 'Niko',
+  //   timeControl: 'bullet',
+  //   room: 10
+  // },
+  // {
+  //   key: 'asdadsadasfdsdfdfsgfdg',
+  //   createdBy: 'DDDDDDDDDD',
+  //   timeControl: 'classical',
+  //   room: 5
+  // },
+  // {
+  //   key: 'gfdgdfgjythythrt',
+  //   createdBy: 'Joel',
+  //   timeControl: 'rapid',
+  //   room: 6
+  // },
+  // {
+  //   key: 'vbcfvbgfjytjsdfrs',
+  //   createdBy: 'Niko',
+  //   timeControl: 'bullet',
+  //   room: 10
+  // }
 
   useEffect(() => {
     socket.on("existing_gameList_from_server", (gameList) => {
@@ -62,7 +62,13 @@ function CreatedGamesList() {
         {createdGames.map((game) => {
           return (
             <button
-              onClick={handleJoinGame(game)}
+              onClick={() => {
+                if (user !== "") {
+                  handleJoinGame(game);
+                } else {
+                  alert("Please enter your username.");
+                }
+              }}
               key={game.key}
               className="games_list_item"
             >
@@ -75,10 +81,8 @@ function CreatedGamesList() {
   );
 
   function handleJoinGame(game) {
-    return () => {
-      console.log("Requesting to join room" + game.room);
-      socket.emit("join_game_request", game.room);
-    };
+    console.log("Requesting to join room" + game.room);
+    socket.emit("join_game_request", game.room);
   }
 }
 

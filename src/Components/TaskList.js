@@ -10,7 +10,6 @@ export function TaskList() {
         Task List
       </h3>
       <ul>
-        <li>Style the login screen</li>
         <li>Style the game screen</li>
         <li>Manage the chat window sizing</li>
         <li>Make it possible to choose promotion piece</li>

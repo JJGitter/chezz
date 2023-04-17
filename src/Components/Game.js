@@ -236,7 +236,7 @@ function Game() {
               >
                 SetupFromFEN
               </button> */}
-              <button
+              {/* <button
                 onClick={() => {
                   console.log(
                     CreateFEN(
@@ -252,10 +252,10 @@ function Game() {
                 }}
               >
                 Test
-              </button>
-              <button onClick={() => setflippedBoard(!flippedBoard)}>
+              </button> */}
+              {!isOnlinePlay_ref.current ? <button onClick={() => setflippedBoard(!flippedBoard)}>
                 Flip Board
-              </button>
+              </button> : null}
               <button
                 onClick={() => {
                   setGameOver({
@@ -295,7 +295,7 @@ function Game() {
             </div>
             {isOnlinePlay_ref.current ? <GameChat /> : null}
 
-            <TaskList />
+            {/* <TaskList /> */}
           </div>
         </DndProvider>
       </boardContext.Provider>
