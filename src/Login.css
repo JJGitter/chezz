@@ -1,0 +1,143 @@
+.loginScreenContainer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #deb887;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.onlineSectionContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.onlineSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.colorSelection {
+  display: flex;
+  flex-direction: row;
+}
+
+#usernameInput {
+  background-color: white;
+  border-radius: 20px;
+  border-width: 4px;
+  border-color: black;
+  height: 40px;
+  width: 150px;
+  font-size: large;
+}
+
+#timeControlButton {
+  background-color: #769656;
+  border-color: #769656;
+  border-radius: 6px;
+  height: 40px;
+  width: 100px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+#startButton {
+  border-color: black;
+  border-width: 4px;
+  background-color: white;
+  border-radius: 10px;
+  height: 60px;
+  width: 140px;
+  font-weight: 1000;
+  font-size: large;
+  cursor: pointer;
+}
+
+#whiteSelection {
+  background-color: white;
+  height: 40px;
+  width: 100px;
+  border-color: white;
+  border-radius: 6px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+#blackSelection {
+  background-color: black;
+  border-color: black;
+  border-radius: 6px;
+  color: white;
+  font-weight: 1000;
+  height: 40px;
+  width: 100px;
+  cursor: pointer;
+}
+
+#randomSelection {
+  background-image: linear-gradient(white, rgb(83, 80, 80));
+  border-radius: 6px;
+  height: 40px;
+  width: 100px;
+  color: black;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.games_list_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.games_list_header {
+  height: 45px;
+  border-radius: 6px;
+  background: #263238;
+  position: relative;
+}
+.games_list_header p {
+  padding: 0 2em 0 3em;
+  color: #fff;
+  font-weight: 700;
+}
+
+.games_list_body {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  border-color: black;
+  width: 180px;
+  height: 250px;
+  overflow-y: scroll;
+}
+
+.games_list_body .games_list_item {
+  background-color: #769656;
+  background-image: linear-gradient(#769656, #deb887);
+  min-height: 60px;
+  width: 120px;
+  border-color: black;
+  border-radius: 6px;
+  font-weight: 1000;
+  font-size: 80%;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#FENInput {
+  background-color: white;
+  border-radius: 20px;
+  border-width: 4px;
+  border-color: black;
+  height: 20px;
+  width: 150px;
+  font-size: small;
+}

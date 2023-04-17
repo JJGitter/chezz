@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
 import { TaskList } from "./TaskList";
 import CreatedGamesList from "./CreatedGamesList";
+import "../Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,7 +33,9 @@ const Login = () => {
     console.log("now listening to server request for gameData");
     socket.on("server_request_for_gameData", () => {
       console.log("server requested my game data");
-      console.log(`sending time control: ${selectedTimeControl_ref.current} to server`);
+      console.log(
+        `sending time control: ${selectedTimeControl_ref.current} to server`
+      );
       socket.emit(
         "gameData_to_server",
         userColor_ref.current,
@@ -67,9 +70,9 @@ const Login = () => {
   }, [socket, selectedTimeControl_ref, userColor_ref, navigate]);
 
   return (
-    <div>
-      <h1>CHEZZ</h1>
-      <h2>Game Options</h2>
+    <div className="loginScreenContainer">
+      <h1 style={{ fontSize: 50 }}>CHEZZ</h1>
+      <h2 style={{ fontSize: 30 }}>Game Options</h2>
       <CreateGameForm
         selectedTimeControl={selectedTimeControl}
         setSelectedTimeControl={setSelectedTimeControl}
@@ -77,21 +80,21 @@ const Login = () => {
         selectedFEN={selectedFEN}
         setSelectedFEN={setSelectedFEN}
       />
-      <h2>Local Game</h2>
+      <h2 style={{ fontSize: 30 }}>Local Game</h2>
       <LocalGameForm navigate={navigate} isOnlinePlay_ref={isOnlinePlay_ref} />
-      <h2>Online Game</h2>
-      <OnlineGameForm
-        user={user}
-        setUser={setUser}
-        joinRoom={joinRoom}
-        navigate={navigate}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        userColor_ref={userColor_ref}
-      />
-      <h3>Join</h3>
-      <CreatedGamesList />
-      <TaskList />
+      <h2 style={{ fontSize: 30 }}>Online Game</h2>
+
+      <div className="onlineSectionContainer">
+        <OnlineGameForm
+          user={user}
+          setUser={setUser}
+          joinRoom={joinRoom}
+          navigate={navigate}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          userColor_ref={userColor_ref}
+        />
+      </div>
     </div>
   );
 };
@@ -109,6 +112,7 @@ function CreateGameForm({
     <>
       <div className="timeControlSelection">
         <button
+          id="timeControlButton"
           style={{ opacity: selectedTimeControl !== "classical" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedTimeControl("classical");
@@ -118,6 +122,7 @@ function CreateGameForm({
           Classical
         </button>
         <button
+          id="timeControlButton"
           style={{ opacity: selectedTimeControl !== "rapid" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedTimeControl("rapid");
@@ -127,6 +132,7 @@ function CreateGameForm({
           Rapid
         </button>
         <button
+          id="timeControlButton"
           style={{ opacity: selectedTimeControl !== "blitz" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedTimeControl("blitz");
@@ -136,6 +142,7 @@ function CreateGameForm({
           Blitz
         </button>
         <button
+          id="timeControlButton"
           style={{ opacity: selectedTimeControl !== "bullet" ? 0.5 : 1 }}
           onClick={() => {
             setSelectedTimeControl("bullet");
@@ -145,16 +152,15 @@ function CreateGameForm({
           Bullet
         </button>
       </div>
-      <div className="inputFEN">
-        <input
-          type="text"
-          placeholder="FEN..."
-          value={selectedFEN}
-          onChange={(input) => {
-            setSelectedFEN(input.target.value);
-          }}
-        />
-      </div>
+      <input
+        id="FENInput"
+        type="text"
+        placeholder="FEN..."
+        value={selectedFEN}
+        onChange={(input) => {
+          setSelectedFEN(input.target.value);
+        }}
+      />
     </>
   );
 }
@@ -163,12 +169,13 @@ function LocalGameForm({ navigate, isOnlinePlay_ref }) {
   return (
     <>
       <button
+        id="startButton"
         onClick={() => {
           isOnlinePlay_ref.current = false;
           navigate("/chezz");
         }}
       >
-        Play Locally
+        Start
       </button>
     </>
   );
@@ -184,57 +191,65 @@ function OnlineGameForm({
   userColor_ref,
 }) {
   return (
-    <>
-      <div className="colorSelection">
+    <div className="onlineSection">
+      <input
+        id="usernameInput"
+        type="text"
+        placeholder="Username..."
+        value={user}
+        maxLength={10}
+        onChange={(input) => {
+          setUser(input.target.value);
+        }}
+      />
+      <div className="createGameSection">
+        <div className="colorSelection">
+          <button
+            id="whiteSelection"
+            style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
+            onClick={() => {
+              setSelectedColor("white");
+              userColor_ref.current = "white";
+            }}
+          >
+            Play as White
+          </button>
+          <button
+            id="blackSelection"
+            style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
+            onClick={() => {
+              setSelectedColor("black");
+              userColor_ref.current = "black";
+            }}
+          >
+            Play as Black
+          </button>
+          <button
+            id="randomSelection"
+            style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
+            onClick={() => {
+              setSelectedColor("random");
+              let randomColor = Math.random() >= 0.5 ? "white" : "black";
+              userColor_ref.current = randomColor;
+            }}
+          >
+            Random Color
+          </button>
+        </div>
         <button
-          style={{ opacity: selectedColor !== "white" ? 0.5 : 1 }}
-          onClick={() => {
-            setSelectedColor("white");
-            userColor_ref.current = "white";
-          }}
-        >
-          Play as White
-        </button>
-        <button
-          style={{ opacity: selectedColor !== "black" ? 0.5 : 1 }}
-          onClick={() => {
-            setSelectedColor("black");
-            userColor_ref.current = "black";
-          }}
-        >
-          Play as Black
-        </button>
-        <button
-          style={{ opacity: selectedColor !== "random" ? 0.5 : 1 }}
-          onClick={() => {
-            setSelectedColor("random");
-            let randomColor = Math.random() >= 0.5 ? "white" : "black";
-            userColor_ref.current = randomColor;
-          }}
-        >
-          Randomize Color
-        </button>
-      </div>
-
-      <form>
-        <input
-          type="text"
-          placeholder="Name..."
-          value={user}
-          onChange={(input) => {
-            setUser(input.target.value);
-          }}
-        />
-        <button
+          id="startButton"
           onClick={() => {
             joinRoom();
             navigate("/lobby");
             console.log(userColor_ref.current);
           }}
         >
-          {user !== "" ? <div>Create Game as {user}</div> : "Create Game"}
+          Create
         </button>
-      </form>
-    </>
+      </div>
+      <div className="joinGameSection">
+        <CreatedGamesList />
+      </div>
+    </div>
   );
 }

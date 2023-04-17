@@ -4,7 +4,44 @@ import { userContext } from "../App";
 function CreatedGamesList() {
   const { socket } = useContext(userContext);
 
-  const [createdGames, setCreatedGames] = useState([]);
+  const [createdGames, setCreatedGames] = useState([
+    {
+      key: 'CsKKxQsBnJv5wlT7AAAd',
+      createdBy: 'DDDDDDDDDD',
+      timeControl: 'classical',
+      room: 5
+    },
+    {
+      key: 'dasdasffdgfghefqefdsfsdf',
+      createdBy: 'Joel',
+      timeControl: 'rapid',
+      room: 6
+    },
+    {
+      key: 'kijfhkoewjoicvfwjvjnbjr',
+      createdBy: 'Niko',
+      timeControl: 'bullet',
+      room: 10
+    },
+    {
+      key: 'asdadsadasfdsdfdfsgfdg',
+      createdBy: 'DDDDDDDDDD',
+      timeControl: 'classical',
+      room: 5
+    },
+    {
+      key: 'gfdgdfgjythythrt',
+      createdBy: 'Joel',
+      timeControl: 'rapid',
+      room: 6
+    },
+    {
+      key: 'vbcfvbgfjytjsdfrs',
+      createdBy: 'Niko',
+      timeControl: 'bullet',
+      room: 10
+    }
+  ]);
 
   useEffect(() => {
     socket.on("existing_gameList_from_server", (gameList) => {
@@ -19,7 +56,7 @@ function CreatedGamesList() {
   return (
     <div className="games_list_container">
       <div className="games_list_header">
-        <p>List of Games</p>
+        <p>Join</p>
       </div>
 
       <div className="games_list_body">
