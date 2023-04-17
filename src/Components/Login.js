@@ -206,7 +206,7 @@ function OnlineGameForm({
       <div className="createAndJoinGameSection">
         <div className="createGameContainer">
           <div className="createGameHeader">
-            <p>Create a New Game</p>
+            <p>Publish a New Game</p>
           </div>
           <div className="createGameSection">
             <div className="colorSelection">
@@ -250,7 +250,7 @@ function OnlineGameForm({
                 console.log(userColor_ref.current);
               }}
             >
-              Create
+              Publish
             </button>
           </div>
         </div>

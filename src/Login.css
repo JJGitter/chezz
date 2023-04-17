@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
 }
 
 .onlineSectionContainer {
@@ -25,7 +26,7 @@
   margin-top: 10px;
 }
 .createGameHeader {
-  height: 45px;
+  height: 60px;
   border-radius: 6px;
   background: #263238;
   width: 300px;
@@ -67,7 +68,7 @@
   border-width: 4px;
   border-color: black;
   height: 40px;
-  width: 150px;
+  width: 130px;
   font-size: large;
 }
 
@@ -140,7 +141,7 @@
 }
 
 .games_list_header {
-  height: 45px;
+  height: 60px;
   border-radius: 6px;
   background: #263238;
   width: 300px;
@@ -173,7 +174,8 @@
   min-height: 60px;
   width: 120px;
   border-color: black;
-  border-radius: 6px;
+  border-radius: 10px;
+  border-width: 4px;
   font-weight: 1000;
   font-size: 80%;
   cursor: pointer;
@@ -187,6 +189,6 @@
   border-width: 4px;
   border-color: black;
   height: 20px;
-  width: 150px;
+  width: 420px;
   font-size: small;
 }

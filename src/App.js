@@ -20,7 +20,7 @@ function App() {
   const userColor_ref = useRef(Math.random() >= 0.5 ? "white" : "black");
   const selectedTimeControl_ref = useRef(selectedTimeControl);
 
-  const [selectedFEN, setSelectedFEN] = useState("");
+  const [selectedFEN, setSelectedFEN] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
 
   const isOnlinePlay_ref = useRef(true);
 
