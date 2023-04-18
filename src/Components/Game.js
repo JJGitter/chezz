@@ -214,49 +214,20 @@ function Game() {
               <DisplayDrawOffer />
             ) : null}
             <div className="ButtonList">
-              {/* <button
-                onClick={() => {
-                  SetupFromFEN(
-                    "rn2n1k1/ppp2ppp/8/2N5/2Pp4/8/PPP2PPP/R1B1R1K1 w - - 1 17",
-                    board,
-                    setBoard,
-                    setPlayer,
-                    wKingState,
-                    bKingState,
-                    enPassantTarget,
-                    nrOfHalfMoves,
-                    nrOfFullMoves,
-                    checkmate,
-                    wChecked,
-                    bChecked,
-                    moveHistory,
-                    boardHistory
-                  );
-                }}
-              >
-                SetupFromFEN
-              </button> */}
-              {/* <button
-                onClick={() => {
-                  console.log(
-                    CreateFEN(
-                      board,
-                      player,
-                      wKingState,
-                      bKingState,
-                      enPassantTarget,
-                      nrOfHalfMoves,
-                      nrOfFullMoves
-                    )
-                  );
-                }}
-              >
-                Test
-              </button> */}
-              {!isOnlinePlay_ref.current ? <button onClick={() => setflippedBoard(!flippedBoard)}>
-                Flip Board
-              </button> : null}
-              <button
+              {!isOnlinePlay_ref.current ? (
+                <button id="gameScreenButton" onClick={() => setflippedBoard(!flippedBoard)}>
+                  Flip Board
+                </button>
+              ) : (
+                <button id="gameScreenButton"
+                  onClick={() => {
+                    socket.emit("offer_draw");
+                  }}
+                >
+                  Offer Draw
+                </button>
+              )}
+              <button id="gameScreenButton"
                 onClick={() => {
                   setGameOver({
                     scenario: `${userColor_ref.current} resigns`,
@@ -267,14 +238,8 @@ function Game() {
               >
                 Resign
               </button>
-              <button
-                onClick={() => {
-                  socket.emit("offer_draw");
-                }}
-              >
-                Offer Draw
-              </button>
-              <button
+
+              <button id="gameScreenButton"
                 onClick={() => {
                   CopyToClipBoard(
                     CreateFEN(

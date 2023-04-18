@@ -1,14 +1,19 @@
 .loginScreenContainer {
   height: 100%;
   width: 100%;
+  background-image: url("./Pictures/loginBackground.png");
+  background-size: cover;
   position: absolute;
   left: 0;
   top: 0;
-  background: #deb887;
+  overflow-y: scroll;
+}
+
+.loginMenuContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: scroll;
+  
 }
 
 .onlineSectionContainer {

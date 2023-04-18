@@ -8,7 +8,8 @@
 .ButtonList {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  height: 40vh;
 }
 
 .Board {
@@ -88,6 +89,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#gameScreenButton {
+  border-color: black;
+  border-width: 4px;
+  background-color: white;
+  border-radius: 10px;
+  height: 60px;
+  width: 140px;
+  font-weight: 1000;
+  font-size: large;
+  cursor: pointer;
+  margin-top: 5vh;
 }
 
 .taskList {

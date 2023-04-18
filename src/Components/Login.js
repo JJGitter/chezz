@@ -4,6 +4,7 @@ import { userContext } from "../App";
 import { TaskList } from "./TaskList";
 import CreatedGamesList from "./CreatedGamesList";
 import "../Login.css";
+import { GiChessKnight, GiChessPawn } from "react-icons/gi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -84,50 +85,53 @@ const Login = () => {
 
   return (
     <div className="loginScreenContainer">
-      <h1 style={{ fontSize: 50 }}>CHEZZ</h1>
+      <div className="loginMenuContainer">
+        <h1 style={{ fontSize: 50 }}>CHEZZ</h1>
 
-      {awaitingOpponent ? (
-        <div style={{ fontSize: 100, color: "black" }}>
-          Waiting for opponent to join...
-        </div>
-      ) : (
-        <>
-          <h2 style={{ fontSize: 30 }}>Game Options</h2>
-          <CreateGameForm
-            selectedTimeControl={selectedTimeControl}
-            setSelectedTimeControl={setSelectedTimeControl}
-            selectedTimeControl_ref={selectedTimeControl_ref}
-            selectedFEN={selectedFEN}
-            setSelectedFEN={setSelectedFEN}
-          />
-          <h2 style={{ fontSize: 30 }}>Local Game</h2>
-          <LocalGameForm
-            navigate={navigate}
-            isOnlinePlay_ref={isOnlinePlay_ref}
-          />
-          <h2 style={{ fontSize: 30 }}>Online Game</h2>
-
-          <div className="onlineSectionContainer">
-            <OnlineGameForm
-              user={user}
-              setUser={setUser}
-              joinRoom={joinRoom}
-              setAwaitingOpponent={setAwaitingOpponent}
-              selectedColor={selectedColor}
-              setSelectedColor={setSelectedColor}
-              userColor_ref={userColor_ref}
-            />
+        {awaitingOpponent ? (
+          <div style={{ fontSize: 100, color: "black" }}>
+            Waiting for opponent to join...
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <h2 style={{ fontSize: 30 }}>Game Options</h2>
+            <CreateGameForm
+              selectedTimeControl={selectedTimeControl}
+              setSelectedTimeControl={setSelectedTimeControl}
+              selectedTimeControl_ref={selectedTimeControl_ref}
+              selectedFEN={selectedFEN}
+              setSelectedFEN={setSelectedFEN}
+            />
+            <h2 style={{ fontSize: 30 }}>Local Game</h2>
+            <LocalGameForm
+              navigate={navigate}
+              isOnlinePlay_ref={isOnlinePlay_ref}
+            />
+            <h2 style={{ fontSize: 30 }}>Online Game</h2>
 
-      {/* <button
+            <div className="onlineSectionContainer">
+              <OnlineGameForm
+                user={user}
+                setUser={setUser}
+                joinRoom={joinRoom}
+                setAwaitingOpponent={setAwaitingOpponent}
+                selectedColor={selectedColor}
+                setSelectedColor={setSelectedColor}
+                userColor_ref={userColor_ref}
+              />
+            </div>
+          </>
+        )}
+
+        {/* <button
         onClick={() =>
           console.log(socket.listeners("server_request_for_gameData").length)
         }
       >
         test
       </button> */}
+      </div>
+
     </div>
   );
 };
