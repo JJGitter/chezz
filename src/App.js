@@ -30,9 +30,8 @@ function App() {
         value={{ user, setUser, socket, selectedColor, setSelectedColor, selectedTimeControl, setSelectedTimeControl, selectedTimeControl_ref, userColor_ref, isOnlinePlay_ref, selectedFEN, setSelectedFEN }}
       >
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="login" element={<Login />} />
-          <Route path="chezz" element={<Game />} />
+          <Route path="/chezz" element={<Login />} />
+          <Route path="/game" element={<Game />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </userContext.Provider>

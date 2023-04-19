@@ -1,4 +1,3 @@
-import { TaskList } from "./TaskList";
 import "../App.css";
 import React, { useState, useEffect, useContext } from "react";
 import SetupBoard from "../Functions/SetupBoard";
@@ -80,6 +79,7 @@ function Game() {
         boardHistory
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

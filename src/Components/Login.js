@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../App";
-import { TaskList } from "./TaskList";
 import CreatedGamesList from "./CreatedGamesList";
 import "../Login.css";
-import { GiChessKnight, GiChessPawn } from "react-icons/gi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,7 +44,7 @@ const Login = () => {
         selectedTimeControl_ref.current,
         selectedFEN
       );
-      navigate("/chezz");
+      navigate("/game");
     });
     return () => socket.removeAllListeners("server_request_for_gameData");
   }, [socket, userColor_ref, selectedTimeControl_ref, navigate, selectedFEN]);
@@ -68,7 +66,7 @@ const Login = () => {
           }
           selectedTimeControl_ref.current = selectedTimeControl_data;
           setSelectedFEN(FEN_data);
-          navigate("/chezz");
+          navigate("/game");
         }
       );
     }
@@ -209,7 +207,7 @@ function LocalGameForm({ navigate, isOnlinePlay_ref }) {
         id="startButton"
         onClick={() => {
           isOnlinePlay_ref.current = false;
-          navigate("/chezz");
+          navigate("/game");
         }}
       >
         Start
