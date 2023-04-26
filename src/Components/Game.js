@@ -83,6 +83,12 @@ function Game() {
   }, []);
 
   useEffect(() => {
+    if(gameOver.isOver){
+      socket.emit("stop_timer");
+    }
+  },[gameOver, socket])
+
+  useEffect(() => {
     if (isOnlinePlay_ref.current) {
       socket.on(
         "opponent_moved",
