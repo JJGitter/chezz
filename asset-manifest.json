@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/chezz/static/css/main.60726262.css",
-    "main.js": "/chezz/static/js/main.8f5b7d10.js",
+    "main.js": "/chezz/static/js/main.b8341179.js",
     "static/media/loginBackground.png": "/chezz/static/media/loginBackground.7deae7804664cc784dc5.png",
     "index.html": "/chezz/index.html",
     "main.60726262.css.map": "/chezz/static/css/main.60726262.css.map",
-    "main.8f5b7d10.js.map": "/chezz/static/js/main.8f5b7d10.js.map"
+    "main.b8341179.js.map": "/chezz/static/js/main.b8341179.js.map"
   },
   "entrypoints": [
     "static/css/main.60726262.css",
-    "static/js/main.8f5b7d10.js"
+    "static/js/main.b8341179.js"
   ]
 }
