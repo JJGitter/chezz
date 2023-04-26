@@ -8,7 +8,9 @@ import Game from "./Components/Game";
 
 export const userContext = React.createContext();
 
-const socket = io("http://localhost:9000");
+// const socket = io("http://localhost:9000");
+const socket = io("https://chezz-server.herokuapp.com/");
+//point to https://chezz-server.herokuapp.com/
 
 function App() {
   const [user, setUser] = useState("");
