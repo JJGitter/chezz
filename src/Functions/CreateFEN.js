@@ -1,4 +1,4 @@
-function CreateFEN(
+function createFEN(
   board,
   player,
   wKingState,
@@ -99,4 +99,4 @@ function CreateFEN(
   return FEN;
 }
 
-export default CreateFEN;
+export default createFEN;

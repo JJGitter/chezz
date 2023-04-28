@@ -1,7 +1,7 @@
 import React from 'react';
 import Square from '../Components/Square';
 
-function SetupBoard() {
+function setupBoard() {
 
     const row8 = [
         <Square key="a8" index="a8" color="Light" pieceType="Rook" pieceColor="black" />,
@@ -97,4 +97,4 @@ function SetupBoard() {
     return (board)
 }
 
-export default SetupBoard
+export default setupBoard

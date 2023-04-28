@@ -1,7 +1,7 @@
-import { stringSplit } from "./MovePiece";
-import UnderEnemyControl from "./UnderEnemyControl";
+import { stringSplit } from "./movePiece";
+import UnderEnemyControl from "./underEnemyControl";
 import Square from "../Components/Square";
-import CreateTempBoard from "./CreateTempBoard";
+import CreateTempBoard from "./createTempBoard";
 
 export function stringMerge(columnidx, rowidx) {
   //This function will merge two strings to make a square id string. (1 and 1 will become "b7")
@@ -14,7 +14,7 @@ export function stringMerge(columnidx, rowidx) {
   return squareID;
 }
 
-function DestinationSquares(
+function destinationSquares(
   movedItem,
   board,
   wKingState,
@@ -695,4 +695,4 @@ function DestinationSquares(
   return destinations;
 }
 
-export default DestinationSquares;
+export default destinationSquares;

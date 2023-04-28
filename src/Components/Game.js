@@ -1,11 +1,11 @@
 import "../App.css";
 import React, { useState, useEffect, useContext } from "react";
-import SetupBoard from "../Functions/SetupBoard";
+import setupBoard from "../Functions/setupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { useRef } from "react";
-import SetupFromFEN from "../Functions/SetupFromFEN";
-import CreateFEN from "../Functions/CreateFEN";
+import setupFromFEN from "../Functions/setupFromFEN";
+import createFEN from "../Functions/createFEN";
 import NotationBox from "../Components/NotationBox";
 import ChessTimer from "../Components/ChessTimer";
 import ServerTimer from "./ServerTimer";
@@ -25,7 +25,7 @@ function Game() {
     selectedFEN,
   } = useContext(userContext);
 
-  const [board, setBoard] = useState(SetupBoard);
+  const [board, setBoard] = useState(setupBoard);
   const [flippedBoard, setflippedBoard] = useState(
     userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false
   ); // usercolor does not have time to update before this is run. Maybe usercolor should be a useRef?
@@ -62,7 +62,7 @@ function Game() {
 
   useEffect(() => {
     if (selectedFEN !== "") {
-      SetupFromFEN(
+      setupFromFEN(
         selectedFEN,
         board,
         setBoard,
@@ -79,14 +79,14 @@ function Game() {
         boardHistory
       );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if(gameOver.isOver){
+    if (gameOver.isOver) {
       socket.emit("stop_timer");
     }
-  },[gameOver, socket])
+  }, [gameOver, socket]);
 
   useEffect(() => {
     if (isOnlinePlay_ref.current) {
@@ -112,6 +112,12 @@ function Game() {
         setGameOver({ scenario: "Draw by agreement", isOver: true });
       });
     }
+    return () => {
+      socket.removeAllListeners("opponent_moved");
+      socket.removeAllListeners("opponent_resigns");
+      socket.removeAllListeners("receive_draw_offer");
+      socket.removeAllListeners("receive_draw_accepted");
+    };
   }, [socket, isOnlinePlay_ref]);
 
   if (opponentMoved) {
@@ -221,11 +227,15 @@ function Game() {
             ) : null}
             <div className="ButtonList">
               {!isOnlinePlay_ref.current ? (
-                <button id="gameScreenButton" onClick={() => setflippedBoard(!flippedBoard)}>
+                <button
+                  id="gameScreenButton"
+                  onClick={() => setflippedBoard(!flippedBoard)}
+                >
                   Flip Board
                 </button>
               ) : (
-                <button id="gameScreenButton"
+                <button
+                  id="gameScreenButton"
                   onClick={() => {
                     socket.emit("offer_draw");
                   }}
@@ -233,7 +243,8 @@ function Game() {
                   Offer Draw
                 </button>
               )}
-              <button id="gameScreenButton"
+              <button
+                id="gameScreenButton"
                 onClick={() => {
                   setGameOver({
                     scenario: `${userColor_ref.current} resigns`,
@@ -245,10 +256,11 @@ function Game() {
                 Resign
               </button>
 
-              <button id="gameScreenButton"
+              <button
+                id="gameScreenButton"
                 onClick={() => {
                   CopyToClipBoard(
-                    CreateFEN(
+                    createFEN(
                       board,
                       player,
                       wKingState,

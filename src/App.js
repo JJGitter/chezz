@@ -8,8 +8,8 @@ import Game from "./Components/Game";
 
 export const userContext = React.createContext();
 
-// const socket = io("http://localhost:9000");
-const socket = io("https://chezz-server.herokuapp.com/");
+const socket = io("http://localhost:9000");
+// const socket = io("https://chezz-server.herokuapp.com/");
 
 function App() {
   const [user, setUser] = useState("");
@@ -24,7 +24,6 @@ function App() {
 
   const isOnlinePlay_ref = useRef(true);
 
-  console.log("app fires")
   return (
     <BrowserRouter>
       <userContext.Provider

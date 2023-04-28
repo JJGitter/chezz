@@ -1,7 +1,7 @@
-import DestinationSquares from "./DestinationSquares";
-import { stringMerge } from "./DestinationSquares";
+import destinationSquares from "./destinationSquares";
+import { stringMerge } from "./destinationSquares";
 
-function UnderEnemyControl(board, player) {
+function underEnemyControl(board, player) {
   //This function returns an array of the squares that are targets by enemy pieces (enemy is the opposer to player).
   //It is useful to determine if castling is legal and to determine checkmate and stalemate.
   //Squares that are targeted several times will also appear several times in the array.
@@ -19,7 +19,7 @@ function UnderEnemyControl(board, player) {
         item.piece = board[i][j].props.pieceType;
         item.pieceColor = board[i][j].props.pieceColor;
         controlledSquares.push(
-          ...DestinationSquares(item, board, null, null, null, true)
+          ...destinationSquares(item, board, null, null, null, true)
         );
       }
       if (
@@ -53,4 +53,4 @@ function UnderEnemyControl(board, player) {
   return controlledSquares;
 }
 
-export default UnderEnemyControl;
+export default underEnemyControl;

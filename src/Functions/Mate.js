@@ -1,4 +1,4 @@
-import DestinationSquares from "./DestinationSquares";
+import destinationSquares from "./destinationSquares";
 
 function anyLegalMoves(player, board, wKingState, bKingState, enPassantTarget) {
   let anyLegalMoves = false;
@@ -18,7 +18,7 @@ function anyLegalMoves(player, board, wKingState, bKingState, enPassantTarget) {
         item.pieceColor = board[i][j].props.pieceColor;
 
         if (
-          DestinationSquares(
+          destinationSquares(
             item,
             board,
             wKingState,
@@ -37,11 +37,11 @@ function anyLegalMoves(player, board, wKingState, bKingState, enPassantTarget) {
   return anyLegalMoves;
 }
 
-function Mate(player, board, wKingState, bKingState, enPassantTarget) {
+function mate(player, board, wKingState, bKingState, enPassantTarget) {
   //call this function after each move, if king is checked
   let isMate = false;
   if (player === "white") {
-    let kingDestinations = DestinationSquares(
+    let kingDestinations = destinationSquares(
       {
         fromCell: bKingState.current.position,
         piece: "King",
@@ -62,7 +62,7 @@ function Mate(player, board, wKingState, bKingState, enPassantTarget) {
       );
     }
   } else {
-    let kingDestinations = DestinationSquares(
+    let kingDestinations = destinationSquares(
       {
         fromCell: wKingState.current.position,
         piece: "King",
@@ -114,4 +114,4 @@ function Mate(player, board, wKingState, bKingState, enPassantTarget) {
   return isMate;
 }
 
-export default Mate;
+export default mate;

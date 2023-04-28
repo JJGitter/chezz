@@ -70,9 +70,8 @@ const Login = () => {
         }
       );
     }
-
     receiveGameData();
-    // return () => socket.removeAllListeners("gameData_to_client");
+    return () => socket.removeAllListeners("gameData_to_client");
   }, [
     socket,
     selectedTimeControl_ref,
@@ -129,7 +128,6 @@ const Login = () => {
         test
       </button> */}
       </div>
-
     </div>
   );
 };

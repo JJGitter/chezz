@@ -4,7 +4,7 @@ import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
 import { boardContext } from "./Game";
 import { useContext } from "react";
-import DestinationSquares from "../Functions/DestinationSquares";
+import destinationSquares from "../Functions/destinationSquares";
 import { userContext } from "../App";
 import { handlePieceMove } from "../Functions/handlePieceMove";
 
@@ -48,7 +48,7 @@ function Square(squareProps) {
     accept: "piece", //the type of drag component that will be accepted to drop
     drop: (item, monitor) => {
       if (
-        DestinationSquares(
+        destinationSquares(
           item,
           board,
           wKingState,

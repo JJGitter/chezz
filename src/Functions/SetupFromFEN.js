@@ -1,7 +1,7 @@
 import Square from "../Components/Square";
-import CreateTempBoard from "./CreateTempBoard";
+import CreateTempBoard from "./createTempBoard";
 
-function SetupFromFEN(
+function setupFromFEN(
   FEN,
   board,
   setBoard,
@@ -201,4 +201,4 @@ function SetupFromFEN(
   //___________________________________________
 }
 
-export default SetupFromFEN;
+export default setupFromFEN;

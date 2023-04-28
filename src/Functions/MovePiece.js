@@ -1,10 +1,10 @@
 import React from "react";
 import Square from "../Components/Square";
-import CreateTempBoard from "./CreateTempBoard";
-import { stringMerge } from "./DestinationSquares";
-import UnderEnemyControl from "./UnderEnemyControl";
-import Mate from "./Mate";
-import CreateFEN from "./CreateFEN";
+import createTempBoard from "./createTempBoard";
+import { stringMerge } from "./destinationSquares";
+import underEnemyControl from "./underEnemyControl";
+import mate from "./mate";
+import CreateFEN from "./createFEN";
 
 export function stringSplit(string) {
   //This function will split the string of square id such as "C4" and return columnindex=2 and rowindex=4
@@ -17,7 +17,7 @@ export function stringSplit(string) {
 
 let lastMoveHighlight = "grayscale(50%)";
 
-function MovePiece(
+function movePiece(
   board,
   setBoard,
   pieceType,
@@ -49,7 +49,7 @@ function MovePiece(
     nrOfHalfMoves.current++;
   }
 
-  let tempBoard = CreateTempBoard(board);
+  let tempBoard = createTempBoard(board);
   //let tempBoard = [...board];
 
   //Remove the highlight on the last move
@@ -301,7 +301,7 @@ function MovePiece(
     }
 
     if (
-      UnderEnemyControl(tempBoard, "black").includes(
+      underEnemyControl(tempBoard, "black").includes(
         bKingState.current.position
       )
     ) {
@@ -337,7 +337,7 @@ function MovePiece(
       }
     }
     if (
-      UnderEnemyControl(tempBoard, "white").includes(
+      underEnemyControl(tempBoard, "white").includes(
         wKingState.current.position
       )
     ) {
@@ -395,7 +395,7 @@ function MovePiece(
   //Checkmate or stalemate?
   //_____________________________________________
   //_____________________________________________
-  if (Mate(player, tempBoard, wKingState, bKingState, enPassantTarget)) {
+  if (mate(player, tempBoard, wKingState, bKingState, enPassantTarget)) {
     if (wChecked.current || bChecked.current) {
       checkmate.current = true;
       setGameOver({ scenario: `${player} wins by checkmate!`, isOver: true })
@@ -417,4 +417,4 @@ function MovePiece(
   return isCapture;
 }
 
-export default MovePiece;
+export default movePiece;

@@ -1,5 +1,5 @@
-import DestinationSquares from "./DestinationSquares";
-import { stringSplit } from "./MovePiece";
+import destinationSquares from "./destinationSquares";
+import { stringSplit } from "./movePiece";
 
 function canMultiplePiecesReachThisSquare(
   board,
@@ -12,7 +12,7 @@ function canMultiplePiecesReachThisSquare(
   let multiplePiecesCanReach;
 
   //Find the destination squares of the piece that was just moved. Check with "checkingEnemyControl" so that it includes squares occupied by your own pieces.
-  let destinations = DestinationSquares(
+  let destinations = destinationSquares(
     {
       fromCell: toSquare, //i.e. "c5"
       piece: movedItem.piece, //i.e. "Knight"
@@ -38,7 +38,7 @@ function canMultiplePiecesReachThisSquare(
   return multiplePiecesCanReach;
 }
 
-function CreateMoveNotation(
+function createMoveNotation(
   board,
   movedItem,
   isCapture,
@@ -124,4 +124,4 @@ function CreateMoveNotation(
   return moveHistory.current;
 }
 
-export default CreateMoveNotation;
+export default createMoveNotation;
