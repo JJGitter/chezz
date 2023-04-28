@@ -12,6 +12,7 @@ import ServerTimer from "./ServerTimer";
 import GameChat from "./GameChat";
 import { userContext } from "../App";
 import { handlePieceMove } from "../Functions/handlePieceMove";
+import resetBoard from "../Functions/resetBoard";
 
 export const boardContext = React.createContext();
 
@@ -59,6 +60,7 @@ function Game() {
   const [receivedItem, setReceivedItem] = useState({});
   const [receivedToSquare, setReceivedToSquare] = useState("");
   const [displayDrawOffer, setDisplayDrawOffer] = useState(false);
+  const [displayRematchOffer, setDisplayRematchOffer] = useState(false);
 
   useEffect(() => {
     if (selectedFEN !== "") {
@@ -111,14 +113,52 @@ function Game() {
       socket.on("receive_draw_accepted", () => {
         setGameOver({ scenario: "Draw by agreement", isOver: true });
       });
+      socket.on("rematch_offer_to_client", () => {
+        console.log("received rematch offer")
+        setDisplayRematchOffer(true);
+      });
     }
     return () => {
       socket.removeAllListeners("opponent_moved");
       socket.removeAllListeners("opponent_resigns");
       socket.removeAllListeners("receive_draw_offer");
       socket.removeAllListeners("receive_draw_accepted");
+      socket.removeAllListeners("rematch_offer_to_client");
     };
   }, [socket, isOnlinePlay_ref]);
+
+  useEffect(() => {
+    socket.on("rematch_accepted_to_client", () => {
+      // resetBoard();
+      setupFromFEN(
+        selectedFEN,
+        board,
+        setBoard,
+        setPlayer,
+        wKingState,
+        bKingState,
+        enPassantTarget,
+        nrOfHalfMoves,
+        nrOfFullMoves,
+        checkmate,
+        wChecked,
+        bChecked,
+        moveHistory,
+        boardHistory
+      );
+      setGameOver({ scenario: "", isOver: false });
+      if (userColor_ref.current === "white") {
+        userColor_ref.current = "black";
+      } else {
+        userColor_ref.current = "white";
+      }
+      beforeFirstMove_ref.current = true;
+      setflippedBoard(userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false);
+    });
+    return () => {
+      socket.removeAllListeners("rematch_accepted_to_client");
+    };
+  }, [socket, board, selectedFEN, userColor_ref, isOnlinePlay_ref]);
 
   if (opponentMoved) {
     setOpponentMoved(false);
@@ -159,6 +199,53 @@ function Game() {
         <button
           onClick={() => {
             setDisplayDrawOffer(false);
+          }}
+        >
+          Decline
+        </button>
+      </>
+    );
+  };
+
+  const DisplayRematchOffer = () => {
+    return (
+      <>
+        Opponent offers a rematch.
+        <button
+          onClick={() => {
+            setDisplayRematchOffer(false);
+            socket.emit("rematch_accepted",selectedTimeControl_ref.current);
+            setupFromFEN(
+              selectedFEN,
+              board,
+              setBoard,
+              setPlayer,
+              wKingState,
+              bKingState,
+              enPassantTarget,
+              nrOfHalfMoves,
+              nrOfFullMoves,
+              checkmate,
+              wChecked,
+              bChecked,
+              moveHistory,
+              boardHistory
+            );
+            setGameOver({ scenario: "", isOver: false });
+            if (userColor_ref.current === "white") {
+              userColor_ref.current = "black";
+            } else {
+              userColor_ref.current = "white";
+            }
+            beforeFirstMove_ref.current = true;
+            setflippedBoard(userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false);
+          }}
+        >
+          Accept
+        </button>
+        <button
+          onClick={() => {
+            setDisplayRematchOffer(false);
           }}
         >
           Decline
@@ -225,6 +312,7 @@ function Game() {
             ) : displayDrawOffer ? (
               <DisplayDrawOffer />
             ) : null}
+            {displayRematchOffer ? <DisplayRematchOffer /> : null}
             <div className="ButtonList">
               {!isOnlinePlay_ref.current ? (
                 <button
@@ -233,7 +321,7 @@ function Game() {
                 >
                   Flip Board
                 </button>
-              ) : (
+              ) : !gameOver.isOver ? (
                 <button
                   id="gameScreenButton"
                   onClick={() => {
@@ -242,19 +330,30 @@ function Game() {
                 >
                   Offer Draw
                 </button>
+              ) : null}
+              {!gameOver.isOver ? (
+                <button
+                  id="gameScreenButton"
+                  onClick={() => {
+                    setGameOver({
+                      scenario: `${userColor_ref.current} resigns`,
+                      isOver: true,
+                    });
+                    socket.emit("resign", userColor_ref.current);
+                  }}
+                >
+                  Resign
+                </button>
+              ) : (
+                <button
+                  id="gameScreenButton"
+                  onClick={() => {
+                    socket.emit("offer_rematch");
+                  }}
+                >
+                  Rematch
+                </button>
               )}
-              <button
-                id="gameScreenButton"
-                onClick={() => {
-                  setGameOver({
-                    scenario: `${userColor_ref.current} resigns`,
-                    isOver: true,
-                  });
-                  socket.emit("resign", userColor_ref.current);
-                }}
-              >
-                Resign
-              </button>
 
               <button
                 id="gameScreenButton"

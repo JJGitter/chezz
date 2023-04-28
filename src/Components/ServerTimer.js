@@ -8,6 +8,7 @@ function ServerTimer({
   selectedTimeControl_ref,
   beforeFirstMove_ref,
 }) {
+  console.log("serverTimer renders");
   const { socket } = useContext(userContext);
   let nrOfSecondsInTimeControl;
 
