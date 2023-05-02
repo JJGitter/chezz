@@ -29,7 +29,7 @@ function Game() {
   const [board, setBoard] = useState(setupBoard);
   const [flippedBoard, setflippedBoard] = useState(
     userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false
-  ); // usercolor does not have time to update before this is run. Maybe usercolor should be a useRef?
+  );
   const [player, setPlayer] = useState("white");
 
   const [gameOver, setGameOver] = useState({ scenario: "", isOver: false });
@@ -129,31 +129,8 @@ function Game() {
 
   useEffect(() => {
     socket.on("rematch_accepted_to_client", () => {
-      // resetBoard();
-      setupFromFEN(
-        selectedFEN,
-        board,
-        setBoard,
-        setPlayer,
-        wKingState,
-        bKingState,
-        enPassantTarget,
-        nrOfHalfMoves,
-        nrOfFullMoves,
-        checkmate,
-        wChecked,
-        bChecked,
-        moveHistory,
-        boardHistory
-      );
-      setGameOver({ scenario: "", isOver: false });
-      if (userColor_ref.current === "white") {
-        userColor_ref.current = "black";
-      } else {
-        userColor_ref.current = "white";
-      }
-      beforeFirstMove_ref.current = true;
-      setflippedBoard(userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false);
+      resetBoard(selectedFEN, board, setBoard, setPlayer, wKingState, bKingState, enPassantTarget, nrOfHalfMoves, nrOfFullMoves, checkmate, wChecked, bChecked, moveHistory, boardHistory, setGameOver, userColor_ref, beforeFirstMove_ref, setflippedBoard, isOnlinePlay_ref);
+
     });
     return () => {
       socket.removeAllListeners("rematch_accepted_to_client");
@@ -215,30 +192,7 @@ function Game() {
           onClick={() => {
             setDisplayRematchOffer(false);
             socket.emit("rematch_accepted",selectedTimeControl_ref.current);
-            setupFromFEN(
-              selectedFEN,
-              board,
-              setBoard,
-              setPlayer,
-              wKingState,
-              bKingState,
-              enPassantTarget,
-              nrOfHalfMoves,
-              nrOfFullMoves,
-              checkmate,
-              wChecked,
-              bChecked,
-              moveHistory,
-              boardHistory
-            );
-            setGameOver({ scenario: "", isOver: false });
-            if (userColor_ref.current === "white") {
-              userColor_ref.current = "black";
-            } else {
-              userColor_ref.current = "white";
-            }
-            beforeFirstMove_ref.current = true;
-            setflippedBoard(userColor_ref.current === "black" && isOnlinePlay_ref.current ? true : false);
+            resetBoard(selectedFEN, board, setBoard, setPlayer, wKingState, bKingState, enPassantTarget, nrOfHalfMoves, nrOfFullMoves, checkmate, wChecked, bChecked, moveHistory, boardHistory, setGameOver, userColor_ref, beforeFirstMove_ref, setflippedBoard, isOnlinePlay_ref);
           }}
         >
           Accept
@@ -480,3 +434,5 @@ function Game() {
 }
 
 export default Game;
+
+
