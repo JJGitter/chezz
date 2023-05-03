@@ -1,5 +1,6 @@
 import "../App.css";
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import setupBoard from "../Functions/setupBoard";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
@@ -25,6 +26,7 @@ function Game() {
     isOnlinePlay_ref,
     selectedFEN,
   } = useContext(userContext);
+  const navigate = useNavigate();
 
   const [board, setBoard] = useState(setupBoard);
   const [flippedBoard, setflippedBoard] = useState(
@@ -114,7 +116,7 @@ function Game() {
         setGameOver({ scenario: "Draw by agreement", isOver: true });
       });
       socket.on("rematch_offer_to_client", () => {
-        console.log("received rematch offer")
+        console.log("received rematch offer");
         setDisplayRematchOffer(true);
       });
     }
@@ -129,8 +131,27 @@ function Game() {
 
   useEffect(() => {
     socket.on("rematch_accepted_to_client", () => {
-      resetBoard(selectedFEN, board, setBoard, setPlayer, wKingState, bKingState, enPassantTarget, nrOfHalfMoves, nrOfFullMoves, checkmate, wChecked, bChecked, moveHistory, boardHistory, setGameOver, userColor_ref, beforeFirstMove_ref, setflippedBoard, isOnlinePlay_ref);
-
+      resetBoard(
+        selectedFEN,
+        board,
+        setBoard,
+        setPlayer,
+        wKingState,
+        bKingState,
+        enPassantTarget,
+        nrOfHalfMoves,
+        nrOfFullMoves,
+        checkmate,
+        wChecked,
+        bChecked,
+        moveHistory,
+        boardHistory,
+        setGameOver,
+        userColor_ref,
+        beforeFirstMove_ref,
+        setflippedBoard,
+        isOnlinePlay_ref
+      );
     });
     return () => {
       socket.removeAllListeners("rematch_accepted_to_client");
@@ -191,8 +212,28 @@ function Game() {
         <button
           onClick={() => {
             setDisplayRematchOffer(false);
-            socket.emit("rematch_accepted",selectedTimeControl_ref.current);
-            resetBoard(selectedFEN, board, setBoard, setPlayer, wKingState, bKingState, enPassantTarget, nrOfHalfMoves, nrOfFullMoves, checkmate, wChecked, bChecked, moveHistory, boardHistory, setGameOver, userColor_ref, beforeFirstMove_ref, setflippedBoard, isOnlinePlay_ref);
+            socket.emit("rematch_accepted", selectedTimeControl_ref.current);
+            resetBoard(
+              selectedFEN,
+              board,
+              setBoard,
+              setPlayer,
+              wKingState,
+              bKingState,
+              enPassantTarget,
+              nrOfHalfMoves,
+              nrOfFullMoves,
+              checkmate,
+              wChecked,
+              bChecked,
+              moveHistory,
+              boardHistory,
+              setGameOver,
+              userColor_ref,
+              beforeFirstMove_ref,
+              setflippedBoard,
+              isOnlinePlay_ref
+            );
           }}
         >
           Accept
@@ -299,14 +340,50 @@ function Game() {
                   Resign
                 </button>
               ) : (
-                <button
-                  id="gameScreenButton"
-                  onClick={() => {
-                    socket.emit("offer_rematch");
-                  }}
-                >
-                  Rematch
-                </button>
+                <>
+                  <button
+                    id="gameScreenButton"
+                    onClick={() => {
+                      if (isOnlinePlay_ref.current) {
+                        socket.emit("offer_rematch");
+                      }else{
+                        resetBoard(
+                          selectedFEN,
+                          board,
+                          setBoard,
+                          setPlayer,
+                          wKingState,
+                          bKingState,
+                          enPassantTarget,
+                          nrOfHalfMoves,
+                          nrOfFullMoves,
+                          checkmate,
+                          wChecked,
+                          bChecked,
+                          moveHistory,
+                          boardHistory,
+                          setGameOver,
+                          userColor_ref,
+                          beforeFirstMove_ref,
+                          setflippedBoard,
+                          isOnlinePlay_ref
+                        );
+                      }
+                    }}
+                  >
+                    Rematch
+                  </button>
+
+                  <button
+                    id="gameScreenButton"
+                    onClick={() => {
+                      socket.emit("leave_room");
+                      navigate("/chezz");
+                    }}
+                  >
+                    Return to home screen
+                  </button>
+                </>
               )}
 
               <button
@@ -434,5 +511,3 @@ function Game() {
 }
 
 export default Game;
-
-
