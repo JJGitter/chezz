@@ -377,7 +377,8 @@ function Game() {
                   <button
                     id="gameScreenButton"
                     onClick={() => {
-                      socket.emit("leave_room");
+                      socket.emit("returning_to_home_screen");
+                      isOnlinePlay_ref.current = true;
                       navigate("/chezz");
                     }}
                   >
