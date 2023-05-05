@@ -27,6 +27,14 @@ function ChessTimer({
   let intervalRef = useRef(null);
 
   useEffect(() => {
+    //reset timer upon rematch
+    if (beforeFirstMove_ref.current) {
+      setWhiteTime(nrOfSecondsInTimeControl);
+      setBlackTime(nrOfSecondsInTimeControl);
+    }
+  }, [gameOver.isOver, nrOfSecondsInTimeControl, setWhiteTime, setBlackTime, beforeFirstMove_ref]);
+
+  useEffect(() => {
     if (playerColor === "white" && !beforeFirstMove_ref.current) {
       //run white timer
       intervalRef.current = setInterval(() => {
