@@ -2,7 +2,8 @@ import movePiece from "./movePiece";
 import createMoveNotation from "./createMoveNotation";
 
 
-export function handlePieceMove(item, toCell, board, setBoard, wKingState, bKingState, enPassantTarget, player, setPlayer, wChecked, bChecked, lastMove, nrOfHalfMoves, checkmate, boardHistory, setGameOver, nrOfFullMoves, moveHistory) {
+export function handlePieceMove(item, toCell, board, setBoard, wKingState, bKingState, enPassantTarget, player, setPlayer, wChecked, bChecked, lastMove, nrOfHalfMoves, checkmate, boardHistory, setGameOver, nrOfFullMoves, moveHistory, promotionPiece) {
+  
   let isCapture = movePiece(
     board,
     setBoard,
@@ -20,7 +21,8 @@ export function handlePieceMove(item, toCell, board, setBoard, wKingState, bKing
     nrOfHalfMoves,
     checkmate,
     boardHistory,
-    setGameOver
+    setGameOver,
+    promotionPiece
   );
 
   if (player === "black") {
@@ -38,7 +40,8 @@ export function handlePieceMove(item, toCell, board, setBoard, wKingState, bKing
     bKingState,
     enPassantTarget,
     moveHistory,
-    checkmate
+    checkmate,
+    promotionPiece
   );
 
   setPlayer(player === "white" ? "black" : "white");

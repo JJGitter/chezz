@@ -7,6 +7,8 @@ import { useContext } from "react";
 import destinationSquares from "../Functions/destinationSquares";
 import { userContext } from "../App";
 import { handlePieceMove } from "../Functions/handlePieceMove";
+import { stringSplit } from "../Functions/movePiece";
+import createTempBoard from "../Functions/createTempBoard";
 
 function Square(squareProps) {
   //This function component will return a square with a Piece (the Piece can be empty) inside of it.
@@ -56,36 +58,65 @@ function Square(squareProps) {
           enPassantTarget
         ).includes(squareProps.index)
       ) {
-        if (isOnlinePlay_ref.current) {
-          socket.emit(
-            "piece_moved",
-            item.fromCell,
-            squareProps.index,
-            item.piece,
-            item.pieceColor
-          );
-        }
+        const [toColIndex, toRowIndex] = stringSplit(squareProps.index);
+        const [fromColIndex, fromRowIndex] = stringSplit(item.fromCell);
+        let isPromotion =
+          item.piece === "Pawn" && (toRowIndex === 0 || toRowIndex === 7);
 
-        handlePieceMove(
-          item,
-          squareProps.index,
-          board,
-          setBoard,
-          wKingState,
-          bKingState,
-          enPassantTarget,
-          player,
-          setPlayer,
-          wChecked,
-          bChecked,
-          lastMove,
-          nrOfHalfMoves,
-          checkmate,
-          boardHistory,
-          setGameOver,
-          nrOfFullMoves,
-          moveHistory
-        );
+        if (!isPromotion) {
+          if (isOnlinePlay_ref.current) {
+            socket.emit(
+              "piece_moved",
+              item.fromCell,
+              squareProps.index,
+              item.piece,
+              item.pieceColor
+            );
+          }
+          handlePieceMove(
+            item,
+            squareProps.index,
+            board,
+            setBoard,
+            wKingState,
+            bKingState,
+            enPassantTarget,
+            player,
+            setPlayer,
+            wChecked,
+            bChecked,
+            lastMove,
+            nrOfHalfMoves,
+            checkmate,
+            boardHistory,
+            setGameOver,
+            nrOfFullMoves,
+            moveHistory
+          );
+        } else {
+          let tempBoard = createTempBoard(board);
+          tempBoard[fromRowIndex][fromColIndex] = (
+            <Square
+              key={item.fromCell}
+              index={item.fromCell}
+              color={board[fromRowIndex][fromColIndex].props.color}
+              pieceType=""
+              pieceColor=""
+            />
+          );
+
+          tempBoard[toRowIndex][toColIndex] = (
+            <Square
+              key={squareProps.index}
+              index={squareProps.index}
+              color={board[toRowIndex][toColIndex].props.color}
+              pieceType={"Promotion"}
+              pieceColor={item.pieceColor}
+              movedItem = {item}
+            />
+          );
+          setBoard(tempBoard);
+        }
       }
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver() }), //Collects isOver into dropProps
@@ -125,6 +156,7 @@ function Square(squareProps) {
           pieceType={squareProps.pieceType}
           pieceColor={dragProps.isDragging ? "grey" : squareProps.pieceColor}
           squareIndex={squareProps.index}
+          item={squareProps.movedItem}
         />
       </div>
     </div>

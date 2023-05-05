@@ -49,7 +49,8 @@ function createMoveNotation(
   bKingState,
   enPassantTarget,
   moveHistory,
-  checkmate
+  checkmate,
+  promotionPiece
 ) {
   //Create an array containing all the moves of the game.
 
@@ -112,7 +113,21 @@ function createMoveNotation(
   const [, toRow] = toSquare.split("");
   if (movedItem.piece === "Pawn" && (toRow === "1" || toRow === "8")) {
     //if pawn promotion
-    move = move + "=Q";
+    let promotionChar = "";
+    switch (promotionPiece) {
+      case "Bishop":
+        promotionChar = "B";
+        break;
+      case "Knight":
+        promotionChar = "N";
+        break;
+      case "Rook":
+        promotionChar = "R";
+        break;
+      default:
+        promotionChar = "Q";
+    }
+    move = move + "=" + promotionChar;
   }
   if (checkmate.current) {
     move = move + "#";

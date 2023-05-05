@@ -61,6 +61,7 @@ function Game() {
   const [opponentMoved, setOpponentMoved] = useState(false);
   const [receivedItem, setReceivedItem] = useState({});
   const [receivedToSquare, setReceivedToSquare] = useState("");
+  const [receivedPromotionPiece, setReceivedPromotionPiece] = useState(null);
   const [displayDrawOffer, setDisplayDrawOffer] = useState(false);
   const [displayRematchOffer, setDisplayRematchOffer] = useState(false);
 
@@ -96,7 +97,7 @@ function Game() {
     if (isOnlinePlay_ref.current) {
       socket.on(
         "opponent_moved",
-        (fromSquare, toSquare, pieceType, pieceColor) => {
+        (fromSquare, toSquare, pieceType, pieceColor, promotionPiece) => {
           setOpponentMoved(true);
           setReceivedItem({
             fromCell: fromSquare, //i.e. "c5"
@@ -104,6 +105,7 @@ function Game() {
             pieceColor: pieceColor,
           });
           setReceivedToSquare(toSquare);
+          setReceivedPromotionPiece(promotionPiece);
         }
       );
       socket.on("opponent_resigns", (opponentColor) => {
@@ -178,7 +180,8 @@ function Game() {
       boardHistory,
       setGameOver,
       nrOfFullMoves,
-      moveHistory
+      moveHistory,
+      receivedPromotionPiece
     );
   }
 

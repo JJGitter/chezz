@@ -15,7 +15,7 @@ export function stringSplit(string) {
   return [columnIndex, rowIndex];
 }
 
-let lastMoveHighlight = "grayscale(50%)";
+let lastMoveHighlight = "grayscale(80%)";
 
 function movePiece(
   board,
@@ -34,7 +34,8 @@ function movePiece(
   nrOfHalfMoves,
   checkmate,
   boardHistory,
-  setGameOver
+  setGameOver,
+  promotionPiece
 ) {
   const [fromColumnIndex, fromRowIndex] = stringSplit(fromSquare);
   const [toColumnIndex, toRowIndex] = stringSplit(toSquare);
@@ -264,18 +265,6 @@ function movePiece(
         lastMoveHighlight={lastMoveHighlight}
       />
     );
-  } else {
-    //else promotion to Queen
-    tempBoard[toRowIndex][toColumnIndex] = (
-      <Square
-        key={toSquare}
-        index={toSquare}
-        color={board[toRowIndex][toColumnIndex].props.color}
-        pieceType="Queen"
-        pieceColor={pieceColor}
-        lastMoveHighlight={lastMoveHighlight}
-      />
-    );
   }
 
   //Handle check
@@ -409,6 +398,21 @@ function movePiece(
   //_____________________________________________
 
   let isCapture = board[toRowIndex][toColumnIndex].props.pieceType !== "";
+
+  if(promotionPiece){
+    //If promoting
+    tempBoard[toRowIndex][toColumnIndex] = (
+      <Square
+        key={toSquare}
+        index={toSquare}
+        color={board[toRowIndex][toColumnIndex].props.color}
+        pieceType={promotionPiece}
+        pieceColor={pieceColor}
+        lastMoveHighlight={lastMoveHighlight}
+      />
+      )
+
+  }
 
   //Update the board state
   setBoard(tempBoard);
