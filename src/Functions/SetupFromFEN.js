@@ -31,6 +31,7 @@ function setupFromFEN(
   //const FEN = "rnbbk1nr/pp1p1ppp/2p1p3/8/5PP1/q7/PPPPPKBP/RNB2QNR b kq - 7 6"; //Mate in one with Bishop
   //const FEN = "5bnr/4p1pq/2Q1ppkr/7p/2P4P/8/PP1PPPP1/RNB1KBNR w KQ - 0 10"; //stalemate in one move(Qxe6)
   //const FEN = "r1bqkbnr/1ppp1ppp/p1n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 3" //scholars mate
+  //rnbqk2r/ppppppPp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0    // promotion checkmate
 
   let FENarray = FEN.split("");
   let colorDescriptionIndex = null;

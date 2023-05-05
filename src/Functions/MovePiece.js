@@ -267,6 +267,21 @@ function movePiece(
     );
   }
 
+  if(promotionPiece){
+    //If promoting
+    tempBoard[toRowIndex][toColumnIndex] = (
+      <Square
+        key={toSquare}
+        index={toSquare}
+        color={board[toRowIndex][toColumnIndex].props.color}
+        pieceType={promotionPiece}
+        pieceColor={pieceColor}
+        lastMoveHighlight={lastMoveHighlight}
+      />
+      )
+
+  }
+
   //Handle check
   //_____________________________________________
   //_____________________________________________
@@ -398,21 +413,6 @@ function movePiece(
   //_____________________________________________
 
   let isCapture = board[toRowIndex][toColumnIndex].props.pieceType !== "";
-
-  if(promotionPiece){
-    //If promoting
-    tempBoard[toRowIndex][toColumnIndex] = (
-      <Square
-        key={toSquare}
-        index={toSquare}
-        color={board[toRowIndex][toColumnIndex].props.color}
-        pieceType={promotionPiece}
-        pieceColor={pieceColor}
-        lastMoveHighlight={lastMoveHighlight}
-      />
-      )
-
-  }
 
   //Update the board state
   setBoard(tempBoard);
