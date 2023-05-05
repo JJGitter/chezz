@@ -4,6 +4,7 @@ import { userContext } from "../App";
 function ServerTimer({
   playerColor,
   clockColor,
+  gameOver,
   setGameOver,
   selectedTimeControl_ref,
   beforeFirstMove_ref,
@@ -26,6 +27,14 @@ function ServerTimer({
   }
   const [whiteTime, setWhiteTime] = useState(nrOfSecondsInTimeControl);
   const [blackTime, setBlackTime] = useState(nrOfSecondsInTimeControl);
+
+  useEffect(() => {
+    //reset timer upon rematch
+    if (beforeFirstMove_ref.current) {
+      setWhiteTime(nrOfSecondsInTimeControl);
+      setBlackTime(nrOfSecondsInTimeControl);
+    }
+  }, [gameOver.isOver, nrOfSecondsInTimeControl, setWhiteTime, setBlackTime, beforeFirstMove_ref]);
 
   useEffect(() => {
     socket.on("time_from_server", (whiteTime, blackTime) => {

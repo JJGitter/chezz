@@ -431,6 +431,7 @@ function Game() {
         <ServerTimer
           playerColor={player}
           clockColor={"black"}
+          gameOver={gameOver}
           setGameOver={setGameOver}
           selectedTimeControl_ref={selectedTimeControl_ref}
           beforeFirstMove_ref={beforeFirstMove_ref}
@@ -439,6 +440,7 @@ function Game() {
         <ServerTimer
           playerColor={player}
           clockColor={"white"}
+          gameOver={gameOver}
           setGameOver={setGameOver}
           selectedTimeControl_ref={selectedTimeControl_ref}
           beforeFirstMove_ref={beforeFirstMove_ref}
@@ -476,6 +478,7 @@ function Game() {
         <ServerTimer
           playerColor={player}
           clockColor={"black"}
+          gameOver={gameOver}
           setGameOver={setGameOver}
           selectedTimeControl_ref={selectedTimeControl_ref}
           beforeFirstMove_ref={beforeFirstMove_ref}
@@ -484,6 +487,7 @@ function Game() {
         <ServerTimer
           playerColor={player}
           clockColor={"white"}
+          gameOver={gameOver}
           setGameOver={setGameOver}
           selectedTimeControl_ref={selectedTimeControl_ref}
           beforeFirstMove_ref={beforeFirstMove_ref}
